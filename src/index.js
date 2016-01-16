@@ -18,7 +18,6 @@ const clamp = (n, min, max) => {
 };
 
 const springConfig = [500, 30];
-const itemsCount = 5;
 
 export default class Demo extends Component{
   constructor(props) {
@@ -28,8 +27,8 @@ export default class Demo extends Component{
       mouse: 0,
       isPressed: false,
       lastPressed: 0,
-      order: range(itemsCount),
-      widthList: range(itemsCount).map(item => 0),
+      order: range(this.props.children.length),
+      widthList: range(this.props.children.length).map(item => 0),
       isResizing: false
     };
     window.addEventListener('touchmove', this.handleTouchMove.bind(this));
@@ -45,12 +44,10 @@ export default class Demo extends Component{
   }
 
   handleResizeStart() {
-    console.log('resize start')
     this.setState({isResizing: true});
   }
 
   handleResizeStop() {
-    console.log('resize stop')
     this.setState({isResizing: false});
   }
 
@@ -73,12 +70,11 @@ export default class Demo extends Component{
   }
 
   handleMouseMove({pageX}) {
-
     const {isPressed, delta, order, lastPressed, widthList, isResizing} = this.state;
     if (isPressed && !isResizing) {
       const mouse = pageX - delta;
-      console.log(mouse);
-      const row = clamp(Math.round(this.getItemCountByPositionX(mouse)), 0, itemsCount - 1);
+      const {length} = this.props.children;
+      const row = clamp(Math.round(this.getItemCountByPositionX(mouse)), 0, length - 1);
       const newOrder = reinsert(order, order.indexOf(lastPressed), row);
       const newWidthList = reinsert(widthList, order.indexOf(lastPressed), row);
       this.setState({mouse: mouse, order: newOrder, widthList: newWidthList});
@@ -110,15 +106,16 @@ export default class Demo extends Component{
   getItemPositionXByIndex(index) {
     const {widthList} = this.state;
     let sum = 0;
-    for (let i = 0; i < index; i++) sum += widthList[i] + 5;
+    for (let i = 0; i < index; i++) sum += widthList[i] + this.props.marginRight;
     return sum;
   }
 
   render() {
     const {mouse, isPressed, lastPressed, order} = this.state;
+    const {length} = this.props.children;
     return (
       <div ref="panes">
-        {range(itemsCount).map(i => {
+        {range(length).map(i => {
           const style = lastPressed === i && isPressed
             ? {
                 scale: spring(1.05, springConfig),
@@ -146,7 +143,7 @@ export default class Demo extends Component{
                             onTouchStart={this.handleTouchStart.bind(this, i, x)}
                             onResizeStart={this.handleResizeStart.bind(this)}
                             onResizeStop={this.handleResizeStop.bind(this)} >
-                   {i + 1}
+                   {this.props.children[i]}
                  </Resizable>
                }
             </Motion>
