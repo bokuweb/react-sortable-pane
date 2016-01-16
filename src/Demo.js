@@ -1,8 +1,7 @@
 import React, {Component, PropTypes} from 'react';
 import {Motion, spring} from 'react-motion';
 import range from 'lodash.range';
-import Resizable from './resizable';
-import _ from 'lodash';
+import Resizable from 'react-resizable-box';
 
 function reinsert(arr, from, to) {
   const _arr = arr.slice(0);
@@ -40,7 +39,7 @@ export default class Demo extends Component{
   }
 
   componentDidMount() {
-    const width = _.map(this.refs.panes.children, child => child.clientWidth);
+    const width = this.refs.panes.children.map(child => child.clientWidth);
     this.setState({widthList: width});
   }
 
@@ -113,9 +112,8 @@ export default class Demo extends Component{
 
   render() {
     const {mouse, isPressed, lastPressed, order} = this.state;
-
     return (
-      <div ref='panes'>
+      <div ref="panes">
         {range(itemsCount).map(i => {
           const style = lastPressed === i && isPressed
             ? {
