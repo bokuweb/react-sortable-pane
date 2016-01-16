@@ -3,19 +3,19 @@ import {Motion, spring} from 'react-motion';
 import range from 'lodash.range';
 import Resizable from 'react-resizable-box';
 
-function reinsert(arr, from, to) {
+const reinsert(arr, from, to) => {
   const _arr = arr.slice(0);
   const val = _arr[from];
   _arr.splice(from, 1);
   _arr.splice(to, 0, val);
   return _arr;
-}
+};
 
-function clamp(n, min, max) {
+const clamp = (n, min, max) => {
   const _min = min || n;
   const _max = max || n;
   return Math.max(Math.min(n, _max), _min);
-}
+};
 
 const springConfig = [500, 30];
 const itemsCount = 5;
