@@ -94,10 +94,11 @@ export default class Demo extends Component{
 
   getItemCountByPositionX(x) {
     const {widthList} = this.state;
+    const {marginRight} = this.props;
     let sum = 0;
     if (x < 0) return 0;
     for (let i = 0; i < widthList.length; i++) {
-      sum += widthList[i] + 5;
+      sum += widthList[i] + marginRight;
       if (sum >= x) return i+1;
     }
     return widthList.length;
