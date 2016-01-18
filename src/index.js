@@ -48,6 +48,13 @@ export default class Demo extends Component{
     this.setState({widthList: width});
   }
 
+  componentWillUnmount() {
+    window.removeEventListener('touchmove', this.handleTouchMove);
+    window.removeEventListener('touchend', this.handleMouseUp);
+    window.removeEventListener('mousemove', this.handleMouseMove);
+    window.removeEventListener('mouseup', this.handleMouseUp);
+  }
+
   handleResizeStart() {
     this.setState({isResizing: true});
   }
