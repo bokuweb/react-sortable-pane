@@ -31,16 +31,28 @@ export default class Demo extends Component{
       widthList: range(this.props.children.length).map(item => 0),
       isResizing: false
     };
-    window.addEventListener('touchmove', this.handleTouchMove.bind(this));
-    window.addEventListener('touchend', this.handleMouseUp.bind(this));
-    window.addEventListener('mousemove', this.handleMouseMove.bind(this));
-    window.addEventListener('mouseup', this.handleMouseUp.bind(this));
+    this.handleTouchMove = this.handleTouchMove.bind(this);
+    this.handleMouseUp = this.handleMouseUp.bind(this);
+    this.handleMouseMove = this.handleMouseMove.bind(this);
+    this.handleMouseUp = this.handleMouseUp .bind(this);
+
+    window.addEventListener('touchmove', this.handleTouchMove);
+    window.addEventListener('touchend', this.handleMouseUp);
+    window.addEventListener('mousemove', this.handleMouseMove);
+    window.addEventListener('mouseup', this.handleMouseUp);
   }
 
   componentDidMount() {
     const children = Array.prototype.slice.call(this.refs.panes.children);
     const width = children.map(child => child.clientWidth);
     this.setState({widthList: width});
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener('touchmove', this.handleTouchMove);
+    window.removeEventListener('touchend', this.handleMouseUp);
+    window.removeEventListener('mousemove', this.handleMouseMove);
+    window.removeEventListener('mouseup', this.handleMouseUp);
   }
 
   handleResizeStart() {
@@ -94,10 +106,11 @@ export default class Demo extends Component{
 
   getItemCountByPositionX(x) {
     const {widthList} = this.state;
+    const {marginRight} = this.props;
     let sum = 0;
     if (x < 0) return 0;
     for (let i = 0; i < widthList.length; i++) {
-      sum += widthList[i] + 5;
+      sum += widthList[i] + marginRight;
       if (sum >= x) return i+1;
     }
     return widthList.length;
