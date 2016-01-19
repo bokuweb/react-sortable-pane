@@ -146,14 +146,14 @@ export default class SortablePane extends Component{
                <Resizable
                     customClass={this.props.customClass}
                     onResize={this.onResize.bind(this, order.indexOf(i))}
-                    canResize={{x:true, y:false, xy:false}}
-                    customStyle={{
+                    isResizable={{x:true, y:false, xy:false}}
+                    customStyle={Object.assign(this.props.customStyle, {
                       boxShadow: `rgba(0, 0, 0, 0.2) 0px ${shadow}px ${2 * shadow}px 0px`,
                       transform: `translate3d(${x}px, 0, 0) scale(${scale})`,
                       WebkitTransform: `translate3d(${x}px, 0, 0) scale(${scale})`,
                       zIndex: i === lastPressed ? 99 : i,
                       position: 'absolute'
-                    }}
+                    })}
                     onMouseDown={this.handleMouseDown.bind(this, i, x)}
                     onTouchStart={this.handleTouchStart.bind(this, i, x)}
                     onResizeStart={this.handleResizeStart.bind(this)}
@@ -180,5 +180,6 @@ SortablePane.defaultProps = {
   onTouchStartP: () => {},
   onResizeStart: () => {},
   onResize: () => {},
-  onResizeStop: () => {}
+  onResizeStop: () => {},
+  customStyle: {}
 };
