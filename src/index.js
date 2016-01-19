@@ -19,7 +19,7 @@ const clamp = (n, min, max) => {
 
 const springConfig = [500, 30];
 
-export default class Demo extends Component{
+export default class SortablePane extends Component{
   constructor(props) {
     super(props);
     this.state = {
@@ -97,9 +97,9 @@ export default class Demo extends Component{
     this.setState({isPressed: false, delta: 0});
   }
 
-  onResize(i, size) {
+  onResize(i, {width}) {
     let {widthList} = this.state;
-    widthList[i] = size.width;
+    widthList[i] = width;
     this.setState({widthList});
     this.forceUpdate();
   }
@@ -143,19 +143,21 @@ export default class Demo extends Component{
           return (
             <Motion style={style} key={i}>
               {({scale, shadow, x}) =>
-               <Resizable customClass="demo8-item" onResize={this.onResize.bind(this, order.indexOf(i))}
-                            canResize={{x:true, y:false, xy:false}}
-                            customStyle={{
-                              boxShadow: `rgba(0, 0, 0, 0.2) 0px ${shadow}px ${2 * shadow}px 0px`,
-                              transform: `translate3d(${x}px, 0, 0) scale(${scale})`,
-                              WebkitTransform: `translate3d(${x}px, 0, 0) scale(${scale})`,
-                              zIndex: i === lastPressed ? 99 : i,
-                              position: 'absolute'
-                            }}
-                            onMouseDown={this.handleMouseDown.bind(this, i, x)}
-                            onTouchStart={this.handleTouchStart.bind(this, i, x)}
-                            onResizeStart={this.handleResizeStart.bind(this)}
-                            onResizeStop={this.handleResizeStop.bind(this)} >
+               <Resizable
+                    customClass={this.props.customClass}
+                    onResize={this.onResize.bind(this, order.indexOf(i))}
+                    isResizable={{x:true, y:false, xy:false}}
+                    customStyle={Object.assign(this.props.customStyle, {
+                      boxShadow: `rgba(0, 0, 0, 0.2) 0px ${shadow}px ${2 * shadow}px 0px`,
+                      transform: `translate3d(${x}px, 0, 0) scale(${scale})`,
+                      WebkitTransform: `translate3d(${x}px, 0, 0) scale(${scale})`,
+                      zIndex: i === lastPressed ? 99 : i,
+                      position: 'absolute'
+                    })}
+                    onMouseDown={this.handleMouseDown.bind(this, i, x)}
+                    onTouchStart={this.handleTouchStart.bind(this, i, x)}
+                    onResizeStart={this.handleResizeStart.bind(this)}
+                    onResizeStop={this.handleResizeStop.bind(this)} >
                    {this.props.children[i]}
                  </Resizable>
                }
@@ -166,3 +168,18 @@ export default class Demo extends Component{
     );
   }
 }
+
+
+SortablePane.propTypes = {
+  onClick: PropTypes.func,
+  onTouchStart: PropTypes.func
+};
+
+SortablePane.defaultProps = {
+  onClick: () => {},
+  onTouchStartP: () => {},
+  onResizeStart: () => {},
+  onResize: () => {},
+  onResizeStop: () => {},
+  customStyle: {}
+};
