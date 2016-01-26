@@ -20,6 +20,18 @@ const clamp = (n, min, max) => {
 const springConfig = [500, 30];
 
 export default class SortablePane extends Component{
+  static propTypes = {
+    //title: React.PropTypes.string.isRequired,
+    //price: React.PropTypes.number.isRequired,
+    //initialQty: React.PropTypes.number
+  };
+
+  static defaultProps = {
+    //title: 'Undefined Product',
+    //price: 100,
+    //initialQty: 0
+  };
+
   constructor(props) {
     super(props);
     this.state = {
