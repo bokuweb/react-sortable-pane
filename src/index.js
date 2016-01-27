@@ -137,10 +137,10 @@ export default class SortablePane extends Component{
 
   render() {
     const {mouse, isPressed, lastPressed, order} = this.state;
-    const {length} = this.props.children;
+    const {children, disableFloatEffect, customStyle} = this.props;
     return (
       <div ref="panes">
-        {range(length).map(i => {
+        {range(children.length).map(i => {
           const style = lastPressed === i && isPressed
             ? {
                 scale: spring(1.05, springConfig),
@@ -149,7 +149,7 @@ export default class SortablePane extends Component{
               }
             : {
                 scale: spring(1, springConfig),
-                shadow: spring(1, springConfig),
+                shadow: spring(0, springConfig),
                 x: spring(this.getItemPositionXByIndex(order.indexOf(i)), springConfig)
               };
           return (
@@ -159,7 +159,8 @@ export default class SortablePane extends Component{
                     customClass={this.props.customClass}
                     onResize={this.onResize.bind(this, order.indexOf(i))}
                     isResizable={{x:true, y:false, xy:false}}
-                    customStyle={Object.assign(this.props.customStyle, {
+                    width={(customStyle && customStyle.width) ? ~~(customStyle.width.replace('px','')) : null}
+                    customStyle={Object.assign(this.props.customStyle,{
                       boxShadow: `rgba(0, 0, 0, 0.2) 0px ${shadow}px ${2 * shadow}px 0px`,
                       transform: `translate3d(${x}px, 0, 0) scale(${scale})`,
                       WebkitTransform: `translate3d(${x}px, 0, 0) scale(${scale})`,
@@ -170,7 +171,7 @@ export default class SortablePane extends Component{
                     onTouchStart={this.handleTouchStart.bind(this, i, x)}
                     onResizeStart={this.handleResizeStart.bind(this)}
                     onResizeStop={this.handleResizeStop.bind(this)} >
-                   {this.props.children[i]}
+                   {children[i]}
                  </Resizable>
                }
             </Motion>
