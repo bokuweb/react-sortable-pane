@@ -159,8 +159,9 @@ export default class SortablePane extends Component{
                     customClass={this.props.customClass}
                     onResize={this.onResize.bind(this, order.indexOf(i))}
                     isResizable={{x:true, y:false, xy:false}}
-                    width={(customStyle && customStyle.width) ? ~~(customStyle.width.replace('px','')) : null}
-                    customStyle={Object.assign(this.props.customStyle,{
+                    width={children[i].props.width}
+                    height={children[i].props.height}
+                    customStyle={Object.assign(children[i].props.style, {
                       boxShadow: `rgba(0, 0, 0, 0.2) 0px ${shadow}px ${2 * shadow}px 0px`,
                       transform: `translate3d(${x}px, 0, 0) scale(${scale})`,
                       WebkitTransform: `translate3d(${x}px, 0, 0) scale(${scale})`,
@@ -171,7 +172,7 @@ export default class SortablePane extends Component{
                     onTouchStart={this.handleTouchStart.bind(this, i, x)}
                     onResizeStart={this.handleResizeStart.bind(this)}
                     onResizeStop={this.handleResizeStop.bind(this)} >
-                   {children[i]}
+                   {children[i].props.children}
                  </Resizable>
                }
             </Motion>
@@ -182,6 +183,27 @@ export default class SortablePane extends Component{
   }
 }
 
+export class Pane extends Component {
+  static propTypes = {
+    //title: React.PropTypes.string.isRequired,
+    //price: React.PropTypes.number.isRequired,
+    //initialQty: React.PropTypes.number
+  };
+
+  static defaultProps = {
+    style: {}
+  };
+
+  constructor(props) {
+    super(props);
+  }
+
+  render() {
+    return (
+      <div>{this.props.children}</div>
+    );
+  }
+}
 
 SortablePane.propTypes = {
   onClick: PropTypes.func,
