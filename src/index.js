@@ -17,7 +17,9 @@ const springConfig = [500, 30];
 
 export default class SortablePane extends Component{
   static propTypes = {
-    marginRight: React.PropTypes.number
+    marginRight: React.PropTypes.number,
+    customClass: React.PropTypes.string,
+    style: React.PropTypes.object
   };
 
   static defaultProps = {
@@ -135,9 +137,11 @@ export default class SortablePane extends Component{
 
   render() {
     const {mouse, isPressed, lastPressed, order} = this.state;
-    const {children, disableFloatEffect, customStyle} = this.props;
+    const {children, disableFloatEffect, style, customClass} = this.props;
     return (
-      <div ref="panes">
+      <div ref="panes"
+           className={customClass}
+           style={style}>
         {children.map((child, i) => {
           const style = lastPressed === i && isPressed
             ? {
