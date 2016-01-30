@@ -47,7 +47,7 @@ var Example = function (_Component) {
     value: function render() {
       return _react2.default.createElement(
         _src2.default,
-        { marginRight: 10 },
+        { margin: 10 },
         _react2.default.createElement(
           _src.Pane,
           {
