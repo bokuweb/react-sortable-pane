@@ -60,7 +60,7 @@ export default class Example extends Component{
 
 ## Properties
 
-### SortablePane Component
+## SortablePane Component
 
 #### customClass {string}
 
@@ -74,7 +74,7 @@ The css style set on the SortablePane.
 
 Margin between the panes.
 
-### Pane Component
+## Pane Component
 
 #### width {number}
 
