@@ -14,7 +14,7 @@ const style = {
 export default class Example extends Component{
   render() {
     return (
-      <SortablePane margin={10}>
+      <SortablePane marginRight={10}>
         <Pane
            width={200}
            height={500}
