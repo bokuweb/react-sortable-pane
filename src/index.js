@@ -17,13 +17,13 @@ const springConfig = [500, 30];
 
 export default class SortablePane extends Component{
   static propTypes = {
-    marginRight: React.PropTypes.number,
+    margin: React.PropTypes.number,
     customClass: React.PropTypes.string,
     style: React.PropTypes.object
   };
 
   static defaultProps = {
-    marginRight: 0,
+    margin: 0,
     onClick: () => {},
     onTouchStartP: () => {},
     onResizeStart: () => {},
@@ -118,11 +118,11 @@ export default class SortablePane extends Component{
 
   getItemCountByPositionX(x) {
     const {widthList} = this.state;
-    const {marginRight} = this.props;
+    const {margin} = this.props;
     let sum = 0;
     if (x < 0) return 0;
     for (let i = 0; i < widthList.length; i++) {
-      sum += widthList[i] + marginRight;
+      sum += widthList[i] + margin;
       if (sum >= x) return i+1;
     }
     return widthList.length;
@@ -131,7 +131,7 @@ export default class SortablePane extends Component{
   getItemPositionXByIndex(index) {
     const {widthList} = this.state;
     let sum = 0;
-    for (let i = 0; i < index; i++) sum += widthList[i] + this.props.marginRight;
+    for (let i = 0; i < index; i++) sum += widthList[i] + this.props.margin;
     return sum;
   }
 
