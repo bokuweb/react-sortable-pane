@@ -11,25 +11,23 @@ const reinsert = (arr, from, to) => {
   return _arr;
 };
 
-const clamp = (n, min, max) => {
-  const _min = min || n;
-  const _max = max || n;
-  return Math.max(Math.min(n, _max), _min);
-};
+const clamp = (n, min = n, max = n) => Math.max(Math.min(n, max), min);
 
 const springConfig = [500, 30];
 
 export default class SortablePane extends Component{
   static propTypes = {
-    //title: React.PropTypes.string.isRequired,
-    //price: React.PropTypes.number.isRequired,
-    //initialQty: React.PropTypes.number
+    marginRight: React.PropTypes.number
   };
 
   static defaultProps = {
-    //title: 'Undefined Product',
-    //price: 100,
-    //initialQty: 0
+    marginRight: 0,
+    onClick: () => {},
+    onTouchStartP: () => {},
+    onResizeStart: () => {},
+    onResize: () => {},
+    onResizeStop: () => {},
+    customStyle: {}
   };
 
   constructor(props) {
@@ -161,6 +159,10 @@ export default class SortablePane extends Component{
                     isResizable={{x:true, y:false, xy:false}}
                     width={child.props.width}
                     height={child.props.height}
+                    minWidth={child.props.minWidth}
+                    minHeight={child.props.minHeight}
+                    maxWidth={child.props.maxWidth}
+                    maxHeight={child.props.maxHeight}
                     customStyle={Object.assign(child.props.style, {
                       boxShadow: `rgba(0, 0, 0, 0.2) 0px ${shadow}px ${2 * shadow}px 0px`,
                       transform: `translate3d(${x}px, 0, 0) scale(${scale})`,
@@ -185,8 +187,13 @@ export default class SortablePane extends Component{
 
 export class Pane extends Component {
   static propTypes = {
-    width: React.PropTypes.number.isRequired,
-    height: React.PropTypes.number.isRequired
+    width: React.PropTypes.number,
+    height: React.PropTypes.number,
+    minWidth: React.PropTypes.number,
+    maxWidth: React.PropTypes.number,
+    minHeight: React.PropTypes.number,
+    maxGeight: React.PropTypes.number,
+    style: React.PropTypes.object
   };
 
   static defaultProps = {
@@ -204,16 +211,3 @@ export class Pane extends Component {
   }
 }
 
-SortablePane.propTypes = {
-  onClick: PropTypes.func,
-  onTouchStart: PropTypes.func
-};
-
-SortablePane.defaultProps = {
-  onClick: () => {},
-  onTouchStartP: () => {},
-  onResizeStart: () => {},
-  onResize: () => {},
-  onResizeStop: () => {},
-  customStyle: {}
-};
