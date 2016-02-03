@@ -67,12 +67,14 @@ export default class SortablePane extends Component{
     window.removeEventListener('mouseup', this.handleMouseUp);
   }
 
-  handleResizeStart() {
+  handleResizeStart(i) {
     this.setState({isResizing: true});
+    this.props.onResizeStart(i);
   }
 
-  handleResizeStop() {
+  handleResizeStop(i) {
     this.setState({isResizing: false});
+    this.props.onResizeStop(i);
   }
 
   handleTouchStart(key, pressLocation, e) {
@@ -110,10 +112,11 @@ export default class SortablePane extends Component{
   }
 
   onResize(i, {width}) {
-    let {widthList} = this.state;
-    widthList[i] = width;
+    let {widthList, order} = this.state;
+    widthList[order.indexOf(i)] = width;
     this.setState({widthList});
     this.forceUpdate();
+    this.props.onResize(i);
   }
 
   getItemCountByPositionX(x) {
@@ -159,7 +162,7 @@ export default class SortablePane extends Component{
               {({scale, shadow, x}) =>
                <Resizable
                     customClass={this.props.customClass}
-                    onResize={this.onResize.bind(this, order.indexOf(i))}
+                    onResize={this.onResize.bind(this, i)}
                     isResizable={{x:true, y:false, xy:false}}
                     width={child.props.width}
                     height={child.props.height}
@@ -176,8 +179,8 @@ export default class SortablePane extends Component{
                     })}
                     onMouseDown={this.handleMouseDown.bind(this, i, x)}
                     onTouchStart={this.handleTouchStart.bind(this, i, x)}
-                    onResizeStart={this.handleResizeStart.bind(this)}
-                    onResizeStop={this.handleResizeStop.bind(this)} >
+                    onResizeStart={this.handleResizeStart.bind(this, i)}
+                    onResizeStop={this.handleResizeStop.bind(this, i)} >
                    {child.props.children}
                  </Resizable>
                }
