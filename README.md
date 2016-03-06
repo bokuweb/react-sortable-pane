@@ -130,12 +130,15 @@ The css style set on the pane.
 
 ## Changelog
 
-### V0.1.1
+### V0.1.2
 
 - Add onOrderChange callback.
 - Add disableEffect props.
 - Fix eslint error.
 
+### V0.1.1
+
+- Add onResize callback.
 
 ### V0.1.0
 
