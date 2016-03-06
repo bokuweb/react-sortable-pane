@@ -42,7 +42,11 @@ const style = {
 export default class Example extends Component{
   render() {
     return (
-      <SortablePane marginRight={10}>
+      <SortablePane
+        margin={10}
+        onResize={index => console.log(`resize pane${index}`)}
+        onOrderChange={order => console.dir(order)}
+      >
         <Pane
            width={200}
            height={500}
@@ -119,8 +123,8 @@ The css style set on the pane.
 ## TODO
 
 - [x] Horizontal pane
-- [ ] Resized callback
-- [ ] Sorted callback
+- [x] Resized callback
+- [x] Sorted callback
 - [ ] Vertical Pane
 - [ ] Test
 
