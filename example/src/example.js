@@ -12,9 +12,13 @@ const style = {
 };
 
 export default class Example extends Component{
+  onResize(i) {
+    console.log(`resize pane${i}`);
+  }
   render() {
     return (
-      <SortablePane margin={10}>
+      <SortablePane margin={10}
+                    onResize={this.onResize.bind(this)}>
         <Pane
            width={200}
            height={500}

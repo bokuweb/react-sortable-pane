@@ -1,0 +1,10 @@
+language: node_js
+
+node_js:
+  - '4.3.0'
+
+install:
+  - npm i
+
+script:
+  - 'npm test'

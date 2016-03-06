@@ -5,6 +5,8 @@ Sortable and resizable pane component for react.
 ## Demo
 
 ![screenshot](https://raw.githubusercontent.com/bokuweb/react-sortable-pane/master/screenshot/screenshot.gif)
+   
+   
 See demo: [http://bokuweb.github.io/react-sortable-pane](http://bokuweb.github.io/react-sortable-pane)
 
 ## Important Note
