@@ -25,10 +25,11 @@ export default class SortablePane extends Component {
     margin: PropTypes.number,
     customClass: PropTypes.string,
     style: PropTypes.object,
-    children: PropTypes.any,
+    children: PropTypes.instanceOf(Pane),
     onResizeStart: PropTypes.func,
     onResize: PropTypes.func,
     onResizeStop: PropTypes.func,
+    disableEffect: PropTypes.bool,
   };
 
   static defaultProps = {
@@ -39,6 +40,7 @@ export default class SortablePane extends Component {
     onResize: () => null,
     onResizeStop: () => null,
     customStyle: {},
+    disableEffect: false,
   };
 
   constructor(props) {
@@ -152,12 +154,12 @@ export default class SortablePane extends Component {
 
   renderPanes() {
     const { mouse, isPressed, lastPressed, order } = this.state;
-    const { children } = this.props; // TODO: Add disableFloatEffect
+    const { children, disableEffect } = this.props; // TODO: Add disableFloatEffect
     return children.map((child, i) => {
       const style = lastPressed === i && isPressed
               ? {
-                scale: spring(1.05, springConfig),
-                shadow: spring(16, springConfig),
+                scale: disableEffect ? 1 : spring(1.05, springConfig),
+                shadow: disableEffect ? 0 : spring(16, springConfig),
                 x: mouse,
               }
               : {
