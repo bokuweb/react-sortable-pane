@@ -56,6 +56,11 @@ export default class SortablePane extends Component {
       order: range(this.props.children.length),
       widthList: range(this.props.children.length).map(() => 0),
       isResizing: false,
+      paneList: this.props.children.map((child, order) => ({
+        id: child.props.id,
+        width: 0,
+        order,
+      })),
     };
     this.handleTouchMove = ::this.handleTouchMove;
     this.handleMouseUp = ::this.handleMouseUp;
@@ -158,7 +163,7 @@ export default class SortablePane extends Component {
 
   renderPanes() {
     const { mouse, isPressed, lastPressed, order } = this.state;
-    const { children, disableEffect } = this.props; // TODO: Add disableFloatEffect
+    const { children, disableEffect } = this.props;
     return children.map((child, i) => {
       const style = lastPressed === i && isPressed
               ? {

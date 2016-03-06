@@ -23,6 +23,7 @@ export default class Example extends Component{
          onOrderChange={order => console.dir(order)}
       >
         <Pane
+           id="a"
            width={200}
            height={500}
            minWidth={100}
@@ -31,6 +32,7 @@ export default class Example extends Component{
           A
         </Pane>
         <Pane
+           id="b"
            width={300}
            height={400}
            minWidth={100}
@@ -38,6 +40,7 @@ export default class Example extends Component{
           B
         </Pane>
         <Pane
+           id="c"
            width={100}
            height={200}
            minWidth={100}
