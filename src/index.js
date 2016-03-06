@@ -2,18 +2,19 @@ import React, { Component, PropTypes } from 'react';
 import { Motion, spring } from 'react-motion';
 import range from 'lodash.range';
 import Resizable from 'react-resizable-box';
+import isEqual from 'lodash.isequal';
 import Pane from './pane';
 
 export {
   Pane,
 };
 
-const reinsert = (arr, from, to) => {
-  const _arr = arr.slice(0);
-  const val = _arr[from];
-  _arr.splice(from, 1);
-  _arr.splice(to, 0, val);
-  return _arr;
+const reinsert = (array, from, to) => {
+  const a = array.slice(0);
+  const v = a[from];
+  a.splice(from, 1);
+  a.splice(to, 0, v);
+  return a;
 };
 
 const clamp = (n, min = n, max = n) => Math.max(Math.min(n, max), min);
@@ -25,10 +26,12 @@ export default class SortablePane extends Component {
     margin: PropTypes.number,
     customClass: PropTypes.string,
     style: PropTypes.object,
-    children: PropTypes.any,
+    children: PropTypes.array,
     onResizeStart: PropTypes.func,
     onResize: PropTypes.func,
     onResizeStop: PropTypes.func,
+    disableEffect: PropTypes.bool,
+    onOrderChange: PropTypes.func,
   };
 
   static defaultProps = {
@@ -38,7 +41,9 @@ export default class SortablePane extends Component {
     onResizeStart: () => null,
     onResize: () => null,
     onResizeStop: () => null,
+    onOrderChange: () => null,
     customStyle: {},
+    disableEffect: false,
   };
 
   constructor(props) {
@@ -134,6 +139,7 @@ export default class SortablePane extends Component {
       const newOrder = reinsert(order, order.indexOf(lastPressed), row);
       const newWidthList = reinsert(widthList, order.indexOf(lastPressed), row);
       this.setState({ mouse, order: newOrder, widthList: newWidthList });
+      if (!isEqual(order, newOrder)) this.props.onOrderChange(newOrder);
     }
   }
 
@@ -152,12 +158,12 @@ export default class SortablePane extends Component {
 
   renderPanes() {
     const { mouse, isPressed, lastPressed, order } = this.state;
-    const { children } = this.props; // TODO: Add disableFloatEffect
+    const { children, disableEffect } = this.props; // TODO: Add disableFloatEffect
     return children.map((child, i) => {
       const style = lastPressed === i && isPressed
               ? {
-                scale: spring(1.05, springConfig),
-                shadow: spring(16, springConfig),
+                scale: disableEffect ? 1 : spring(1.05, springConfig),
+                shadow: disableEffect ? 0 : spring(16, springConfig),
                 x: mouse,
               }
               : {
