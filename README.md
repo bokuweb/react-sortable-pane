@@ -117,6 +117,8 @@ The css style set on the pane.
 ## TODO
 
 - [x] Horizontal pane
+- [ ] Resized callback
+- [ ] Sorted callback
 - [ ] Vertical Pane
 - [ ] Test
 
