@@ -17,8 +17,11 @@ export default class Example extends Component{
   }
   render() {
     return (
-      <SortablePane margin={10}
-                    onResize={this.onResize.bind(this)}>
+      <SortablePane
+         margin={10}
+         onResize={this.onResize.bind(this)}
+         onOrderChange={order => console.dir(order)}
+      >
         <Pane
            width={200}
            height={500}
