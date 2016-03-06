@@ -2,6 +2,8 @@
 
 Sortable and resizable pane component for react.
 
+[![Code Climate](https://codeclimate.com/github/bokuweb/react-sortable-pane/badges/gpa.svg)](https://codeclimate.com/github/bokuweb/react-sortable-pane)
+
 ## Demo
 
 ![screenshot](https://raw.githubusercontent.com/bokuweb/react-sortable-pane/master/screenshot/screenshot.gif)
