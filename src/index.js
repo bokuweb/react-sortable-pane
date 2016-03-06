@@ -33,11 +33,11 @@ export default class SortablePane extends Component {
 
   static defaultProps = {
     margin: 0,
-    onClick: () => {},
-    onTouchStartP: () => {},
-    onResizeStart: () => {},
-    onResize: () => {},
-    onResizeStop: () => {},
+    onClick: () => null,
+    onTouchStart: () => null,
+    onResizeStart: () => null,
+    onResize: () => null,
+    onResizeStop: () => null,
     customStyle: {},
   };
 
