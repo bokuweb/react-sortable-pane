@@ -128,6 +128,19 @@ The css style set on the pane.
 - [ ] Vertical Pane
 - [ ] Test
 
+## Changelog
+
+### V0.1.1
+
+- Add onOrderChange callback.
+- Add disableEffect props.
+- Fix eslint error.
+
+
+### V0.1.0
+
+publised.
+
 ## License
 
 The MIT License (MIT)
