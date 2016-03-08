@@ -3,6 +3,7 @@ import { Motion, spring } from 'react-motion';
 import range from 'lodash.range';
 import Resizable from 'react-resizable-box';
 import isEqual from 'lodash.isequal';
+//import find from 'lodash.find';
 import Pane from './pane';
 
 export {
@@ -53,7 +54,9 @@ export default class SortablePane extends Component {
       mouse: 0,
       isPressed: false,
       lastPressed: 0,
+      // TODO: remove later
       order: range(this.props.children.length),
+      // TODO: remove later
       widthList: range(this.props.children.length).map(() => 0),
       isResizing: false,
       paneList: this.props.children.map((child, order) => ({
@@ -84,10 +87,23 @@ export default class SortablePane extends Component {
   }
 
   onResize(i, { width }) {
-    const { widthList, order } = this.state;
+    // TODO: remove widthList and order
+    let { widthList, order, paneList } = this.state;
     widthList[order.indexOf(i)] = width;
+    paneList = paneList.map(pane => {
+      if (pane.order === i) {
+        return {
+          width,
+          order: pane.order,
+          id: pane.id,
+        };
+      }
+      return pane;
+    });
+    // TODO: remove later
     this.setState({ widthList });
-    this.forceUpdate();
+    this.setState({ paneList });
+    // this.forceUpdate();
     this.props.onResize(i);
   }
 
@@ -210,7 +226,7 @@ export default class SortablePane extends Component {
                   boxShadow: `rgba(0, 0, 0, 0.2) 0px ${shadow}px ${2 * shadow}px 0px`,
                   transform: `translate3d(${x}px, 0, 0) scale(${scale})`,
                   WebkitTransform: `translate3d(${x}px, 0, 0) scale(${scale})`,
-                  zIndex: i === lastPressed ? 99 : i,
+                  zIndex: i === lastPressed ? 99 : i, // TODO: Add this.props.zIndex
                   position: 'absolute',
                 })}
                 onMouseDown={onMouseDown}
