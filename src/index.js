@@ -110,7 +110,14 @@ export default class SortablePane extends Component {
   setWidth() {
     const children = Array.prototype.slice.call(this.refs.panes.children);
     const width = children.map(child => child.clientWidth);
+    const paneList = this.props.children.map((child, i) => ({
+      id: child.props.id,
+      width: this.refs.panes.children[i].clientWidth,
+      order: i,
+    }));
+    // TODO: remove later
     this.setState({ widthList: width });
+    this.setState({ paneList });
   }
 
   getItemPositionXByIndex(index) {
