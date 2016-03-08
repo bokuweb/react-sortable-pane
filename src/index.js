@@ -91,6 +91,10 @@ export default class SortablePane extends Component {
     this.props.onResize(i);
   }
 
+  getPanePropWithArray(key) {
+    return this.state.paneList.map(pane => pane[key]);
+  }
+
   getItemCountByPositionX(x) {
     const { widthList } = this.state;
     const { margin } = this.props;
