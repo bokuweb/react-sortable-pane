@@ -72,7 +72,9 @@ export default class Example extends Component{
                                    {id}
                                    </Pane>);
             this.setState({list: this.state.list})}} >add</a>
-        <a onClick={() => this.refs.pane.remove()}>remove</a>
+        <a onClick={() => {
+          this.state.list.splice(1, 1);
+          this.setState({list: this.state.list})}} >remove</a>
         <SortablePane
            ref="pane" 
            margin={10}

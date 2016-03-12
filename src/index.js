@@ -146,13 +146,13 @@ export default class SortablePane extends Component {
     return sum;
   }
 
-  updateOrder(panes, order) {
+  updateOrder(panes, order, mode) {
     return panes.map(pane => {
       if (pane.order >= order) {
         return {
           id: pane.id,
           width: pane.width,
-          order: pane.order + 1,
+          order: mode === 'add' ? pane.order + 1 : pane.order - 1,
         };
       }
       return pane;
@@ -164,7 +164,7 @@ export default class SortablePane extends Component {
     next.children.forEach((child, i) => {
       const ids = this.state.panes.map(pane => pane.id);
       if (ids.indexOf(child.props.id) === -1) {
-        newPanes = this.updateOrder(newPanes, i);
+        newPanes = this.updateOrder(newPanes, i, 'add');
         const pane = {
           id: child.props.id,
           width: child.props.width,
@@ -176,8 +176,16 @@ export default class SortablePane extends Component {
     this.setState({ panes: newPanes });
   }
 
-  remove() {
-    console.log('remove');
+  removePane(next) {
+    let newPanes;
+    this.state.panes.forEach((pane, i) => {
+      const ids = next.children.map(child => child.props.id);
+      if (ids.indexOf(pane.id) === -1) {
+        newPanes = this.updateOrder(this.state.panes, i, 'remove');
+        newPanes.splice(i, 1);
+      }
+    });
+    this.setState({ panes: newPanes });
   }
 
   handleResizeStart(i) {
