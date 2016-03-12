@@ -1,50 +1,98 @@
-import React, {Component} from 'react';
-import SortablePane, {Pane} from '../../src';
+import React, { Component } from 'react';
+import SortablePane, { Pane } from '../../src';
 
 const style = {
-  fontSize: "40px",
-  textAlign:"center",
-  paddingTop:"60px",
-  height:"400px",
-  border: "solid 1px #ccc",
-  borderRadius: "5px",
-  backgroundColor: "#fff"
+  fontSize: '40px',
+  textAlign: 'center',
+  paddingTop: '60px',
+  height: '400px',
+  border: 'solid 1px #ccc',
+  borderRadius: '5px',
+  backgroundColor: '#fff',
 };
 
-export default class Example extends Component{
-  onResize(i) {
-    console.log(`resize pane${i}`);
+export default class Example extends Component {
+  constructor(props) {
+    super(props);
+    this.id = 3;
+    this.state = {
+      list: [
+        <Pane
+          id={1}
+          width={200}
+          height={500}
+          minWidth={100}
+          maxWidth={800}
+          minHeight={100}
+          style={style}
+        >
+          1
+        </Pane>,
+        <Pane
+          id={2}
+          width={300}
+          height={400}
+          minWidth={100}
+          minHeight={100}
+          style={style}
+        >
+          2
+        </Pane>,
+        <Pane
+          id={3}
+          width={100}
+          height={200}
+          minWidth={100}
+          minHeight={100}
+          style={style}
+        >
+          3
+        </Pane>,
+      ],
+    };
+    this.add = ::this.add;
+    this.remove = ::this.remove;
+    this.onResize = ::this.onResize;
   }
+
+  onResize(i) {
+    console.log(`resize pane id = ${i}`);
+  }
+
+  add() {
+    this.state.list.splice(~~(Math.random() * this.state.list.length), 0, (
+      <Pane
+        id={++this.id}
+        width={~~(Math.random() * 200) + 100}
+        height={~~(Math.random() * 200) + 100}
+        minWidth={50}
+        minHeight={100}
+        style={style}
+      >
+       {this.id}
+      </Pane>
+    ));
+    this.setState({ list: this.state.list });
+  }
+
+  remove() {
+    this.state.list.splice(~~(Math.random() * this.state.list.length), 1);
+    this.setState({ list: this.state.list });
+  }
+
   render() {
     return (
-      <SortablePane
-         margin={10}
-         onResize={this.onResize.bind(this)}
-         onOrderChange={order => console.dir(order)}
-      >
-        <Pane
-           width={200}
-           height={500}
-           minWidth={100}
-           maxWidth={800}
-           style={style}>
-          A
-        </Pane>
-        <Pane
-           width={300}
-           height={400}
-           minWidth={100}
-           style={style}>
-          B
-        </Pane>
-        <Pane
-           width={100}
-           height={200}
-           minWidth={100}
-           style={style}>
-          C
-        </Pane>
-      </SortablePane>
+      <div>
+        <a onClick={this.add} >add</a>
+        <a onClick={this.remove} >remove</a>
+        <SortablePane
+          margin={10}
+          onResize={this.onResize}
+          onOrderChange={console.dir}
+        >
+          {this.state.list}
+        </SortablePane>
+      </div>
     );
   }
 }

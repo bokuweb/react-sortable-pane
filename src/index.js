@@ -1,6 +1,5 @@
 import React, { Component, PropTypes } from 'react';
 import { Motion, spring } from 'react-motion';
-import range from 'lodash.range';
 import Resizable from 'react-resizable-box';
 import isEqual from 'lodash.isequal';
 import Pane from './pane';
@@ -32,6 +31,11 @@ export default class SortablePane extends Component {
     onResizeStop: PropTypes.func,
     disableEffect: PropTypes.bool,
     onOrderChange: PropTypes.func,
+    isResizable: PropTypes.shape({
+      x: React.PropTypes.bool,
+      y: React.PropTypes.bool,
+      xy: React.PropTypes.bool,
+    }),
   };
 
   static defaultProps = {
@@ -44,6 +48,11 @@ export default class SortablePane extends Component {
     onOrderChange: () => null,
     customStyle: {},
     disableEffect: false,
+    isResizable: {
+      x: true,
+      y: true,
+      xy: true,
+    },
   };
 
   constructor(props) {
@@ -53,9 +62,12 @@ export default class SortablePane extends Component {
       mouse: 0,
       isPressed: false,
       lastPressed: 0,
-      order: range(this.props.children.length),
-      widthList: range(this.props.children.length).map(() => 0),
       isResizing: false,
+      panes: this.props.children.map((child, order) => ({
+        id: child.props.id,
+        width: 0,
+        order,
+      })),
     };
     this.handleTouchMove = ::this.handleTouchMove;
     this.handleMouseUp = ::this.handleMouseUp;
@@ -71,6 +83,13 @@ export default class SortablePane extends Component {
     this.setWidth();
   }
 
+  componentWillUpdate(next) {
+    const { panes } = this.state;
+    if (next.children.length > panes.length) return this.addPane(next);
+    if (next.children.length < panes.length) return this.removePane(next);
+    return null;
+  }
+
   componentWillUnmount() {
     window.removeEventListener('touchmove', this.handleTouchMove);
     window.removeEventListener('touchend', this.handleMouseUp);
@@ -79,36 +98,94 @@ export default class SortablePane extends Component {
   }
 
   onResize(i, { width }) {
-    const { widthList, order } = this.state;
-    widthList[order.indexOf(i)] = width;
-    this.setState({ widthList });
-    this.forceUpdate();
-    this.props.onResize(i);
+    let { panes } = this.state;
+    const order = this.getPanePropWithArray('order');
+    panes = panes.map((pane, index) => {
+      if (order.indexOf(i) === index) {
+        return {
+          width,
+          order: pane.order,
+          id: pane.id,
+        };
+      }
+      return pane;
+    });
+    this.setState({ panes });
+    this.props.onResize(panes[order.indexOf(i)].id);
+  }
+
+  getPanePropWithArray(key) {
+    return this.state.panes.map(pane => pane[key]);
   }
 
   getItemCountByPositionX(x) {
-    const { widthList } = this.state;
+    const width = this.getPanePropWithArray('width');
     const { margin } = this.props;
     let sum = 0;
     if (x < 0) return 0;
-    for (let i = 0; i < widthList.length; i++) {
-      sum += widthList[i] + margin;
+    for (let i = 0; i < width.length; i++) {
+      sum += width[i] + margin;
       if (sum >= x) return i + 1;
     }
-    return widthList.length;
+    return width.length;
   }
 
   setWidth() {
-    const children = Array.prototype.slice.call(this.refs.panes.children);
-    const width = children.map(child => child.clientWidth);
-    this.setState({ widthList: width });
+    const panes = this.props.children.map((child, i) => ({
+      id: child.props.id,
+      width: this.refs.panes.children[i].clientWidth,
+      order: i,
+    }));
+    this.setState({ panes });
   }
 
   getItemPositionXByIndex(index) {
-    const { widthList } = this.state;
+    const width = this.getPanePropWithArray('width');
     let sum = 0;
-    for (let i = 0; i < index; i++) sum += widthList[i] + this.props.margin;
+    for (let i = 0; i < index; i++) sum += width[i] + this.props.margin;
     return sum;
+  }
+
+  updateOrder(panes, order, mode) {
+    return panes.map(pane => {
+      if (pane.order >= order) {
+        return {
+          id: pane.id,
+          width: pane.width,
+          order: mode === 'add' ? pane.order + 1 : pane.order - 1,
+        };
+      }
+      return pane;
+    });
+  }
+
+  addPane(next) {
+    let newPanes = this.state.panes;
+    next.children.forEach((child, i) => {
+      const ids = this.state.panes.map(pane => pane.id);
+      if (ids.indexOf(child.props.id) === -1) {
+        newPanes = this.updateOrder(newPanes, i, 'add');
+        const pane = {
+          id: child.props.id,
+          width: child.props.width,
+          order: i,
+        };
+        newPanes.splice(i, 0, pane);
+      }
+    });
+    this.setState({ panes: newPanes });
+  }
+
+  removePane(next) {
+    let newPanes;
+    this.state.panes.forEach((pane, i) => {
+      const ids = next.children.map(child => child.props.id);
+      if (ids.indexOf(pane.id) === -1) {
+        newPanes = this.updateOrder(this.state.panes, i, 'remove');
+        newPanes.splice(i, 1);
+      }
+    });
+    this.setState({ panes: newPanes });
   }
 
   handleResizeStart(i) {
@@ -131,15 +208,15 @@ export default class SortablePane extends Component {
   }
 
   handleMouseMove({ pageX }) {
-    const { isPressed, delta, order, lastPressed, widthList, isResizing } = this.state;
+    const { isPressed, delta, lastPressed, isResizing, panes } = this.state;
     if (isPressed && !isResizing) {
       const mouse = pageX - delta;
       const { length } = this.props.children;
+      const order = this.getPanePropWithArray('order');
       const row = clamp(Math.round(this.getItemCountByPositionX(mouse)), 0, length - 1);
-      const newOrder = reinsert(order, order.indexOf(lastPressed), row);
-      const newWidthList = reinsert(widthList, order.indexOf(lastPressed), row);
-      this.setState({ mouse, order: newOrder, widthList: newWidthList });
-      if (!isEqual(order, newOrder)) this.props.onOrderChange(newOrder);
+      const newPanes = reinsert(panes, order.indexOf(lastPressed), row);
+      this.setState({ mouse, panes: newPanes });
+      if (!isEqual(panes, newPanes)) this.props.onOrderChange(newPanes);
     }
   }
 
@@ -157,8 +234,9 @@ export default class SortablePane extends Component {
   }
 
   renderPanes() {
-    const { mouse, isPressed, lastPressed, order } = this.state;
-    const { children, disableEffect } = this.props; // TODO: Add disableFloatEffect
+    const { mouse, isPressed, lastPressed } = this.state;
+    const order = this.getPanePropWithArray('order');
+    const { children, disableEffect } = this.props;
     return children.map((child, i) => {
       const style = lastPressed === i && isPressed
               ? {
@@ -172,7 +250,7 @@ export default class SortablePane extends Component {
                 x: spring(this.getItemPositionXByIndex(order.indexOf(i)), springConfig),
               };
       return (
-        <Motion style={style} key={i}>
+        <Motion style={style} key={child.props.id}>
           {({ scale, shadow, x }) => {
             const onResize = this.onResize.bind(this, i);
             const onMouseDown = this.handleMouseDown.bind(this, i, x);
@@ -183,7 +261,7 @@ export default class SortablePane extends Component {
               <Resizable
                 customClass={this.props.customClass}
                 onResize={onResize}
-                isResizable={{ x: true, y: false, xy: false }}
+                isResizable={{ x: true, y: true, xy: true }}
                 width={child.props.width}
                 height={child.props.height}
                 minWidth={child.props.minWidth}
@@ -194,7 +272,7 @@ export default class SortablePane extends Component {
                   boxShadow: `rgba(0, 0, 0, 0.2) 0px ${shadow}px ${2 * shadow}px 0px`,
                   transform: `translate3d(${x}px, 0, 0) scale(${scale})`,
                   WebkitTransform: `translate3d(${x}px, 0, 0) scale(${scale})`,
-                  zIndex: i === lastPressed ? 99 : i,
+                  zIndex: i === lastPressed ? 99 : i, // TODO: Add this.props.zIndex
                   position: 'absolute',
                 })}
                 onMouseDown={onMouseDown}

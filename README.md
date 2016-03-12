@@ -125,6 +125,7 @@ The css style set on the pane.
 - [x] Horizontal pane
 - [x] Resized callback
 - [x] Sorted callback
+- [ ] Support pane append and remove
 - [ ] Vertical Pane
 - [ ] Test
 
