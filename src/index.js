@@ -78,9 +78,9 @@ class SortablePane extends Component {
     window.addEventListener('mouseup', this.handleMouseUp);
   }
 
-  // componentDidMount() {
-  //   this.setWidth();
-  // }
+  componentDidMount() {
+    this.setSize();
+  }
 
   componentWillUpdate(next) {
     const { panes } = this.state;
@@ -97,6 +97,7 @@ class SortablePane extends Component {
   }
 
   onResize(i, size) {
+    console.dir(size)
     let { panes } = this.state;
     const order = this.getPanePropWithArray('order');
     panes = panes.map((pane, index) => {
@@ -136,14 +137,15 @@ class SortablePane extends Component {
     return size.length;
   }
 
-  // setWidth() {
-  //   const panes = this.props.children.map((child, i) => ({
-  //     id: child.props.id,
-  //     width: this.refs.panes.children[i].clientWidth,
-  //     order: i,
-  //   }));
-  //   this.setState({ panes });
-  // }
+  setSize() {
+    const panes = this.props.children.map((child, i) => ({
+      id: child.props.id,
+      width: this.refs.panes.children[i].clientWidth,
+      height: this.refs.panes.children[i].clientHeight,
+      order: i,
+    }));
+    this.setState({ panes });
+  }
 
   getItemPositionByIndex(index) {
     const size = this.getPaneSizeList();
@@ -204,20 +206,20 @@ class SortablePane extends Component {
     this.props.onResizeStop({ id: this.state.panes[order.indexOf(i)].id, size });
   }
 
-  handleMouseDown(pos, pressX, { pageX, pageY }) {
+  handleMouseDown(pos, pressX, pressY, { pageX, pageY }) {
     this.setState({
-      delta: pageX - pressX,
-      mouse: pressX,
+      delta: this.isHorizontal() ? pageX - pressX : pageY - pressY,
+      mouse: this.isHorizontal() ? pressX : pressY,
       isPressed: true,
       lastPressed: pos,
     });
   }
 
-  handleMouseMove({ pageX }) {
+  handleMouseMove({ pageX, pageY }) {
     const { isPressed, delta, lastPressed, isResizing, panes } = this.state;
     const { onOrderChange } = this.props;
     if (isPressed && !isResizing) {
-      const mouse = pageX - delta;
+      const mouse = this.isHorizontal() ? pageX - delta : pageY - delta;
       const { length } = this.props.children;
       const order = this.getPanePropWithArray('order');
       const row = clamp(Math.round(this.getItemCountByPosition(mouse)), 0, length - 1);
@@ -250,26 +252,28 @@ class SortablePane extends Component {
               ? {
                 scale: disableEffect ? 1 : spring(1.05, springConfig),
                 shadow: disableEffect ? 0 : spring(16, springConfig),
-                [this.isHorizontal() ? 'x' : 'y']: mouse,
+                x: this.isHorizontal() ? mouse : 0,
+                y: !this.isHorizontal() ? mouse : 0,
               }
               : {
                 scale: spring(1, springConfig),
                 shadow: spring(0, springConfig),
-                [this.isHorizontal() ? 'x' : 'y']: springPosition,
+                x: this.isHorizontal() ? springPosition : 0,
+                y: !this.isHorizontal() ? springPosition : 0,
               };
       return (
         <Motion style={style} key={child.props.id}>
-          {({ scale, shadow, x }) => {
+          {({ scale, shadow, x, y }) => {
             const onResize = this.onResize.bind(this, i);
-            const onMouseDown = this.handleMouseDown.bind(this, i, x);
-            const onTouchStart = this.handleTouchStart.bind(this, i, x);
+            const onMouseDown = this.handleMouseDown.bind(this, i, x, y);
+            const onTouchStart = this.handleTouchStart.bind(this, i, x, y);
             const onResizeStart = this.handleResizeStart.bind(this, i);
             const onResizeStop = this.handleResizeStop.bind(this, i);
             return (
               <Resizable
                 customClass={this.props.customClass}
                 onResize={onResize}
-                isResizable={{ x: true, y: true, xy: true }}
+                isResizable={this.props.isResizable}
                 width={child.props.width}
                 height={child.props.height}
                 minWidth={child.props.minWidth}
@@ -278,8 +282,10 @@ class SortablePane extends Component {
                 maxHeight={child.props.maxHeight}
                 customStyle={Object.assign(child.props.style, {
                   boxShadow: `rgba(0, 0, 0, 0.2) 0px ${shadow}px ${2 * shadow}px 0px`,
-                  transform: `translate3d(${x}px, 0, 0) scale(${scale})`,
-                  WebkitTransform: `translate3d(${x}px, 0, 0) scale(${scale})`,
+                  transform: `translate3d(${x}px, ${y}px, 0) scale(${scale})`,
+                  WebkitTransform: `translate3d(${x}px, ${y}px, 0) scale(${scale})`,
+                  MozTransform: `translate3d(${x}px, ${y}px, 0) scale(${scale})`,
+                  MsTransform: `translate3d(${x}px, ${y}px, 0) scale(${scale})`,
                   zIndex: i === lastPressed ? 99 : i, // TODO: Add this.props.zIndex
                   position: 'absolute',
                 })}
