@@ -111,7 +111,7 @@ export default class SortablePane extends Component {
       return pane;
     });
     this.setState({ panes });
-    this.props.onResize(i);
+    this.props.onResize(panes[order.indexOf(i)].id);
   }
 
   getPanePropWithArray(key) {
