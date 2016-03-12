@@ -4,10 +4,6 @@ import Resizable from 'react-resizable-box';
 import isEqual from 'lodash.isequal';
 import Pane from './pane';
 
-export {
-  Pane,
-};
-
 const reinsert = (array, from, to) => {
   const a = array.slice(0);
   const v = a[from];
@@ -20,7 +16,7 @@ const clamp = (n, min = n, max = n) => Math.max(Math.min(n, max), min);
 
 const springConfig = [500, 30];
 
-export default class SortablePane extends Component {
+class SortablePane extends Component {
   static propTypes = {
     direction: PropTypes.oneOf(['horizontal', 'vertical']),
     margin: PropTypes.number,
@@ -100,13 +96,15 @@ export default class SortablePane extends Component {
     window.removeEventListener('mouseup', this.handleMouseUp);
   }
 
-  onResize(i, { width }) {
+  onResize(i, { width, height }) {
+    console.log(height)
     let { panes } = this.state;
     const order = this.getPanePropWithArray('order');
     panes = panes.map((pane, index) => {
       if (order.indexOf(i) === index) {
         return {
           width,
+          height,
           order: pane.order,
           id: pane.id,
         };
@@ -306,3 +304,4 @@ export default class SortablePane extends Component {
   }
 }
 
+export { Pane, SortablePane };

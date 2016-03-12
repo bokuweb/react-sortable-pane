@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import SortablePane, { Pane } from '../../src';
+import { SortablePane, Pane } from '../../src';
 
 const style = {
   fontSize: '40px',
