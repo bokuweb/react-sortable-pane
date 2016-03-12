@@ -60,11 +60,11 @@ export default class Example extends Component {
   }
 
   add() {
-    this.state.list.splice(1, 0, (
+    this.state.list.splice(~~(Math.random() * this.state.list.length), 0, (
       <Pane
         id={++this.id}
-        width={50}
-        height={100}
+        width={~~(Math.random() * 200) + 100}
+        height={~~(Math.random() * 200) + 100}
         minWidth={50}
         minHeight={100}
         style={style}
@@ -76,7 +76,7 @@ export default class Example extends Component {
   }
 
   remove() {
-    this.state.list.splice(1, 1);
+    this.state.list.splice(~~(Math.random() * this.state.list.length), 1);
     this.setState({ list: this.state.list });
   }
 
@@ -88,7 +88,7 @@ export default class Example extends Component {
         <SortablePane
           margin={10}
           onResize={this.onResize}
-          onOrderChange={order => console.dir(order)}
+          onOrderChange={console.dir}
         >
           {this.state.list}
         </SortablePane>
