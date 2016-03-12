@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import SortablePane, { Pane } from '../../src';
 
 const style = {
-  fontSize:'40px',
+  fontSize: '40px',
   textAlign: 'center',
   paddingTop: '60px',
   height: '400px',
@@ -56,21 +56,22 @@ export default class Example extends Component {
   }
 
   onResize(i) {
-    console.log(`on resize pane id ${i}`);
+    console.log(`resize pane id = ${i}`);
   }
 
   add() {
-    this.state.list.splice(1, 0,
-                           <Pane
-                             id={this.id++}
-                             width={50}
-                             height={100}
-                             minWidth={50}
-                             minHeight={100}
-                             style={style}
-                           >
-                             {this.id}
-                           </Pane>);
+    this.state.list.splice(1, 0, (
+      <Pane
+        id={++this.id}
+        width={50}
+        height={100}
+        minWidth={50}
+        minHeight={100}
+        style={style}
+      >
+       {this.id}
+      </Pane>
+    ));
     this.setState({ list: this.state.list });
   }
 
@@ -82,8 +83,8 @@ export default class Example extends Component {
   render() {
     return (
       <div>
-        <a onClick={this.add}>add</a>
-        <a onClick={this.remove}>remove</a>
+        <a onClick={this.add} >add</a>
+        <a onClick={this.remove} >remove</a>
         <SortablePane
           margin={10}
           onResize={this.onResize}
