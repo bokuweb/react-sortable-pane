@@ -96,15 +96,14 @@ class SortablePane extends Component {
     window.removeEventListener('mouseup', this.handleMouseUp);
   }
 
-  onResize(i, { width, height }) {
-    console.log(height)
+  onResize(i, size) {
     let { panes } = this.state;
     const order = this.getPanePropWithArray('order');
     panes = panes.map((pane, index) => {
       if (order.indexOf(i) === index) {
         return {
-          width,
-          height,
+          width: size.width,
+          height: size.height,
           order: pane.order,
           id: pane.id,
         };
@@ -112,23 +111,29 @@ class SortablePane extends Component {
       return pane;
     });
     this.setState({ panes });
-    this.props.onResize(panes[order.indexOf(i)].id);
+    this.props.onResize({ id: panes[order.indexOf(i)].id, size });
   }
 
   getPanePropWithArray(key) {
     return this.state.panes.map(pane => pane[key]);
   }
 
-  getItemCountByPositionX(x) {
+  getPaneSizeList() {
     const width = this.getPanePropWithArray('width');
+    const height = this.getPanePropWithArray('height');
+    return this.isHorizontal() ? width : height;
+  }
+
+  getItemCountByPosition(position) {
+    const size = this.getPaneSizeList();
     const { margin } = this.props;
     let sum = 0;
-    if (x < 0) return 0;
-    for (let i = 0; i < width.length; i++) {
-      sum += width[i] + margin;
-      if (sum >= x) return i + 1;
+    if (position < 0) return 0;
+    for (let i = 0; i < size.length; i++) {
+      sum += size[i] + margin;
+      if (sum >= position) return i + 1;
     }
-    return width.length;
+    return size.length;
   }
 
   // setWidth() {
@@ -140,21 +145,22 @@ class SortablePane extends Component {
   //   this.setState({ panes });
   // }
 
-  getItemPositionXByIndex(index) {
-    const width = this.getPanePropWithArray('width');
+  getItemPositionByIndex(index) {
+    const size = this.getPaneSizeList();
     let sum = 0;
-    for (let i = 0; i < index; i++) sum += width[i] + this.props.margin;
+    for (let i = 0; i < index; i++) sum += size[i] + this.props.margin;
     return sum;
   }
 
-  updateOrder(panes, order, mode) {
+  isHorizontal() {
+    return this.props.direction === 'horizontal';
+  }
+
+  updateOrder(panes, index, mode) {
     return panes.map(pane => {
-      if (pane.order >= order) {
-        return {
-          id: pane.id,
-          width: pane.width,
-          order: mode === 'add' ? pane.order + 1 : pane.order - 1,
-        };
+      if (pane.order >= index) {
+        const { id, width, height, order } = pane;
+        return { id, width, height, order: mode === 'add' ? order + 1 : order - 1 };
       }
       return pane;
     });
@@ -166,11 +172,8 @@ class SortablePane extends Component {
       const ids = this.state.panes.map(pane => pane.id);
       if (ids.indexOf(child.props.id) === -1) {
         newPanes = this.updateOrder(newPanes, i, 'add');
-        const pane = {
-          id: child.props.id,
-          width: child.props.width,
-          order: i,
-        };
+        const { id, width, height } = child.props;
+        const pane = { id, width, height, order: i };
         newPanes.splice(i, 0, pane);
       }
     });
@@ -190,16 +193,18 @@ class SortablePane extends Component {
   }
 
   handleResizeStart(i) {
+    const order = this.getPanePropWithArray('order');
     this.setState({ isResizing: true });
-    this.props.onResizeStart(i);
+    this.props.onResizeStart({ id: this.state.panes[order.indexOf(i)].id });
   }
 
-  handleResizeStop(i) {
+  handleResizeStop(i, size) {
+    const order = this.getPanePropWithArray('order');
     this.setState({ isResizing: false });
-    this.props.onResizeStop(i);
+    this.props.onResizeStop({ id: this.state.panes[order.indexOf(i)].id, size });
   }
 
-  handleMouseDown(pos, pressX, { pageX }) {
+  handleMouseDown(pos, pressX, { pageX, pageY }) {
     this.setState({
       delta: pageX - pressX,
       mouse: pressX,
@@ -210,14 +215,15 @@ class SortablePane extends Component {
 
   handleMouseMove({ pageX }) {
     const { isPressed, delta, lastPressed, isResizing, panes } = this.state;
+    const { onOrderChange } = this.props;
     if (isPressed && !isResizing) {
       const mouse = pageX - delta;
       const { length } = this.props.children;
       const order = this.getPanePropWithArray('order');
-      const row = clamp(Math.round(this.getItemCountByPositionX(mouse)), 0, length - 1);
+      const row = clamp(Math.round(this.getItemCountByPosition(mouse)), 0, length - 1);
       const newPanes = reinsert(panes, order.indexOf(lastPressed), row);
       this.setState({ mouse, panes: newPanes });
-      if (!isEqual(panes, newPanes)) this.props.onOrderChange(newPanes);
+      if (!isEqual(panes, newPanes)) onOrderChange(newPanes);
     }
   }
 
@@ -239,16 +245,17 @@ class SortablePane extends Component {
     const order = this.getPanePropWithArray('order');
     const { children, disableEffect } = this.props;
     return children.map((child, i) => {
+      const springPosition = spring(this.getItemPositionByIndex(order.indexOf(i)), springConfig);
       const style = lastPressed === i && isPressed
               ? {
                 scale: disableEffect ? 1 : spring(1.05, springConfig),
                 shadow: disableEffect ? 0 : spring(16, springConfig),
-                x: mouse,
+                [this.isHorizontal() ? 'x' : 'y']: mouse,
               }
               : {
                 scale: spring(1, springConfig),
                 shadow: spring(0, springConfig),
-                x: spring(this.getItemPositionXByIndex(order.indexOf(i)), springConfig),
+                [this.isHorizontal() ? 'x' : 'y']: springPosition,
               };
       return (
         <Motion style={style} key={child.props.id}>

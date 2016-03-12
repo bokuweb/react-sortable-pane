@@ -92,7 +92,7 @@ export default class Example extends Component {
         <SortablePane
           margin={10}
           onResize={this.onResize}
-          onOrderChange={console.dir}
+          onOrderChange={(pane) => console.dir(pane)}
         >
           {this.state.list}
         </SortablePane>
