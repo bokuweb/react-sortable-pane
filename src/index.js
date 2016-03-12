@@ -67,7 +67,8 @@ export default class SortablePane extends Component {
       isResizing: false,
       panes: this.props.children.map((child, order) => ({
         id: child.props.id,
-        width: 0,
+        width: child.props.width,
+        height: child.props.height,
         order,
       })),
     };
@@ -81,9 +82,9 @@ export default class SortablePane extends Component {
     window.addEventListener('mouseup', this.handleMouseUp);
   }
 
-  componentDidMount() {
-    this.setWidth();
-  }
+  // componentDidMount() {
+  //   this.setWidth();
+  // }
 
   componentWillUpdate(next) {
     const { panes } = this.state;
@@ -132,14 +133,14 @@ export default class SortablePane extends Component {
     return width.length;
   }
 
-  setWidth() {
-    const panes = this.props.children.map((child, i) => ({
-      id: child.props.id,
-      width: this.refs.panes.children[i].clientWidth,
-      order: i,
-    }));
-    this.setState({ panes });
-  }
+  // setWidth() {
+  //   const panes = this.props.children.map((child, i) => ({
+  //     id: child.props.id,
+  //     width: this.refs.panes.children[i].clientWidth,
+  //     order: i,
+  //   }));
+  //   this.setState({ panes });
+  // }
 
   getItemPositionXByIndex(index) {
     const width = this.getPanePropWithArray('width');
