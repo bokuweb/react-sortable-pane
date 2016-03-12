@@ -22,6 +22,7 @@ const springConfig = [500, 30];
 
 export default class SortablePane extends Component {
   static propTypes = {
+    direction: PropTypes.oneOf(['horizontal', 'vertical']),
     margin: PropTypes.number,
     customClass: PropTypes.string,
     style: PropTypes.object,
@@ -39,6 +40,7 @@ export default class SortablePane extends Component {
   };
 
   static defaultProps = {
+    direction: 'horizontal',
     margin: 0,
     onClick: () => null,
     onTouchStart: () => null,
