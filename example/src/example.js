@@ -24,6 +24,7 @@ export default class Example extends Component{
         height={500}
         minWidth={100}
         maxWidth={800}
+        minHeight={100}
         style={style}
           >
           A
@@ -33,6 +34,7 @@ export default class Example extends Component{
            width={300}
            height={400}
            minWidth={100}
+           minHeight={100}
            style={style}
            >
           B
@@ -42,6 +44,7 @@ export default class Example extends Component{
            width={100}
            height={200}
            minWidth={100}
+           minHeight={100}
            style={style}
            >
           C
@@ -63,9 +66,10 @@ export default class Example extends Component{
                                               width={50}
                                               height={100}
                                               minWidth={50}
+                                              minHeight={100}
                                               style={style}
                                               >
-                                   D
+                                   {id}
                                    </Pane>);
             this.setState({list: this.state.list})}} >add</a>
         <a onClick={() => this.refs.pane.remove()}>remove</a>

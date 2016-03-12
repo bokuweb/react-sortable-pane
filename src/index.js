@@ -31,6 +31,11 @@ export default class SortablePane extends Component {
     onResizeStop: PropTypes.func,
     disableEffect: PropTypes.bool,
     onOrderChange: PropTypes.func,
+    isResizable: PropTypes.shape({
+      x: React.PropTypes.bool,
+      y: React.PropTypes.bool,
+      xy: React.PropTypes.bool,
+    }),
   };
 
   static defaultProps = {
@@ -43,6 +48,11 @@ export default class SortablePane extends Component {
     onOrderChange: () => null,
     customStyle: {},
     disableEffect: false,
+    isResizable: {
+      x: true,
+      y: true,
+      xy: true,
+    },
   };
 
   constructor(props) {
@@ -243,7 +253,7 @@ export default class SortablePane extends Component {
               <Resizable
                 customClass={this.props.customClass}
                 onResize={onResize}
-                isResizable={{ x: true, y: false, xy: false }}
+                isResizable={{ x: true, y: true, xy: true }}
                 width={child.props.width}
                 height={child.props.height}
                 minWidth={child.props.minWidth}
