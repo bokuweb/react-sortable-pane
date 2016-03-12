@@ -58,16 +58,16 @@ export default class Example extends Component{
     return (
       <div>
         <a onClick={() => {
-            
-            this.setState({list: this.state.list.concat(<Pane
-                                            id={id++}
-                                            width={100}
-                                            height={200}
-                                            minWidth={100}
-                                            style={style}
-                                            >
-                                       C
-          </Pane>)})}} >add</a>
+            this.state.list.splice(1, 0, <Pane
+                                              id={id++}
+                                              width={50}
+                                              height={100}
+                                              minWidth={50}
+                                              style={style}
+                                              >
+                                   D
+                                   </Pane>);
+            this.setState({list: this.state.list})}} >add</a>
         <a onClick={() => this.refs.pane.remove()}>remove</a>
         <SortablePane
            ref="pane" 
