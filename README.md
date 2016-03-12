@@ -125,8 +125,9 @@ The css style set on the pane.
 - [x] Horizontal pane
 - [x] Resized callback
 - [x] Sorted callback
-- [ ] Support pane append and remove
+- [x] Support pane append and remove
 - [ ] Vertical Pane
+- [ ] Support size updater by parent component
 - [ ] Test
 
 ## Changelog
