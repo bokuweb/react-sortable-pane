@@ -19,6 +19,7 @@ export default class Example extends Component {
       list: [
         <Pane
           id={1}
+          key={1}
           width={200}
           height={500}
           minWidth={100}
@@ -30,6 +31,7 @@ export default class Example extends Component {
         </Pane>,
         <Pane
           id={2}
+          key={2}
           width={300}
           height={400}
           minWidth={100}
@@ -40,6 +42,7 @@ export default class Example extends Component {
         </Pane>,
         <Pane
           id={3}
+          key={3}
           width={100}
           height={200}
           minWidth={100}
@@ -63,6 +66,7 @@ export default class Example extends Component {
     this.state.list.splice(~~(Math.random() * this.state.list.length), 0, (
       <Pane
         id={++this.id}
+        key={this.id}
         width={~~(Math.random() * 200) + 100}
         height={~~(Math.random() * 200) + 100}
         minWidth={50}
