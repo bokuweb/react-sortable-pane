@@ -68,6 +68,7 @@ class SortablePane extends Component {
         order,
       })),
     };
+    this.hasAdded = false;
     this.handleTouchMove = ::this.handleTouchMove;
     this.handleMouseUp = ::this.handleMouseUp;
     this.handleMouseMove = ::this.handleMouseMove;
@@ -89,6 +90,13 @@ class SortablePane extends Component {
     return null;
   }
 
+  componentDidUpdate() {
+    if (this.hasAdded) {
+      this.hasAdded = false;
+      this.setSize();
+    }
+  }
+
   componentWillUnmount() {
     window.removeEventListener('touchmove', this.handleTouchMove);
     window.removeEventListener('touchend', this.handleMouseUp);
@@ -96,15 +104,14 @@ class SortablePane extends Component {
     window.removeEventListener('mouseup', this.handleMouseUp);
   }
 
-  onResize(i, size) {
-    console.dir(size)
+  onResize(i, dir, size, rect) {
     let { panes } = this.state;
     const order = this.getPanePropWithArray('order');
     panes = panes.map((pane, index) => {
       if (order.indexOf(i) === index) {
         return {
-          width: size.width,
-          height: size.height,
+          width: rect.width,
+          height: rect.height,
           order: pane.order,
           id: pane.id,
         };
@@ -112,7 +119,7 @@ class SortablePane extends Component {
       return pane;
     });
     this.setState({ panes });
-    this.props.onResize({ id: panes[order.indexOf(i)].id, size });
+    this.props.onResize({ id: panes[order.indexOf(i)].id, rect });
   }
 
   getPanePropWithArray(key) {
@@ -138,13 +145,16 @@ class SortablePane extends Component {
   }
 
   setSize() {
-    const panes = this.props.children.map((child, i) => ({
-      id: child.props.id,
-      width: this.refs.panes.children[i].clientWidth,
-      height: this.refs.panes.children[i].clientHeight,
-      order: i,
-    }));
-    this.setState({ panes });
+    const panes = this.props.children.map((child, i) => {
+      const { width, height } = this.refs.panes.children[i].getBoundingClientRect();
+      return {
+        id: child.props.id,
+        width,
+        height,
+        order: i,
+      };
+    });
+    if (!isEqual(panes, this.state.panes)) this.setState({ panes });
   }
 
   getItemPositionByIndex(index) {
@@ -180,6 +190,7 @@ class SortablePane extends Component {
       }
     });
     this.setState({ panes: newPanes });
+    this.hasAdded = true;
   }
 
   removePane(next) {

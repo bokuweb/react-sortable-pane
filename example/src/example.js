@@ -91,7 +91,7 @@ export default class Example extends Component {
         <a onClick={this.add} >add</a>
         <a onClick={this.remove} >remove</a>
         <SortablePane
-          direction="horizontal"
+          direction="vertical"
           margin={10}
           onResize={this.onResize}
           onOrderChange={(pane) => console.dir(pane)}
