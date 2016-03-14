@@ -237,7 +237,7 @@ class SortablePane extends Component {
       const row = clamp(Math.round(this.getItemCountByPosition(mouse)), 0, length - 1);
       const newPanes = reinsert(panes, order.indexOf(lastPressed), row);
       this.setState({ mouse, panes: newPanes });
-      if (!isEqual(panes, newPanes)) onOrderChange(newPanes);
+      if (!isEqual(panes, newPanes)) onOrderChange(panes, newPanes);
     }
   }
 
