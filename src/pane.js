@@ -6,23 +6,25 @@ export default class Pane extends Component {
       React.PropTypes.string,
       React.PropTypes.number,
     ]).isRequired,
-    width: PropTypes.number.isRequired,
-    height: PropTypes.number.isRequired,
+    width: PropTypes.number,
+    height: PropTypes.number,
     minWidth: PropTypes.number,
     maxWidth: PropTypes.number,
     minHeight: PropTypes.number,
     maxHeight: PropTypes.number,
     style: PropTypes.object,
+    className: PropTypes.string,
     children: PropTypes.any,
   };
 
   static defaultProps = {
     style: {},
+    className: '',
   };
 
   render() {
     return (
-      <div>{this.props.children}</div>
+      <div className={this.props.className}>{this.props.children}</div>
     );
   }
 }

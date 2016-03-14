@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
-import SortablePane, { Pane } from '../../src';
+import { SortablePane, Pane } from '../../src';
 
 const style = {
   fontSize: '40px',
   textAlign: 'center',
   paddingTop: '60px',
+  paddingRight: '60px',
   height: '400px',
   border: 'solid 1px #ccc',
   borderRadius: '5px',
@@ -19,8 +20,9 @@ export default class Example extends Component {
       list: [
         <Pane
           id={1}
+          key={1}
           width={200}
-          height={500}
+          height={70}
           minWidth={100}
           maxWidth={800}
           minHeight={100}
@@ -30,8 +32,9 @@ export default class Example extends Component {
         </Pane>,
         <Pane
           id={2}
+          key={2}
           width={300}
-          height={400}
+          height={50}
           minWidth={100}
           minHeight={100}
           style={style}
@@ -40,8 +43,9 @@ export default class Example extends Component {
         </Pane>,
         <Pane
           id={3}
+          key={3}
           width={100}
-          height={200}
+          height={40}
           minWidth={100}
           minHeight={100}
           style={style}
@@ -63,6 +67,7 @@ export default class Example extends Component {
     this.state.list.splice(~~(Math.random() * this.state.list.length), 0, (
       <Pane
         id={++this.id}
+        key={this.id}
         width={~~(Math.random() * 200) + 100}
         height={~~(Math.random() * 200) + 100}
         minWidth={50}
@@ -86,9 +91,10 @@ export default class Example extends Component {
         <a onClick={this.add} >add</a>
         <a onClick={this.remove} >remove</a>
         <SortablePane
+          direction="vertical"
           margin={10}
           onResize={this.onResize}
-          onOrderChange={console.dir}
+          onOrderChange={(pane) => console.dir(pane)}
         >
           {this.state.list}
         </SortablePane>
