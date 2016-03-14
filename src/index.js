@@ -120,7 +120,7 @@ class SortablePane extends Component {
       return pane;
     });
     this.setState({ panes });
-    this.props.onResize({ id: panes[order.indexOf(i)].id, rect });
+    this.props.onResize({ id: panes[order.indexOf(i)].id, dir, size, rect });
   }
 
   getPanePropsArrayOf(key) {
