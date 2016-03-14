@@ -13,16 +13,18 @@ export default class Pane extends Component {
     minHeight: PropTypes.number,
     maxHeight: PropTypes.number,
     style: PropTypes.object,
+    className: PropTypes.string,
     children: PropTypes.any,
   };
 
   static defaultProps = {
     style: {},
+    className: '',
   };
 
   render() {
     return (
-      <div>{this.props.children}</div>
+      <div className={this.props.className}>{this.props.children}</div>
     );
   }
 }

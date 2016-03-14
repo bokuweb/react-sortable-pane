@@ -20,7 +20,6 @@ class SortablePane extends Component {
   static propTypes = {
     direction: PropTypes.oneOf(['horizontal', 'vertical']),
     margin: PropTypes.number,
-    customClass: PropTypes.string,
     style: PropTypes.object,
     children: PropTypes.array,
     onResizeStart: PropTypes.func,
@@ -28,6 +27,7 @@ class SortablePane extends Component {
     onResizeStop: PropTypes.func,
     disableEffect: PropTypes.bool,
     onOrderChange: PropTypes.func,
+    className: PropTypes.string,
     isResizable: PropTypes.shape({
       x: React.PropTypes.bool,
       y: React.PropTypes.bool,
@@ -45,6 +45,7 @@ class SortablePane extends Component {
     onResizeStop: () => null,
     onOrderChange: () => null,
     customStyle: {},
+    className: '',
     disableEffect: false,
     isResizable: {
       x: true,
@@ -315,11 +316,11 @@ class SortablePane extends Component {
   }
 
   render() {
-    const { style, customClass } = this.props;
+    const { style, className } = this.props;
     return (
       <div
         ref="panes"
-        className={customClass}
+        className={className}
         style={style}
       >
         { this.renderPanes() }
