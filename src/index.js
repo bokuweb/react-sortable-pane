@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import { Motion, spring } from 'react-motion';
-import Resizable from 'react-resizable-box';
+import Resizable from '/lib/react-resizable-box/src/index.js';
 import isEqual from 'lodash.isequal';
 import Pane from './pane';
 
