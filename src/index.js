@@ -284,7 +284,7 @@ class SortablePane extends Component {
             const onResizeStop = this.handleResizeStop.bind(this, i);
             return (
               <Resizable
-                customClass={this.props.customClass}
+                customClass={child.props.className}
                 onResize={onResize}
                 isResizable={this.props.isResizable}
                 width={child.props.width}
