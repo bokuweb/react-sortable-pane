@@ -148,28 +148,28 @@ Calls back with (`id: number or string`, ``direction: string`)
 #### `onResize`: PropTypes.func
 
 Calls when Pane component resize.
-Calls back with (`id: number or string`, `direction: string`, `size: object`, `rect: object`)
+Calls back with (`id: number or string`, `direction: string`, `coputedSize: object`, `clientSize: object`)
 
 - id: pane id
 - direction: `x` or `y` or `xy`
 - size: `{ width, height }`
-  - this argument is `{ style.width, style.height }` of Pane component.
+  - this argument is {width, height} of getComputedStyle.
 - rect: `{ width, height }`
-  - this argument is `width` and `height` of `PaneComponent.getBoundingClientRect()`.
+  - this argument is `clientWidth` and `clientHeight`.
   
 For example, when `<Resizable width={100} height={200} style={{ padding: '20px'}} onResize={...} />` mounted and resize 'x', this callback is called with `('x', { width: 100, height: 200 }, { width: 140, height: 240 })`
 
 #### `onResizeStop`: PropTypes.func
 
 Calls when Pane component resizeStop.
-Calls back with (`id: number or string`, `direction: string`, `size: object`, `rect: object`)
+Calls back with (`id: number or string`, `direction: string`, `coputedSize: object`, `clientSize: object`)
 
 - id: pane id
 - direction: `x` or `y` or `xy`
 - size: `{ width, height }`
-  - this argument is `{ style.width, style.height }` of Pane component.
+  - this argument is {width, height} of getComputedStyle.
 - rect: `{ width, height }`
-  - this argument is `width` and `height` of `PaneComponent.getBoundingClientRect()`.
+  - this argument is `clientWidth` and `clientHeight`.
   
 For example, when `<Resizable width={100} height={200} style={{ padding: '20px'}} onResize={...} />` mounted and resize 'x', this callback is called with `('x', { width: 100, height: 200 }, { width: 140, height: 240 })`
 
@@ -223,6 +223,14 @@ The `style` property is used to set the style of a Pane component.
 - [ ] Test
 
 ## Changelog
+
+### V0.2.2
+
+- Fix className bug..
+
+### V0.2.1
+
+- Update resizable box component.
 
 ### V0.2.0
 

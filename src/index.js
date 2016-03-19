@@ -212,10 +212,11 @@ class SortablePane extends Component {
     this.props.onResizeStart({ id: this.state.panes[order.indexOf(i)].id });
   }
 
-  handleResizeStop(i, size) {
+  handleResizeStop(i, dir, size, rect) {
+    const { panes } = this.state;
     const order = this.getPanePropsArrayOf('order');
     this.setState({ isResizing: false });
-    this.props.onResizeStop({ id: this.state.panes[order.indexOf(i)].id, size });
+    this.props.onResizeStop({ id: panes[order.indexOf(i)].id, dir, size, rect });
   }
 
   handleMouseDown(pos, pressX, pressY, { pageX, pageY }) {
@@ -283,7 +284,7 @@ class SortablePane extends Component {
             const onResizeStop = this.handleResizeStop.bind(this, i);
             return (
               <Resizable
-                customClass={this.props.customClass}
+                customClass={child.props.className}
                 onResize={onResize}
                 isResizable={this.props.isResizable}
                 width={child.props.width}
