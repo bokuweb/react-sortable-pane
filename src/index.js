@@ -29,10 +29,11 @@ class SortablePane extends Component {
     onOrderChange: PropTypes.func,
     className: PropTypes.string,
     isResizable: PropTypes.shape({
-      x: React.PropTypes.bool,
-      y: React.PropTypes.bool,
-      xy: React.PropTypes.bool,
+      x: PropTypes.bool,
+      y: PropTypes.bool,
+      xy: PropTypes.bool,
     }),
+    dragHandleClass: PropTypes.string
   };
 
   static defaultProps = {
@@ -52,6 +53,7 @@ class SortablePane extends Component {
       y: true,
       xy: true,
     },
+    dragHandleClass: undefined
   };
 
   constructor(props) {
@@ -219,7 +221,10 @@ class SortablePane extends Component {
     this.props.onResizeStop({ id: panes[order.indexOf(i)].id, dir, size, rect });
   }
 
-  handleMouseDown(pos, pressX, pressY, { pageX, pageY }) {
+handleMouseDown(pos, pressX, pressY, { target, pageX, pageY }) { //NOTE: destructures pageX, pageY from React's `SyntheticMouseEvent`
+    if (!!this.props.dragHandleClass && !target.classList.contains(this.props.dragHandleClass))
+      return;
+
     this.setState({
       delta: this.isHorizontal() ? pageX - pressX : pageY - pressY,
       mouse: this.isHorizontal() ? pressX : pressY,
@@ -263,7 +268,7 @@ class SortablePane extends Component {
       const springPosition = spring(this.getItemPositionByIndex(order.indexOf(i)), springConfig);
       const style = lastPressed === i && isPressed
               ? {
-                scale: disableEffect ? 1 : spring(1.05, springConfig),
+                scale: disableEffect ? 1 : spring(0.95, springConfig),
                 shadow: disableEffect ? 0 : spring(16, springConfig),
                 x: this.isHorizontal() ? mouse : 0,
                 y: !this.isHorizontal() ? mouse : 0,
@@ -302,7 +307,10 @@ class SortablePane extends Component {
                   zIndex: i === lastPressed ? 99 : i, // TODO: Add this.props.zIndex
                   position: 'absolute',
                 })}
-                onMouseDown={onMouseDown}
+                onMouseDown={
+                  onMouseDown
+                  // (...args) => console.log(...args)
+                }
                 onTouchStart={onTouchStart}
                 onResizeStart={onResizeStart}
                 onResizeStop={onResizeStop}
