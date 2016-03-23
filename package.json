@@ -79,6 +79,6 @@
   "dependencies": {
     "lodash.isequal": "^4.1.1",
     "react-motion": "^0.3.1",
-    "react-resizable-box": "^0.3.2"
+    "react-resizable-box": "^0.3.3"
   }
 }
