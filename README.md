@@ -219,14 +219,18 @@ The `style` property is used to set the style of a Pane component.
 - [x] Sorted callback
 - [x] Support pane append and remove
 - [x] Vertical Pane
-- [x] Support size updater by parent component
+- [x] update pane size when props.width/height updated
 - [ ] Test
 
 ## Changelog
 
+### V0.2.3
+
+- update pane size when props.width/height updated.
+
 ### V0.2.2
 
-- Fix className bug..
+- Fix className bug.
 
 ### V0.2.1
 
