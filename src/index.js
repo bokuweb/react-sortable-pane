@@ -86,10 +86,10 @@ class SortablePane extends Component {
     this.setSize();
   }
 
-  componentWillUpdate(next) {
+  componentWillUpdate(nextProps) {
     const { panes } = this.state;
-    if (next.children.length > panes.length) return this.addPane(next);
-    if (next.children.length < panes.length) return this.removePane(next);
+    if (nextProps.children.length > panes.length) return this.addPane(nextProps);
+    if (nextProps.children.length < panes.length) return this.removePane(nextProps);
     return null;
   }
 
@@ -181,9 +181,11 @@ class SortablePane extends Component {
     });
   }
 
-  addPane(next) {
+  addPane(nextProps) {
+    console.log(nextProps)
     let newPanes = this.state.panes;
-    next.children.forEach((child, i) => {
+    nextProps.children.forEach((child, i) => {
+      console.log(child, i)
       const ids = this.state.panes.map(pane => pane.id);
       if (ids.indexOf(child.props.id) === -1) {
         newPanes = this.updateOrder(newPanes, i, 'add');
@@ -196,10 +198,10 @@ class SortablePane extends Component {
     this.hasAdded = true;
   }
 
-  removePane(next) {
+  removePane(nextProps) {
     let newPanes;
     this.state.panes.forEach((pane, i) => {
-      const ids = next.children.map(child => child.props.id);
+      const ids = nextProps.children.map(child => child.props.id);
       if (ids.indexOf(pane.id) === -1) {
         newPanes = this.updateOrder(this.state.panes, i, 'remove');
         newPanes.splice(i, 1);
