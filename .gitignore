@@ -1,0 +1,3 @@
+node_modules/
+lib/*.js
+example/dist/*.js
