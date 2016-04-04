@@ -182,10 +182,10 @@ class SortablePane extends Component {
   }
 
   addPane(nextProps) {
-    console.log(nextProps)
+    // console.log(nextProps)
     let newPanes = this.state.panes;
     nextProps.children.forEach((child, i) => {
-      console.log(child, i)
+      // console.log(child, i)
       const ids = this.state.panes.map(pane => pane.id);
       if (ids.indexOf(child.props.id) === -1) {
         newPanes = this.updateOrder(newPanes, i, 'add');
