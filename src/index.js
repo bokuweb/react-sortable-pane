@@ -14,7 +14,7 @@ const reinsert = (array, from, to) => {
 
 const clamp = (n, min = n, max = n) => Math.max(Math.min(n, max), min);
 
-const springConfig = [500, 30];
+const springConfig = {stiffness: 500, damping: 30};
 
 class SortablePane extends Component {
   static propTypes = {
@@ -147,6 +147,9 @@ class SortablePane extends Component {
     return size.length;
   }
 
+  /**
+   * NOTE: called by `componentDidMount`, `componentDidUpdate` if pane has been added dynamically
+   */
   setSize() {
     const panes = this.props.children.map((child, i) => {
       const { width, height } = this.refs.panes.children[i].getBoundingClientRect();
@@ -223,9 +226,8 @@ class SortablePane extends Component {
     this.props.onResizeStop({ id: panes[order.indexOf(i)].id, dir, size, rect });
   }
 
-handleMouseDown(pos, pressX, pressY, { target, pageX, pageY }) { //NOTE: destructures pageX, pageY from React's `SyntheticMouseEvent`
-    if (!!this.props.dragHandleClass && !target.classList.contains(this.props.dragHandleClass))
-      return;
+  handleMouseDown(pos, pressX, pressY, { target, pageX, pageY }) { //NOTE: destructures pageX, pageY from React's `SyntheticMouseEvent`
+    if (!!this.props.dragHandleClass && !target.classList.contains(this.props.dragHandleClass)) return
 
     this.setState({
       delta: this.isHorizontal() ? pageX - pressX : pageY - pressY,
@@ -265,6 +267,7 @@ handleMouseDown(pos, pressX, pressY, { target, pageX, pageY }) { //NOTE: destruc
   renderPanes() {
     const { mouse, isPressed, lastPressed } = this.state;
     const order = this.getPanePropsArrayOf('order');
+    LOG('order', order)
     const { children, disableEffect } = this.props;
     return children.map((child, i) => {
       const springPosition = spring(this.getItemPositionByIndex(order.indexOf(i)), springConfig);
@@ -289,10 +292,10 @@ handleMouseDown(pos, pressX, pressY, { target, pageX, pageY }) { //NOTE: destruc
             const onTouchStart = this.handleTouchStart.bind(this, i, x, y);
             const onResizeStart = this.handleResizeStart.bind(this, i);
             const onResizeStop = this.handleResizeStop.bind(this, i);
+            // LOG(x, this.state.panes[0].width, this.state.panes[1].width)
             return (
               <Resizable
                 customClass={child.props.className}
-                onResize={onResize}
                 isResizable={this.props.isResizable}
                 width={child.props.width}
                 height={child.props.height}
@@ -309,10 +312,8 @@ handleMouseDown(pos, pressX, pressY, { target, pageX, pageY }) { //NOTE: destruc
                   zIndex: i === lastPressed ? 99 : i, // TODO: Add this.props.zIndex
                   position: 'absolute',
                 })}
-                onMouseDown={
-                  onMouseDown
-                  // (...args) => console.log(...args)
-                }
+                onResize={onResize}
+                onMouseDown={onMouseDown}
                 onTouchStart={onTouchStart}
                 onResizeStart={onResizeStart}
                 onResizeStop={onResizeStop}
