@@ -224,6 +224,10 @@ The `style` property is used to set the style of a Pane component.
 
 ## Changelog
 
+### V0.2.4
+
+- update packages to support react v15
+
 ### V0.2.3
 
 - update pane size when props.width/height updated.
