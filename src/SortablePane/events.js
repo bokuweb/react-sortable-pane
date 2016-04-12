@@ -4,7 +4,7 @@ export default {
 
   //TODO: REFACTOR rename to handleResize?
   onResize(i, dir, size, rect) {
-    LOG()
+    LOG(i, dir, size, rect)
     let { panes } = this.state;
     const order = this.getPanePropsArrayOf('order');
     panes = panes.map((pane, index) => {

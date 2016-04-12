@@ -86,5 +86,5 @@ export default {
 const springConfig = {
   stiffness: 500,
   damping: 30,
-  onRest: (...args) => console.log(...args)
+  onRest: function(){ console.log('hi')}
 };
