@@ -224,6 +224,11 @@ The `style` property is used to set the style of a Pane component.
 
 ## Changelog
 
+### V0.2.5
+
+- Add order props to change order by parent component.
+- Add husky and prepush hook.
+
 ### V0.2.4
 
 - update packages to support react v15

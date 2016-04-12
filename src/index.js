@@ -18,6 +18,7 @@ const springConfig = [500, 30];
 
 class SortablePane extends Component {
   static propTypes = {
+    order: PropTypes.arrayOf(PropTypes.number),
     direction: PropTypes.oneOf(['horizontal', 'vertical']),
     margin: PropTypes.number,
     style: PropTypes.object,
@@ -33,7 +34,6 @@ class SortablePane extends Component {
       y: React.PropTypes.bool,
       xy: React.PropTypes.bool,
     }),
-    order: PropTypes.array,
   };
 
   static defaultProps = {
@@ -83,6 +83,16 @@ class SortablePane extends Component {
 
   componentDidMount() {
     this.setSize();
+  }
+
+  componentWillReceiveProps(next) {
+    const newPanes = [];
+    const order = this.getPanePropsArrayOf('order');
+    if (order === next.order) return;
+    for (let i = 0; i < next.order.length; i++) {
+      newPanes[next.order[i]] = this.state.panes[order[i]];
+    }
+    this.setState({ panes: newPanes });
   }
 
   componentWillUpdate(next) {
