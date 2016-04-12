@@ -33,6 +33,7 @@ class SortablePane extends Component {
       y: React.PropTypes.bool,
       xy: React.PropTypes.bool,
     }),
+    order: PropTypes.array,
   };
 
   static defaultProps = {
