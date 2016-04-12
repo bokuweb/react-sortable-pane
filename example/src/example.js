@@ -17,6 +17,7 @@ export default class Example extends Component {
     super(props);
     this.id = 3;
     this.state = {
+      order: [0, 1, 2],
       list: [
         <Pane
           id={1}
@@ -57,6 +58,7 @@ export default class Example extends Component {
     this.add = ::this.add;
     this.remove = ::this.remove;
     this.onResize = ::this.onResize;
+    setInterval(() => this.setState({ order: this.state.order.map(order => (order + 1) % 3) }), 1000);
   }
 
   onResize(i) {
@@ -95,6 +97,7 @@ export default class Example extends Component {
           margin={10}
           onResize={this.onResize}
           onOrderChange={(pane) => console.dir(pane)}
+          order={this.state.order}
         >
           {this.state.list}
         </SortablePane>
