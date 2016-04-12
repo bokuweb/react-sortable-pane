@@ -10,6 +10,7 @@ import addRemove from './addRemove'
 
 class SortablePane extends Component {
   static propTypes = {
+    order: PropTypes.arrayOf(PropTypes.number),
     direction: PropTypes.oneOf(['horizontal', 'vertical']),
     margin: PropTypes.number,
     style: PropTypes.object,
