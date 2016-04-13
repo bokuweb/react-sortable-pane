@@ -85,12 +85,15 @@ class SortablePane extends Component {
     this.setSize();
   }
 
-  componentWillReceiveProps(next) {
+  componentWillReceiveProps(nextProps) {
     const newPanes = [];
     const order = this.getPanePropsArrayOf('order');
-    if (order === next.order) return;
-    for (let i = 0; i < next.order.length; i++) {
-      newPanes[next.order[i]] = this.state.panes[order[i]];
+    for (let i = 0; i < nextProps.order.length; i++) {
+      const oldPane = this.state.panes[order[i]];
+      //TODO: call setSize() to get bounding rectangle, but how since DOM element only available after `componentDidUpdate`
+      oldPane.width = nextProps.children[i].props.width;
+      oldPane.height = nextProps.children[i].props.height;
+      newPanes[nextProps.order[i]] = oldPane;
     }
     this.setState({ panes: newPanes });
   }
