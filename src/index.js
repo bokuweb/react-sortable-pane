@@ -37,6 +37,7 @@ class SortablePane extends Component {
   };
 
   static defaultProps = {
+    order: [],
     direction: 'horizontal',
     margin: 0,
     onClick: () => null,
@@ -71,6 +72,7 @@ class SortablePane extends Component {
       })),
     };
     this.hasAdded = false;
+    this.sizePropsUpdated = false;
     this.handleTouchMove = ::this.handleTouchMove;
     this.handleMouseUp = ::this.handleMouseUp;
     this.handleMouseMove = ::this.handleMouseMove;
@@ -85,17 +87,20 @@ class SortablePane extends Component {
     this.setSize();
   }
 
-  componentWillReceiveProps(nextProps) {
+  componentWillReceiveProps(next) {
     const newPanes = [];
     const order = this.getPanePropsArrayOf('order');
-    for (let i = 0; i < nextProps.order.length; i++) {
-      const oldPane = this.state.panes[order[i]];
-      //TODO: call setSize() to get bounding rectangle, but how since DOM element only available after `componentDidUpdate`
-      oldPane.width = nextProps.children[i].props.width;
-      oldPane.height = nextProps.children[i].props.height;
-      newPanes[nextProps.order[i]] = oldPane;
+    if (order !== next.order) {
+      for (let i = 0; i < next.order.length; i++) {
+        newPanes[next.order[i]] = this.state.panes[order[i]];
+      }
+      this.setState({ panes: newPanes });
     }
-    this.setState({ panes: newPanes });
+    for (let i = 0; i < next.children.length; i++) {
+      const { width, height } = this.props.children[i];
+      const { newWidth, newHeight } = next.children[i];
+      if (width !== newWidth || height !== newHeight) this.sizePropsUpdated = true;
+    }
   }
 
   componentWillUpdate(next) {
@@ -108,6 +113,11 @@ class SortablePane extends Component {
   componentDidUpdate() {
     if (this.hasAdded) {
       this.hasAdded = false;
+      this.setSize();
+    }
+
+    if (this.sizePropsUpdated) {
+      this.sizePropsUpdated = false;
       this.setSize();
     }
   }
@@ -300,7 +310,16 @@ class SortablePane extends Component {
               <Resizable
                 customClass={child.props.className}
                 onResize={onResize}
-                isResizable={this.props.isResizable}
+                isResizable={{
+                  top: false,
+                  right: this.props.isResizable.x,
+                  bottomRight: this.props.isResizable.xy,
+                  bottom: this.props.isResizable.y,
+                  left: false,
+                  topRight: false,
+                  bottomLeft: false,
+                  topLeft: false,
+                }}
                 width={child.props.width}
                 height={child.props.height}
                 minWidth={child.props.minWidth}

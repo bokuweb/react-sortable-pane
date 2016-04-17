@@ -224,6 +224,11 @@ The `style` property is used to set the style of a Pane component.
 
 ## Changelog
 
+### V0.2.6
+
+- Fix order bug
+- Update react-resizable-box(^1.2.0)
+
 ### V0.2.5
 
 - Add order props to change order by parent component.
