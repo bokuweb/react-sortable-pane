@@ -224,6 +224,10 @@ The `style` property is used to set the style of a Pane component.
 
 ## Changelog
 
+### V0.2.8
+
+- Fix size updater bug
+
 ### V0.2.7
 
 - Fix size updater bug
