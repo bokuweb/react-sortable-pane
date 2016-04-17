@@ -90,13 +90,12 @@ class SortablePane extends Component {
   componentWillReceiveProps(next) {
     const newPanes = [];
     const order = this.getPanePropsArrayOf('order');
-    if (order !== next.order) {
+    if (!isEqual(this.props.order, next.order)) {
       for (let i = 0; i < next.order.length; i++) {
         newPanes[next.order[i]] = this.state.panes[order[i]];
       }
       this.setState({ panes: newPanes });
     }
-    /* TODO:
     for (let i = 0; i < this.props.children.length; i++) {
       const width = this.props.children[i].props.width;
       const height = this.props.children[i].props.height;
@@ -104,7 +103,6 @@ class SortablePane extends Component {
       const newHeight = next.children[i].props.height;
       if (width !== newWidth || height !== newHeight) this.sizePropsUpdated = true;
     }
-     */
   }
 
   componentWillUpdate(next) {
