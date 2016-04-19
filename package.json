@@ -34,7 +34,6 @@
   },
   "homepage": "https://github.com/bokuweb/react-sortable-pane",
   "devDependencies": {
-    "babel": "^6.1.18",
     "babel-cli": "^6.2.0",
     "babel-eslint": "^6.0.2",
     "babel-plugin-espower": "2.0.0",
@@ -62,7 +61,6 @@
     "phantomjs": "^1.9.18",
     "phantomjs-polyfill": "^0.0.1",
     "power-assert": "^1.1.0",
-    "react": "^15.0.1",
     "react-addons-test-utils": "^15.0.1",
     "sinon": "^1.17.2",
     "watchify": "^3.5.0"
@@ -78,6 +76,6 @@
   "dependencies": {
     "lodash.isequal": "^4.1.1",
     "react-motion": "^0.4.2",
-    "react-resizable-box": "^1.2.0" 
+    "react-resizable-box": "^1.2.0"
   }
 }
