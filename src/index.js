@@ -34,6 +34,7 @@ class SortablePane extends Component {
       y: React.PropTypes.bool,
       xy: React.PropTypes.bool,
     }),
+    dragHandleClass: PropTypes.string
   };
 
   static defaultProps = {
@@ -54,6 +55,7 @@ class SortablePane extends Component {
       y: true,
       xy: true,
     },
+    dragHandleClass: undefined
   };
 
   constructor(props) {
@@ -245,7 +247,9 @@ class SortablePane extends Component {
     this.props.onResizeStop({ id: panes[order.indexOf(i)].id, dir, size, rect });
   }
 
-  handleMouseDown(pos, pressX, pressY, { pageX, pageY }) {
+  handleMouseDown(pos, pressX, pressY, { target, pageX, pageY }) { //NOTE: destructures pageX, pageY from React's `SyntheticMouseEvent`
+    if (!!this.props.dragHandleClass && !target.classList.contains(this.props.dragHandleClass)) return;
+    
     this.setState({
       delta: this.isHorizontal() ? pageX - pressX : pageY - pressY,
       mouse: this.isHorizontal() ? pressX : pressY,
