@@ -332,10 +332,10 @@ class SortablePane extends Component {
                 maxHeight={child.props.maxHeight}
                 customStyle={Object.assign(child.props.style, {
                   boxShadow: `rgba(0, 0, 0, 0.2) 0px ${shadow}px ${2 * shadow}px 0px`,
-                  transform: `translate3d(${x}px, ${y}px, 0) scale(${scale})`,
-                  WebkitTransform: `translate3d(${x}px, ${y}px, 0) scale(${scale})`,
-                  MozTransform: `translate3d(${x}px, ${y}px, 0) scale(${scale})`,
-                  MsTransform: `translate3d(${x}px, ${y}px, 0) scale(${scale})`,
+                  transform: `translate3d(${x}px, ${y}px, 0px) scale(${scale})`,
+                  WebkitTransform: `translate3d(${x}px, ${y}px, 0px) scale(${scale})`,
+                  MozTransform: `translate3d(${x}px, ${y}px, 0px) scale(${scale})`,
+                  MsTransform: `translate3d(${x}px, ${y}px, 0px) scale(${scale})`,
                   zIndex: i === lastPressed ? 99 : i, // TODO: Add this.props.zIndex
                   position: 'absolute',
                 })}
