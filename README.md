@@ -224,7 +224,11 @@ The `style` property is used to set the style of a Pane component.
 
 ## Changelog
 
-### V0.2.10
+### V0.2.12
+
+- Update react-motion(use "^0.4.3")
+
+### V0.2.10, V0.2.11
 
 - Fix order update bug
 
