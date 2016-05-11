@@ -224,6 +224,10 @@ The `style` property is used to set the style of a Pane component.
 
 ## Changelog
 
+### V0.3.0
+
+- Change sort trigger position (#40 thanks @lanVS)
+
 ### V0.2.12
 
 - Update react-motion(use "^0.4.3")
