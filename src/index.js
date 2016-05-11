@@ -161,16 +161,70 @@ class SortablePane extends Component {
     return this.isHorizontal() ? width : height;
   }
 
-  getItemCountByPosition(position) {
+  /**
+   * Find the position sum of halfway points of panes surrounding a given pane
+   *
+   *  |-------------|
+   *  |             | ---> 'previous' halfway
+   *  |-------------|
+   *                  <--- margin
+   *  |-------------|
+   *  | currentPane |
+   *  |-------------|
+   *                  <--- margin
+   *  |-------------|
+   *  |             |
+   *  |             | ---> 'next' halfway
+   *  |             |
+   *  |-------------|
+   *
+   *
+   * @param  {number}   currentPane - Index of rerference pane
+   * @param  {number[]} sizes       - Array of pane sizes
+   * @param  {number}   margin      - The margin between panes
+   * @return {object}               - Object containing 'prevoius' and 'next'
+   *                                  pane halfway points
+   */
+  getSurroundingHalfSizes(currentPane, sizes, margin) {
+    const nextPane = currentPane + 1;
+    const prevPane = currentPane - 1;
+
+    return sizes.reduce((sums, val, index) => {
+      const newSums = {};
+      if (index < prevPane) {
+        newSums.previous = sums.previous + val + margin;
+      } else if (index === prevPane) {
+        newSums.previous = sums.previous + val / 2;
+      } else {
+        newSums.previous = sums.previous;
+      }
+
+      if (index < nextPane) {
+        newSums.next = sums.next + val + margin;
+      } else if (index === nextPane) {
+        newSums.next = sums.next + val / 2;
+      } else {
+        newSums.next = sums.next;
+      }
+      return newSums;
+    }, { previous: 0, next: 0 });
+  }
+
+  /**
+   * Determine where a particular pane should be ordered
+   *
+   * @param  {number} position     - Top of the current pane
+   * @param  {number} paneIndex    - Index of the pane
+   * @return {number}              - New index of the pane based on position
+   */
+  getItemCountByPosition(position, paneIndex) {
     const size = this.getPaneSizeList();
     const { margin } = this.props;
-    let sum = 0;
-    if (position < 0) return 0;
-    for (let i = 0; i < size.length; i++) {
-      sum += size[i] + margin;
-      if (sum >= position) return i + 1;
-    }
-    return size.length;
+    const halfsizes = this.getSurroundingHalfSizes(paneIndex, size, margin);
+
+    if (position + size[paneIndex] > halfsizes.next) return paneIndex + 1;
+    if (position < halfsizes.previous) return paneIndex - 1;
+    return paneIndex;
   }
 
   setSize() {
@@ -263,7 +317,8 @@ class SortablePane extends Component {
       const mouse = this.isHorizontal() ? pageX - delta : pageY - delta;
       const { length } = this.props.children;
       const order = this.getPanePropsArrayOf('order');
-      const row = clamp(Math.round(this.getItemCountByPosition(mouse)), 0, length - 1);
+      const newPosition = this.getItemCountByPosition(mouse, order.indexOf(lastPressed));
+      const row = clamp(Math.round(newPosition), 0, length - 1);
       const newPanes = reinsert(panes, order.indexOf(lastPressed), row);
       this.setState({ mouse, panes: newPanes });
       if (!isEqual(panes, newPanes)) onOrderChange(panes, newPanes);
