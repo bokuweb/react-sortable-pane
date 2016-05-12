@@ -315,7 +315,7 @@ class SortablePane extends Component {
       lastPressed: pos,
     });
     this.props.children[pos].props.onDragStart();
-    this.props.onDragStart(pos);
+    this.props.onDragStart(this.props.children[pos].props.id);
   }
 
   handleMouseMove({ pageX, pageY }) {
@@ -345,7 +345,8 @@ class SortablePane extends Component {
   handleMouseUp() {
     this.setState({ isPressed: false, delta: 0 });
     this.props.children[this.state.lastPressed].props.onDragEnd();
-    this.props.onDragEnd(this.state.lastPressed);
+    const lastPressedId = this.props.children[this.state.lastPressed].props.id;
+    this.props.onDragEnd(lastPressedId);
   }
 
   renderPanes() {
