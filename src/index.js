@@ -26,9 +26,11 @@ class SortablePane extends Component {
     onResizeStart: PropTypes.func,
     onResize: PropTypes.func,
     onResizeStop: PropTypes.func,
-    disableEffect: PropTypes.bool,
+    onDragStart: PropTypes.func,
+    onDragEnd: PropTypes.func,
     onOrderChange: PropTypes.func,
     className: PropTypes.string,
+    disableEffect: PropTypes.bool,
     isResizable: PropTypes.shape({
       x: React.PropTypes.bool,
       y: React.PropTypes.bool,
@@ -46,6 +48,8 @@ class SortablePane extends Component {
     onResizeStart: () => null,
     onResize: () => null,
     onResizeStop: () => null,
+    onDragStart: () => null,
+    onDragEnd: () => null,
     onOrderChange: () => null,
     customStyle: {},
     className: '',
@@ -310,6 +314,8 @@ class SortablePane extends Component {
       isPressed: true,
       lastPressed: pos,
     });
+    this.props.children[pos].props.onDragStart();
+    this.props.onDragStart(this.props.children[pos].props.id);
   }
 
   handleMouseMove({ pageX, pageY }) {
@@ -338,6 +344,9 @@ class SortablePane extends Component {
 
   handleMouseUp() {
     this.setState({ isPressed: false, delta: 0 });
+    this.props.children[this.state.lastPressed].props.onDragEnd();
+    const lastPressedId = this.props.children[this.state.lastPressed].props.id;
+    this.props.onDragEnd(lastPressedId);
   }
 
   renderPanes() {

@@ -152,8 +152,8 @@ Calls back with (`id: number or string`, `direction: string`)
 
 #### `onResize`: PropTypes.func
 
-Calls when Pane component resize.
-Calls back with (`id: number or string`, `direction: string`, `coputedSize: object`, `clientSize: object`)
+Calls when Pane component resizes.
+Calls back with (`id: number or string`, `direction: string`, `computedSize: object`, `clientSize: object`)
 
 - id: pane id
 - direction: `x` or `y` or `xy`
@@ -166,8 +166,8 @@ For example, when `<Resizable width={100} height={200} style={{ padding: '20px'}
 
 #### `onResizeStop`: PropTypes.func
 
-Calls when Pane component resizeStop.
-Calls back with (`id: number or string`, `direction: string`, `coputedSize: object`, `clientSize: object`)
+Calls when Pane component resize stops.
+Calls back with (`id: number or string`, `direction: string`, `computedSize: object`, `clientSize: object`)
 
 - id: pane id
 - direction: `x` or `y` or `xy`
@@ -178,19 +178,35 @@ Calls back with (`id: number or string`, `direction: string`, `coputedSize: obje
 
 For example, when `<Resizable width={100} height={200} style={{ padding: '20px'}} onResize={...} />` mounted and resize 'x', this callback is called with `('x', { width: 100, height: 200 }, { width: 140, height: 240 })`
 
+#### `onDragStart`: PropTypes.function
+
+Calls when a Pane component is clicked (e.g. to sort it). It will not be executed if `isSortable` is `false`.
+Calls back with (`id: number or string`)
+
+- id: pane id
+
+#### `onDragEnd`: PropTypes.function
+
+Calls when a Pane component is released (finished sorting). It will not be executed if `isSortable` is `false`.
+Calls back with (`id: number or string`)
+
+- id: pane id
+
 ## Pane Component
 
 #### `id`: PropTypes.oneOfType([PropTypes.string, PropTypes.number ]).isRequired
 
 The `id` property is used to Pane component id.
 
-#### `width`: PropTypes.number
+#### `width`: oneOfType([PropTypes.number, PropTypes.string])
 
 The `width` property is used to set the width of a Pane component.
+For example, it can be 300, '300px', or 50%.
 
-#### `height`: PropTypes.number
+#### `height`: oneOfType([PropTypes.number, PropTypes.string])
 
 The `height` property is used to set the width of a Pane component.
+For example, it can be 300, '300px', or 50%.
 
 #### `minWidth`: PropTypes.number
 
@@ -207,6 +223,16 @@ The `maxWidth` property is used to set the maximum width of a Pane component.
 #### `maxHeight`: PropTypes.number
 
 The `maxHeight` property is used to set the maximum height of a Pane component.
+
+#### `onDragStart`: PropTypes.function
+
+If provided, an `onDragStart` function will be executed when the mouse is pressed
+down on the pane to drag it.  It will not be executed if `isSortable` is `false`.
+
+#### `onDragEnd`: PropTypes.function
+
+If provided, an `onDragEnd` function will be executed when the mouse is released
+after clicking a pane.  It will not be executed if `isSortable` is `false`.
 
 #### `className`: PropTypes.string
 
