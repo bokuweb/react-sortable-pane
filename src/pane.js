@@ -18,12 +18,16 @@ export default class Pane extends Component {
     maxWidth: PropTypes.number,
     minHeight: PropTypes.number,
     maxHeight: PropTypes.number,
+    onDragStart: PropTypes.func,
+    onDragEnd: PropTypes.func,
     style: PropTypes.object,
     className: PropTypes.string,
     children: PropTypes.any,
   };
 
   static defaultProps = {
+    onDragStart: () => null,
+    onDragEnd: () => null,
     style: {},
     className: '',
   };
