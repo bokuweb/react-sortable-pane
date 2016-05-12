@@ -184,13 +184,15 @@ For example, when `<Resizable width={100} height={200} style={{ padding: '20px'}
 
 The `id` property is used to Pane component id.
 
-#### `width`: PropTypes.number
+#### `width`: oneOfType([PropTypes.number, PropTypes.string])
 
 The `width` property is used to set the width of a Pane component.
+For example, it can be 300, '300px', or 50%.
 
-#### `height`: PropTypes.number
+#### `height`: oneOfType([PropTypes.number, PropTypes.string])
 
 The `height` property is used to set the width of a Pane component.
+For example, it can be 300, '300px', or 50%.
 
 #### `minWidth`: PropTypes.number
 
