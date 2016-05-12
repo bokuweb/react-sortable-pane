@@ -7,8 +7,8 @@ Sortable and resizable pane component for react.
 ## Demo
 
 ![screenshot](https://raw.githubusercontent.com/bokuweb/react-sortable-pane/master/screenshot/screenshot.gif)
-   
-   
+
+
 See demo: [http://bokuweb.github.io/react-sortable-pane](http://bokuweb.github.io/react-sortable-pane)
 
 ## Important Note
@@ -81,7 +81,7 @@ The `className` property is used to set the css class name of a component.
 
 The `style` property is used to set the style of a component.
 
-#### `direction`: PropTypes.oneOf(['horizontal', 'vertical']).
+#### `direction`: PropTypes.oneOf(['horizontal', 'vertical'])
 
 The `direction` property is used to set the direction of a component.
 If ommited the default direction is `'horizontal'`.
@@ -91,20 +91,25 @@ If ommited the default direction is `'horizontal'`.
 The `margin` property is used to set the margin between Pane component.
 If ommited the default margin is `0`
 
-#### `isResizable`: Proptypes.shape({ x: PropTypes.bool, y: PropTypes.bool, xy: PropTypes.bool })
+#### `isResizable`: PropTypes.shape({ x: PropTypes.bool, y: PropTypes.bool, xy: PropTypes.bool })
 
 The `isResizable` property is used to set the resizable permission of a component.
 
 The permission of `x`, `y`, `xy` direction resizing.
-If ommited the default value is `{ x: true, y: true, xy: true }`.
-If you want to permit only x direction resizing, please set `{ x:true, y:false, xy:false }`. 
+If omitted the default value is `{ x: true, y: true, xy: true }`.
+If you want to permit only x direction resizing, please set `{ x:true, y:false, xy:false }`.
 
-#### `disableEffect`: PropTypes.bool,
+#### `isSortable`: PropTypes.bool
+
+The `isSortable` property is used to control whether panes can be dragged or not.
+If omitted, the default value is `true`.
+
+#### `disableEffect`: PropTypes.bool
 
 The `disableEffect` property is used to disable floating effect.
-If ommited the default margin is `false`.
+If omitted the default margin is `false`.
 
-#### `onOrderChange`: PropTypes.func,
+#### `onOrderChange`: PropTypes.func
 
 Calls when pane component order changed.
 Calls back with (`oldPanes: array`, `newPanes: array`)
@@ -136,11 +141,11 @@ See the example bellow.
 ]
 ```
 
-    
+
 #### `onResizeStart`: PropTypes.func
 
 Calls when pane component resize starts.
-Calls back with (`id: number or string`, ``direction: string`)
+Calls back with (`id: number or string`, `direction: string`)
 
 - id: pane id
 - direction: `x` or `y` or `xy`
@@ -156,7 +161,7 @@ Calls back with (`id: number or string`, `direction: string`, `coputedSize: obje
   - this argument is {width, height} of getComputedStyle.
 - rect: `{ width, height }`
   - this argument is `clientWidth` and `clientHeight`.
-  
+
 For example, when `<Resizable width={100} height={200} style={{ padding: '20px'}} onResize={...} />` mounted and resize 'x', this callback is called with `('x', { width: 100, height: 200 }, { width: 140, height: 240 })`
 
 #### `onResizeStop`: PropTypes.func
@@ -170,7 +175,7 @@ Calls back with (`id: number or string`, `direction: string`, `coputedSize: obje
   - this argument is {width, height} of getComputedStyle.
 - rect: `{ width, height }`
   - this argument is `clientWidth` and `clientHeight`.
-  
+
 For example, when `<Resizable width={100} height={200} style={{ padding: '20px'}} onResize={...} />` mounted and resize 'x', this callback is called with `('x', { width: 100, height: 200 }, { width: 140, height: 240 })`
 
 ## Pane Component
@@ -201,7 +206,7 @@ The `maxWidth` property is used to set the maximum width of a Pane component.
 
 #### `maxHeight`: PropTypes.number
 
-The `maxheight` property is used to set the maximum height of a Pane component.
+The `maxHeight` property is used to set the maximum height of a Pane component.
 
 #### `className`: PropTypes.string
 
@@ -301,4 +306,3 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
 The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-
