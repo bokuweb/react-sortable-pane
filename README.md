@@ -99,6 +99,11 @@ The permission of `x`, `y`, `xy` direction resizing.
 If ommited the default value is `{ x: true, y: true, xy: true }`.
 If you want to permit only x direction resizing, please set `{ x:true, y:false, xy:false }`. 
 
+#### `isSortable`: PropTypes.bool
+
+The `isSortable` property is used to control whether panes can be dragged or not.
+If omitted, the default value is `true`.
+
 #### `disableEffect`: PropTypes.bool,
 
 The `disableEffect` property is used to disable floating effect.

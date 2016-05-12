@@ -34,6 +34,7 @@ class SortablePane extends Component {
       y: React.PropTypes.bool,
       xy: React.PropTypes.bool,
     }),
+    isSortable: PropTypes.bool,
   };
 
   static defaultProps = {
@@ -54,6 +55,7 @@ class SortablePane extends Component {
       y: true,
       xy: true,
     },
+    isSortable: true,
   };
 
   constructor(props) {
@@ -341,7 +343,7 @@ class SortablePane extends Component {
   renderPanes() {
     const { mouse, isPressed, lastPressed } = this.state;
     const order = this.getPanePropsArrayOf('order');
-    const { children, disableEffect } = this.props;
+    const { children, disableEffect, isSortable } = this.props;
     return children.map((child, i) => {
       const springPosition = spring(this.getItemPositionByIndex(order.indexOf(i)), springConfig);
       const style = lastPressed === i && isPressed
@@ -361,7 +363,7 @@ class SortablePane extends Component {
         <Motion style={style} key={child.props.id}>
           {({ scale, shadow, x, y }) => {
             const onResize = this.onResize.bind(this, i);
-            const onMouseDown = this.handleMouseDown.bind(this, i, x, y);
+            const onMouseDown = isSortable ? this.handleMouseDown.bind(this, i, x, y) : () => null;
             const onTouchStart = this.handleTouchStart.bind(this, i, x, y);
             const onResizeStart = this.handleResizeStart.bind(this, i);
             const onResizeStop = this.handleResizeStop.bind(this, i);
