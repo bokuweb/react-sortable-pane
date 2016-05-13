@@ -255,6 +255,11 @@ The `style` property is used to set the style of a Pane component.
 
 ## Changelog
 
+### V0.3.2
+
+- Allow strings for width and height. (thanks @lanVS)
+- Add onDragStart and onDragEnd props. (thanks @lanVS)
+
 ### V0.3.1
 
 - Add `isSortable` props. (#34 thanks @lanVS)
