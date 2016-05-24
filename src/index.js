@@ -363,8 +363,8 @@ class SortablePane extends Component {
                 y: !this.isHorizontal() ? mouse : 0,
               }
               : {
-                scale: spring(1, springConfig),
-                shadow: spring(0, springConfig),
+                scale: disableEffect ? 1 : spring(1, springConfig),
+                shadow: disableEffect ? 0 : spring(0, springConfig),
                 x: this.isHorizontal() ? springPosition : 0,
                 y: !this.isHorizontal() ? springPosition : 0,
               };
@@ -376,6 +376,21 @@ class SortablePane extends Component {
             const onTouchStart = this.handleTouchStart.bind(this, i, x, y);
             const onResizeStart = this.handleResizeStart.bind(this, i);
             const onResizeStop = this.handleResizeStop.bind(this, i);
+
+            // take a copy rather than direct-manipulating the child's prop, which violates React
+            // and causes problems if the child's prop is a static default {}, which then will be
+            // shared across all children!
+            var customStyle = Object.assign({}, child.props.style);
+            Object.assign(customStyle, {
+                  boxShadow: `rgba(0, 0, 0, 0.2) 0px ${shadow}px ${2 * shadow}px 0px`,
+                  transform: `translate3d(${x}px, ${y}px, 0px) scale(${scale})`,
+                  WebkitTransform: `translate3d(${x}px, ${y}px, 0px) scale(${scale})`,
+                  MozTransform: `translate3d(${x}px, ${y}px, 0px) scale(${scale})`,
+                  MsTransform: `translate3d(${x}px, ${y}px, 0px) scale(${scale})`,
+                  zIndex: i === lastPressed ? 99 : i, // TODO: Add this.props.zIndex
+                  position: 'absolute',
+            });
+
             return (
               <Resizable
                 customClass={child.props.className}
@@ -396,15 +411,7 @@ class SortablePane extends Component {
                 minHeight={child.props.minHeight}
                 maxWidth={child.props.maxWidth}
                 maxHeight={child.props.maxHeight}
-                customStyle={Object.assign(child.props.style, {
-                  boxShadow: `rgba(0, 0, 0, 0.2) 0px ${shadow}px ${2 * shadow}px 0px`,
-                  transform: `translate3d(${x}px, ${y}px, 0px) scale(${scale})`,
-                  WebkitTransform: `translate3d(${x}px, ${y}px, 0px) scale(${scale})`,
-                  MozTransform: `translate3d(${x}px, ${y}px, 0px) scale(${scale})`,
-                  MsTransform: `translate3d(${x}px, ${y}px, 0px) scale(${scale})`,
-                  zIndex: i === lastPressed ? 99 : i, // TODO: Add this.props.zIndex
-                  position: 'absolute',
-                })}
+                customStyle={customStyle}
                 onMouseDown={onMouseDown}
                 onTouchStart={onTouchStart}
                 onResizeStart={onResizeStart}
