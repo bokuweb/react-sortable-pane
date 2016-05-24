@@ -255,6 +255,10 @@ The `style` property is used to set the style of a Pane component.
 
 ## Changelog
 
+### V0.4.1
+
+- Fixes a nasty bug where all Panes could end up sharing the same static style #44 (thanks @ara4n)
+
 ### V0.4.0
 
 - Add Object.assign transform plugin
