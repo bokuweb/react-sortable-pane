@@ -380,7 +380,7 @@ class SortablePane extends Component {
             // take a copy rather than direct-manipulating the child's prop, which violates React
             // and causes problems if the child's prop is a static default {}, which then will be
             // shared across all children!
-            var customStyle = Object.assign({}, child.props.style);
+            const customStyle = Object.assign({}, child.props.style);
             Object.assign(customStyle, {
               boxShadow: `rgba(0, 0, 0, 0.2) 0px ${shadow}px ${2 * shadow}px 0px`,
               transform: `translate3d(${x}px, ${y}px, 0px) scale(${scale})`,
