@@ -68,7 +68,6 @@ export default class Example extends Component{
 }
 ```
 
-
 ## Props
 
 ### SortablePane Component
@@ -91,13 +90,10 @@ If ommited the default direction is `'horizontal'`.
 The `margin` property is used to set the margin between Pane component.
 If ommited the default margin is `0`
 
-#### `isResizable`: PropTypes.shape({ x: PropTypes.bool, y: PropTypes.bool, xy: PropTypes.bool })
+#### `zIndex`: PropTypes.number
 
-The `isResizable` property is used to set the resizable permission of a component.
-
-The permission of `x`, `y`, `xy` direction resizing.
-If omitted the default value is `{ x: true, y: true, xy: true }`.
-If you want to permit only x direction resizing, please set `{ x:true, y:false, xy:false }`.
+The `zIndex` property is used to set the zIndex of a component.
+If ommited the default margin is `100`
 
 #### `isSortable`: PropTypes.bool
 
@@ -243,6 +239,15 @@ The `className` property is used to set the css class name of a Pane component.
 The `style` property is used to set the style of a Pane component.
 
 
+#### `isResizable`: PropTypes.shape({ x: PropTypes.bool, y: PropTypes.bool, xy: PropTypes.bool })
+
+The `isResizable` property is used to set the resizable permission of a component.
+
+The permission of `x`, `y`, `xy` direction resizing.
+If omitted the default value is `{ x: true, y: true, xy: true }`.
+If you want to permit only x direction resizing, please set `{ x:true, y:false, xy:false }`.
+
+
 ## TODO
 
 - [x] Horizontal pane
@@ -255,11 +260,17 @@ The `style` property is used to set the style of a Pane component.
 
 ## Changelog
 
+
+### V0.5.1
+
+- update readme
+
 ### V0.5.0
 
 - Fixes a nasty bug
 - Add isResizable props to Pane component
 - Set `user-select: none` when resizeing or moving.
+- Add zIndex props.
 - update example
 
 ### V0.4.1
