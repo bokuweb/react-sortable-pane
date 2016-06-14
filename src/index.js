@@ -37,6 +37,7 @@ class SortablePane extends Component {
       xy: React.PropTypes.bool,
     }),
     isSortable: PropTypes.bool,
+    zIndex: PropTypes.number,
   };
 
   static defaultProps = {
@@ -346,7 +347,7 @@ class SortablePane extends Component {
   renderPanes() {
     const { mouse, isPressed, lastPressed } = this.state;
     const order = this.getPanePropsArrayOf('order');
-    const { children, disableEffect, isSortable } = this.props;
+    const { children, disableEffect, isSortable, zIndex } = this.props;
     return children.map((child, i) => {
       const springPosition = spring(this.getItemPositionByIndex(order.indexOf(i)), springConfig);
       const style = lastPressed === i && isPressed
@@ -381,7 +382,7 @@ class SortablePane extends Component {
               WebkitTransform: `translate3d(${x}px, ${y}px, 0px) scale(${scale})`,
               MozTransform: `translate3d(${x}px, ${y}px, 0px) scale(${scale})`,
               MsTransform: `translate3d(${x}px, ${y}px, 0px) scale(${scale})`,
-              zIndex: i === lastPressed ? 99 : i, // TODO: Add this.props.zIndex
+              zIndex: i === lastPressed ? zIndex + children.length : zIndex + i,
               position: 'absolute',
             });
 
