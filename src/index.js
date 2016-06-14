@@ -104,18 +104,16 @@ class SortablePane extends Component {
     }
   }
 
-  componentWillUpdate(next) {
+  componentDidUpdate(next) {
     const { panes } = this.state;
     if (next.children.length > panes.length) return this.addPane(next);
     if (next.children.length < panes.length) return this.removePane(next);
-    return null;
-  }
 
-  componentDidUpdate() {
     if (this.sizePropsUpdated) {
       this.sizePropsUpdated = false;
       this.setSize();
     }
+    return null;
   }
 
   componentWillUnmount() {
@@ -329,6 +327,7 @@ class SortablePane extends Component {
   }
 
   handleMouseUp() {
+    if (this.props.children.length === 0) return;
     this.setState({ isPressed: false, delta: 0 });
     this.props.children[this.state.lastPressed].props.onDragEnd();
     const lastPressedId = this.props.children[this.state.lastPressed].props.id;
