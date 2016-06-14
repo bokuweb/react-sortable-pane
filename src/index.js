@@ -128,9 +128,10 @@ class SortablePane extends Component {
     const order = this.getPanePropsArrayOf('order');
     panes = panes.map((pane, index) => {
       if (order.indexOf(i) === index) {
+        const { offsetWidth, offsetHeight } = this.refs.panes.children[i];
         return {
-          width: rect.width,
-          height: rect.height,
+          width: offsetWidth,
+          height: offsetHeight,
           order: pane.order,
           id: pane.id,
         };
@@ -219,11 +220,11 @@ class SortablePane extends Component {
 
   setSize() {
     const panes = this.props.children.map((child, i) => {
-      const { width, height } = this.refs.panes.children[i].getBoundingClientRect();
+      const { offsetWidth, offsetHeight } = this.refs.panes.children[i];
       return {
         id: child.props.id,
-        width,
-        height,
+        width: offsetWidth,
+        height: offsetHeight,
         order: i,
       };
     });
