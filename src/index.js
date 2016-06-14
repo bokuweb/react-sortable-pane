@@ -77,7 +77,6 @@ class SortablePane extends Component {
         order,
       })),
     };
-    this.hasAdded = false;
     this.sizePropsUpdated = false;
     this.handleTouchMove = ::this.handleTouchMove;
     this.handleMouseUp = ::this.handleMouseUp;
@@ -121,11 +120,6 @@ class SortablePane extends Component {
   }
 
   componentDidUpdate() {
-    if (this.hasAdded) {
-      this.hasAdded = false;
-      this.setSize();
-    }
-
     if (this.sizePropsUpdated) {
       this.sizePropsUpdated = false;
       this.setSize();
@@ -273,13 +267,13 @@ class SortablePane extends Component {
       const ids = this.state.panes.map(pane => pane.id);
       if (ids.indexOf(child.props.id) === -1) {
         newPanes = this.updateOrder(newPanes, i, 'add');
-        const { id, width, height } = child.props;
+        const { id } = child.props;
+        const { width, height } = this.refs.panes.children[i].getBoundingClientRect();
         const pane = { id, width, height, order: i };
         newPanes.splice(i, 0, pane);
       }
     });
     this.setState({ panes: newPanes });
-    this.hasAdded = true;
   }
 
   removePane(next) {
