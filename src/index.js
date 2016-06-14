@@ -31,11 +31,6 @@ class SortablePane extends Component {
     onOrderChange: PropTypes.func,
     className: PropTypes.string,
     disableEffect: PropTypes.bool,
-    isResizable: PropTypes.shape({
-      x: React.PropTypes.bool,
-      y: React.PropTypes.bool,
-      xy: React.PropTypes.bool,
-    }),
     isSortable: PropTypes.bool,
     zIndex: PropTypes.number,
   };
@@ -55,12 +50,8 @@ class SortablePane extends Component {
     customStyle: {},
     className: '',
     disableEffect: false,
-    isResizable: {
-      x: true,
-      y: true,
-      xy: true,
-    },
     isSortable: true,
+    zIndex: 100,
   };
 
   constructor(props) {
@@ -345,7 +336,7 @@ class SortablePane extends Component {
   }
 
   renderPanes() {
-    const { mouse, isPressed, lastPressed } = this.state;
+    const { mouse, isPressed, lastPressed, isResizing } = this.state;
     const order = this.getPanePropsArrayOf('order');
     const { children, disableEffect, isSortable, zIndex } = this.props;
     return children.map((child, i) => {
@@ -371,6 +362,18 @@ class SortablePane extends Component {
             const onTouchStart = this.handleTouchStart.bind(this, i, x, y);
             const onResizeStart = this.handleResizeStart.bind(this, i);
             const onResizeStop = this.handleResizeStop.bind(this, i);
+            const userSelect = (isPressed || isResizing)
+              ? {
+                userSelect: 'none',
+                MozUserSelect: 'none',
+                WebkitUserSelect: 'none',
+                MsUserSelect: 'none',
+              } : {
+                userSelect: 'auto',
+                MozUserSelect: 'auto',
+                WebkitUserSelect: 'auto',
+                MsUserSelect: 'auto',
+              };
 
             // take a copy rather than direct-manipulating the child's prop, which violates React
             // and causes problems if the child's prop is a static default {}, which then will be
@@ -384,6 +387,7 @@ class SortablePane extends Component {
               MsTransform: `translate3d(${x}px, ${y}px, 0px) scale(${scale})`,
               zIndex: i === lastPressed ? zIndex + children.length : zIndex + i,
               position: 'absolute',
+              ...userSelect,
             });
 
             return (
@@ -392,9 +396,9 @@ class SortablePane extends Component {
                 onResize={onResize}
                 isResizable={{
                   top: false,
-                  right: this.props.isResizable.x,
-                  bottomRight: this.props.isResizable.xy,
-                  bottom: this.props.isResizable.y,
+                  right: child.props.isResizable.x,
+                  bottomRight: child.props.isResizable.xy,
+                  bottom: child.props.isResizable.y,
                   left: false,
                   topRight: false,
                   bottomLeft: false,
