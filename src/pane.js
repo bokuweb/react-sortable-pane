@@ -23,6 +23,11 @@ export default class Pane extends Component {
     style: PropTypes.object,
     className: PropTypes.string,
     children: PropTypes.any,
+    isResizable: PropTypes.shape({
+      x: React.PropTypes.bool,
+      y: React.PropTypes.bool,
+      xy: React.PropTypes.bool,
+    }),
   };
 
   static defaultProps = {
@@ -30,6 +35,11 @@ export default class Pane extends Component {
     onDragEnd: () => null,
     style: {},
     className: '',
+    isResizable: {
+      x: true,
+      y: true,
+      xy: true,
+    },
   };
 
   render() {

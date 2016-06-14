@@ -255,6 +255,13 @@ The `style` property is used to set the style of a Pane component.
 
 ## Changelog
 
+### V0.5.0
+
+- Fixes a nasty bug
+- Add isResizable props to Pane component
+- Set `user-select: none` when resizeing or moving.
+- update example
+
 ### V0.4.1
 
 - Fixes a nasty bug where all Panes could end up sharing the same static style #44 (thanks @ara4n)
