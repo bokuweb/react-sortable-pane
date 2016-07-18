@@ -260,9 +260,13 @@ If you want to permit only x direction resizing, please set `{ x:true, y:false, 
 
 ## Changelog
 
+### V0.5.3
+
+- Fix componentDidUpdate argument, use this.props instaead of prev.
+
 ### V0.5.2
 
-- UUe babel-preset-es2015-ie  babel-preset-es2015-ie #47 thanks @PabloDiablo
+- Use babel-preset-es2015-ie  babel-preset-es2015-ie #47 thanks @PabloDiablo
 
 ### V0.5.1
 
