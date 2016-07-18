@@ -104,10 +104,10 @@ class SortablePane extends Component {
     }
   }
 
-  componentDidUpdate(next) {
+  componentDidUpdate() {
     const { panes } = this.state;
-    if (next.children.length > panes.length) return this.addPane(next);
-    if (next.children.length < panes.length) return this.removePane(next);
+    if (this.props.children.length > panes.length) return this.addPane();
+    if (this.props.children.length < panes.length) return this.removePane();
 
     if (this.sizePropsUpdated) {
       this.sizePropsUpdated = false;
@@ -252,9 +252,9 @@ class SortablePane extends Component {
     });
   }
 
-  addPane(next) {
+  addPane() {
     let newPanes = this.state.panes;
-    next.children.forEach((child, i) => {
+    this.props.children.forEach((child, i) => {
       const ids = this.state.panes.map(pane => pane.id);
       if (ids.indexOf(child.props.id) === -1) {
         newPanes = this.updateOrder(newPanes, i, 'add');
@@ -267,10 +267,10 @@ class SortablePane extends Component {
     this.setState({ panes: newPanes });
   }
 
-  removePane(next) {
+  removePane() {
     let newPanes;
     this.state.panes.forEach((pane, i) => {
-      const ids = next.children.map(child => child.props.id);
+      const ids = this.props.children.map(child => child.props.id);
       if (ids.indexOf(pane.id) === -1) {
         newPanes = this.updateOrder(this.state.panes, i, 'remove');
         newPanes.splice(i, 1);
@@ -416,7 +416,7 @@ class SortablePane extends Component {
                 onResizeStart={onResizeStart}
                 onResizeStop={onResizeStop}
               >
-                { child.props.children }
+                {child.props.children}
               </Resizable>
             );
           }}
