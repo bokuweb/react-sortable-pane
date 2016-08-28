@@ -260,6 +260,10 @@ If you want to permit only x direction resizing, please set `{ x:true, y:false, 
 
 ## Changelog
 
+### V0.5.4
+
+- Support server side rendering. #50 thanks @lazreg87 
+
 ### V0.5.3
 
 - Fix componentDidUpdate argument, use this.props instaead of prev.
