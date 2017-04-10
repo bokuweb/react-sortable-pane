@@ -275,7 +275,7 @@ class SortablePane extends Component {
     this.state.panes.forEach((pane, i) => {
       const ids = this.props.children.map(child => child.props.id);
       if (ids.indexOf(pane.id) === -1) {
-        newPanes = this.updateOrder(this.state.panes, i, 'remove');
+        newPanes = this.updateOrder(this.state.panes, pane.order, 'remove');
         newPanes.splice(i, 1);
       }
     });
