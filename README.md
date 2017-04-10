@@ -260,6 +260,11 @@ If you want to permit only x direction resizing, please set `{ x:true, y:false, 
 
 ## Changelog
 
+### V0.5.5
+
+- Use `prop-types` package.
+- Fix #56 thanks @avaskys.
+
 ### V0.5.4
 
 - Support server side rendering. #50 thanks @lazreg87 
