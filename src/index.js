@@ -331,12 +331,14 @@ class SortablePane extends Component {
     this.handleMouseMove(e.touches[0]);
   }
 
-  handleMouseUp() {
+  handleMouseUp(e) {
     if (this.props.children.length === 0) return;
     this.setState({ isPressed: false, delta: 0 });
-    this.props.children[this.state.lastPressed].props.onDragEnd();
     const lastPressedId = this.props.children[this.state.lastPressed].props.id;
-    this.props.onDragEnd(lastPressedId);
+    this.props.children[this.state.lastPressed].props.onDragEnd(
+      e, this.state.panes.find(p => p.id === lastPressedId)
+    );
+    this.props.onDragEnd(e, lastPressedId, this.state.panes);
   }
 
   renderPanes() {
@@ -403,7 +405,7 @@ class SortablePane extends Component {
               <Resizable
                 className={child.props.className}
                 onResize={onResize}
-                isResizable={{
+                enable={{
                   top: false,
                   right: child.props.isResizable.x,
                   bottomRight: child.props.isResizable.xy,
