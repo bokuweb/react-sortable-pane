@@ -49,6 +49,7 @@ export default class Example extends Component{
           onOrderChange={(panes) => null}
       >
         <Pane
+           id="0"
            width={200}
            height={500}
            style={style}
@@ -56,6 +57,7 @@ export default class Example extends Component{
           A
         </Pane>
         <Pane
+           id="1"
            width={300}
            height={400}
            style={style}
