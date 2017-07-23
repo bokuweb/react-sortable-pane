@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { SortablePane, Pane } from '../../src';
-import { Button } from 're-bulma';
 
 const style = {
   fontSize: '40px',
@@ -19,7 +18,7 @@ export default class Example extends Component {
         <Pane
           id={1}
           key={1}
-          width={420}
+          width="100%"
           height={120}
           minWidth={100}
           maxWidth={800}
@@ -90,27 +89,24 @@ export default class Example extends Component {
 
   render() {
     return (
-      <div>
+      <div style={{ width: '800px', background: '#ccc' }}>
         <h1>sortable pane</h1>
-        <Button
+        <button
           onClick={this.add}
-          style="isOutlined"
-          color="isPrimary"
-          customStyle={{
+          style={{
             color: '#fff', borderColor: '#fff',
           }}
         >
           Add
-        </Button>
-        <Button
+        </button>
+        <button
           onClick={this.remove}
-          style="isOutlined"
-          color="isPrimary"
-          customStyle={{
+          style={{
             color: '#fff', borderColor: '#fff', margin: '0 0 30px 10px',
           }}
         >
-          Remove</Button>
+          Remove
+          </button>
         <SortablePane
           direction="vertical"
           margin={20}

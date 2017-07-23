@@ -346,18 +346,18 @@ class SortablePane extends Component {
     return children.map((child, i) => {
       const springPosition = spring(this.getItemPositionByIndex(order.indexOf(i)), springConfig);
       const style = lastPressed === i && isPressed
-              ? {
-                scale: disableEffect ? 1 : spring(1.05, springConfig),
-                shadow: disableEffect ? 0 : spring(16, springConfig),
-                x: this.isHorizontal() ? mouse : 0,
-                y: !this.isHorizontal() ? mouse : 0,
-              }
-              : {
-                scale: disableEffect ? 1 : spring(1, springConfig),
-                shadow: disableEffect ? 0 : spring(0, springConfig),
-                x: this.isHorizontal() ? springPosition : 0,
-                y: !this.isHorizontal() ? springPosition : 0,
-              };
+        ? {
+          scale: disableEffect ? 1 : spring(1.05, springConfig),
+          shadow: disableEffect ? 0 : spring(16, springConfig),
+          x: this.isHorizontal() ? mouse : 0,
+          y: !this.isHorizontal() ? mouse : 0,
+        }
+        : {
+          scale: disableEffect ? 1 : spring(1, springConfig),
+          shadow: disableEffect ? 0 : spring(0, springConfig),
+          x: this.isHorizontal() ? springPosition : 0,
+          y: !this.isHorizontal() ? springPosition : 0,
+        };
       return (
         <Motion style={style} key={child.props.id}>
           {({ scale, shadow, x, y }) => {
@@ -394,9 +394,14 @@ class SortablePane extends Component {
               ...userSelect,
             });
 
+            const extendsProps = {
+              onMouseDown,
+              onTouchStart,
+            };
+
             return (
               <Resizable
-                customClass={child.props.className}
+                className={child.props.className}
                 onResize={onResize}
                 isResizable={{
                   top: false,
@@ -414,11 +419,10 @@ class SortablePane extends Component {
                 minHeight={child.props.minHeight}
                 maxWidth={child.props.maxWidth}
                 maxHeight={child.props.maxHeight}
-                customStyle={customStyle}
-                onMouseDown={onMouseDown}
-                onTouchStart={onTouchStart}
+                style={customStyle}
                 onResizeStart={onResizeStart}
                 onResizeStop={onResizeStop}
+                extendsProps={extendsProps}
               >
                 {child.props.children}
               </Resizable>
@@ -435,9 +439,9 @@ class SortablePane extends Component {
       <div
         ref="panes"
         className={className}
-        style={style}
+        style={{ position: 'relative', ...style }}
       >
-        { this.renderPanes() }
+        {this.renderPanes()}
       </div>
     );
   }
