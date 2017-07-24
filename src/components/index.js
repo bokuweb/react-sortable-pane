@@ -1,7 +1,7 @@
 import React from 'react';
 import { Motion, spring } from 'react-motion';
 import Resizable from 'react-resizable-box';
-import PropTypes from 'prop-types';
+// import PropTypes from 'prop-types';
 import isEqual from 'lodash.isequal';
 import Pane from './pane';
 
@@ -18,7 +18,7 @@ const clamp = (n, min = n, max = n) => Math.max(Math.min(n, max), min);
 const springConfig = [500, 30];
 
 class SortablePane extends React.Component {
-
+  /*
   static propTypes = {
     order: PropTypes.arrayOf(PropTypes.number),
     direction: PropTypes.oneOf(['horizontal', 'vertical']),
@@ -36,6 +36,7 @@ class SortablePane extends React.Component {
     isSortable: PropTypes.bool,
     zIndex: PropTypes.number,
   };
+  */
 
   static defaultProps = {
     order: [],
@@ -91,12 +92,12 @@ class SortablePane extends React.Component {
     const newPanes = [];
     const order = this.getPanePropsArrayOf('order');
     if (!isEqual(this.props.order, next.order)) {
-      for (let i = 0; i < next.order.length; i++) {
+      for (let i = 0; i < next.order.length; i += 1) {
         newPanes[next.order[i]] = this.state.panes[order[i]];
       }
       this.setState({ panes: newPanes });
     }
-    for (let i = 0; i < this.props.children.length; i++) {
+    for (let i = 0; i < this.props.children.length; i += 1) {
       if (next.children[i]) {
         const width = this.props.children[i].props.width;
         const height = this.props.children[i].props.height;
@@ -133,7 +134,7 @@ class SortablePane extends React.Component {
     const order = this.getPanePropsArrayOf('order');
     panes = panes.map((pane, index) => {
       if (order.indexOf(i) === index) {
-        const { offsetWidth, offsetHeight } = this.refs.panes.children[i];
+        const { offsetWidth, offsetHeight } = this.panes.children[i];
         return {
           width: offsetWidth,
           height: offsetHeight,
@@ -181,7 +182,7 @@ class SortablePane extends React.Component {
    * @return {object}               - Object containing 'prevoius' and 'next'
    *                                  pane halfway points
    */
-  getSurroundingHalfSizes(currentPane, sizes, margin) {
+  getSurroundingHalfSizes = (currentPane, sizes, margin) => {
     const nextPane = currentPane + 1;
     const prevPane = currentPane - 1;
 
@@ -190,7 +191,7 @@ class SortablePane extends React.Component {
       if (index < prevPane) {
         newSums.previous = sums.previous + val + margin;
       } else if (index === prevPane) {
-        newSums.previous = sums.previous + val / 2;
+        newSums.previous = sums.previous + (val / 2);
       } else {
         newSums.previous = sums.previous;
       }
@@ -198,7 +199,7 @@ class SortablePane extends React.Component {
       if (index < nextPane) {
         newSums.next = sums.next + val + margin;
       } else if (index === nextPane) {
-        newSums.next = sums.next + val / 2;
+        newSums.next = sums.next + (val / 2);
       } else {
         newSums.next = sums.next;
       }
@@ -225,7 +226,7 @@ class SortablePane extends React.Component {
 
   setSize() {
     const panes = this.props.children.map((child, i) => {
-      const { offsetWidth, offsetHeight } = this.refs.panes.children[i];
+      const { offsetWidth, offsetHeight } = this.panes.children[i];
       return {
         id: child.props.id,
         width: offsetWidth,
@@ -239,7 +240,9 @@ class SortablePane extends React.Component {
   getItemPositionByIndex(index) {
     const size = this.getPaneSizeList();
     let sum = 0;
-    for (let i = 0; i < index; i++) sum += size[i] + this.props.margin;
+    for (let i = 0; i < index; i += 1) {
+      sum += size[i] + this.props.margin;
+    }
     return sum;
   }
 
@@ -247,8 +250,8 @@ class SortablePane extends React.Component {
     return this.props.direction === 'horizontal';
   }
 
-  updateOrder(panes, index, mode) {
-    return panes.map(pane => {
+  updateOrder = (panes, index, mode) => {
+    return panes.map((pane: any) => {
       if (pane.order >= index) {
         const { id, width, height, order } = pane;
         return { id, width, height, order: mode === 'add' ? order + 1 : order - 1 };
@@ -264,7 +267,7 @@ class SortablePane extends React.Component {
       if (ids.indexOf(child.props.id) === -1) {
         newPanes = this.updateOrder(newPanes, i, 'add');
         const { id } = child.props;
-        const { width, height } = this.refs.panes.children[i].getBoundingClientRect();
+        const { width, height } = this.panes.children[i].getBoundingClientRect();
         const pane = { id, width, height, order: i };
         newPanes.splice(i, 0, pane);
       }
@@ -337,7 +340,7 @@ class SortablePane extends React.Component {
     this.setState({ isPressed: false, delta: 0 });
     const lastPressedId = this.props.children[this.state.lastPressed].props.id;
     this.props.children[this.state.lastPressed].props.onDragEnd(
-      e, this.state.panes.find(p => p.id === lastPressedId)
+      e, this.state.panes.find(p => p.id === lastPressedId),
     );
     this.props.onDragEnd(e, lastPressedId, this.state.panes);
   }
@@ -439,7 +442,7 @@ class SortablePane extends React.Component {
     const { style, className } = this.props;
     return (
       <div
-        ref="panes"
+        ref={(c) => { this.panes = c; }}
         className={className}
         style={{ position: 'relative', ...style }}
       >

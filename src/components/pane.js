@@ -1,8 +1,8 @@
 import React from 'react';
-import PropTypes from 'prop-types';
+// import PropTypes from 'prop-types';
 
 export default class Pane extends React.Component {
-
+  /*
   static propTypes = {
     id: PropTypes.oneOfType([
       PropTypes.string,
@@ -31,6 +31,7 @@ export default class Pane extends React.Component {
       xy: React.PropTypes.bool,
     }),
   };
+  */
 
   static defaultProps = {
     onDragStart: () => null,

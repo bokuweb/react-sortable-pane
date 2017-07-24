@@ -15,6 +15,7 @@
     "flowtype/require-parameter-type": 1,
     "no-duplicate-imports": 0,
     "flowtype/require-return-type": 0,
+    "arrow-body-style": 0,
     "flowtype/space-after-type-colon": [
       1,
       "always"
