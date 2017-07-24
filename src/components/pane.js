@@ -1,41 +1,39 @@
+/* @flow */
+
 import React from 'react';
-// import PropTypes from 'prop-types';
+
+export type IsPaneResizable = {
+  x?: boolean;
+  y?: boolean;
+  xy?: boolean;
+};
+
+export type PaneProps = {
+  id: string | number;
+  width: string | number;
+  height: string | number;
+  minWidth?: number;
+  maxWidth?: number;
+  minHeight?: number;
+  maxHeight?: number;
+  onDragStart?: () => void;
+  onDragEnd?: () => void;
+  style?: { [key: string]: string };
+  className?: string;
+  children?: string | React$Element<any>;
+  isResizable: IsPaneResizable;
+}
 
 export default class Pane extends React.Component {
-  /*
-  static propTypes = {
-    id: PropTypes.oneOfType([
-      PropTypes.string,
-      PropTypes.number,
-    ]).isRequired,
-    width: PropTypes.oneOfType([
-      PropTypes.number,
-      PropTypes.string,
-    ]),
-    height: PropTypes.oneOfType([
-      PropTypes.number,
-      PropTypes.string,
-    ]),
-    minWidth: PropTypes.number,
-    maxWidth: PropTypes.number,
-    minHeight: PropTypes.number,
-    maxHeight: PropTypes.number,
-    onDragStart: PropTypes.func,
-    onDragEnd: PropTypes.func,
-    style: PropTypes.object,
-    className: PropTypes.string,
-    children: PropTypes.any,
-    isResizable: PropTypes.shape({
-      x: React.PropTypes.bool,
-      y: React.PropTypes.bool,
-      xy: React.PropTypes.bool,
-    }),
-  };
-  */
+  props: PaneProps;
 
   static defaultProps = {
     onDragStart: () => null,
     onDragEnd: () => null,
+    minWidth: 0,
+    minHeight: 0,
+    maxWidth: undefined,
+    maxHeight: undefined,
     style: {},
     className: '',
     isResizable: {
@@ -43,11 +41,14 @@ export default class Pane extends React.Component {
       y: true,
       xy: true,
     },
+    children: '',
   };
 
   render() {
     return (
-      <div className={this.props.className}>{this.props.children}</div>
+      <div className={this.props.className}>
+        {this.props.children}
+      </div>
     );
   }
 }
