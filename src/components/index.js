@@ -1,46 +1,68 @@
+/* @flow */
+
 import React from 'react';
 import { Motion, spring } from 'react-motion';
 import Resizable from 'react-resizable-box';
-// import PropTypes from 'prop-types';
 import isEqual from 'lodash.isequal';
 import Pane from './pane';
 
-const reinsert = (array, from, to) => {
+function reinsert<T>(array: Array<T>, from: number, to: number): Array<T> {
   const a = array.slice(0);
   const v = a[from];
   a.splice(from, 1);
   a.splice(to, 0, v);
   return a;
-};
+}
 
-const clamp = (n, min = n, max = n) => Math.max(Math.min(n, max), min);
+const clamp = (n: number, min = n, max = n): number => Math.max(Math.min(n, max), min);
 
-const springConfig = [500, 30];
+const springConfig: [number, number] = [500, 30];
+
+export type PaneProperty = {
+  id: number | string;
+  width: number | string;
+  height: number | string;
+  order: number;
+}
+
+export type SortablePaneProps = {
+  order: number[];
+  direction?: 'horizontal' | 'vertical';
+  margin?: number;
+  style?: { [key: string]: string };
+  children?: Pane[];
+  onResizeStart?: () => void;
+  onResize?: () => void;
+  onResizeStop?: () => void;
+  onDragStart?: () => void;
+  onDragEnd?: () => void;
+  onOrderChange?: () => void;
+  className?: string;
+  disableEffect?: boolean;
+  isSortable?: boolean;
+  zIndex?: number;
+}
 
 class SortablePane extends React.Component {
-  /*
-  static propTypes = {
-    order: PropTypes.arrayOf(PropTypes.number),
-    direction: PropTypes.oneOf(['horizontal', 'vertical']),
-    margin: PropTypes.number,
-    style: PropTypes.object,
-    children: PropTypes.array,
-    onResizeStart: PropTypes.func,
-    onResize: PropTypes.func,
-    onResizeStop: PropTypes.func,
-    onDragStart: PropTypes.func,
-    onDragEnd: PropTypes.func,
-    onOrderChange: PropTypes.func,
-    className: PropTypes.string,
-    disableEffect: PropTypes.bool,
-    isSortable: PropTypes.bool,
-    zIndex: PropTypes.number,
+  props: SortablePaneProps;
+  state: {
+    delta: number;
+    mouse: number;
+    isPressed: boolean;
+    lastPressed: number;
+    isResizing: boolean;
+    panes: Array<PaneProperty>;
   };
-  */
+  sizePropsUpdated: boolean;
+  handleTouchMove: () => void;
+  handleMouseUp: () => void;
+  handleMouseMove: () => void;
 
   static defaultProps = {
     order: [],
     direction: 'horizontal',
+    style: {},
+    children: [],
     margin: 0,
     onClick: () => null,
     onTouchStart: () => null,
@@ -50,14 +72,13 @@ class SortablePane extends React.Component {
     onDragStart: () => null,
     onDragEnd: () => null,
     onOrderChange: () => null,
-    customStyle: {},
     className: '',
     disableEffect: false,
     isSortable: true,
     zIndex: 100,
   };
 
-  constructor(props) {
+  constructor(props: SortablePaneProps) {
     super(props);
     this.state = {
       delta: 0,
@@ -65,7 +86,7 @@ class SortablePane extends React.Component {
       isPressed: false,
       lastPressed: 0,
       isResizing: false,
-      panes: this.props.children.map((child, order) => ({
+      panes: (this.props.children || []).map((child: Pane, order: number) => ({
         id: child.props.id,
         width: child.props.width,
         height: child.props.height,
@@ -76,6 +97,7 @@ class SortablePane extends React.Component {
     this.handleTouchMove = this.handleTouchMove.bind(this);
     this.handleMouseUp = this.handleMouseUp.bind(this);
     this.handleMouseMove = this.handleMouseMove.bind(this);
+
     if (typeof window !== 'undefined') {
       window.addEventListener('touchmove', this.handleTouchMove);
       window.addEventListener('touchend', this.handleMouseUp);
@@ -88,22 +110,31 @@ class SortablePane extends React.Component {
     this.setSize();
   }
 
-  componentWillReceiveProps(next) {
+  componentWillReceiveProps(next: SortablePaneProps) {
     const newPanes = [];
     const order = this.getPanePropsArrayOf('order');
     if (!isEqual(this.props.order, next.order)) {
       for (let i = 0; i < next.order.length; i += 1) {
-        newPanes[next.order[i]] = this.state.panes[order[i]];
+        if (this.state.panes.length) {
+          const pane = this.state.panes[parseInt(order[i], 10)];
+          newPanes[next.order[i]] = pane;
+        }
       }
       this.setState({ panes: newPanes });
     }
-    for (let i = 0; i < this.props.children.length; i += 1) {
+
+    if (!next.children || next.children.length === 0) return;
+    const children = this.props.children || [];
+    for (let i = 0; i < children.length; i += 1) {
       if (next.children[i]) {
-        const width = this.props.children[i].props.width;
-        const height = this.props.children[i].props.height;
-        const newWidth = next.children[i].props.width;
-        const newHeight = next.children[i].props.height;
-        if (width !== newWidth || height !== newHeight) this.sizePropsUpdated = true;
+        const child = children[i];
+        if (child) {
+          const width = child.props.width;
+          const height = child.props.height;
+          const newWidth = next.children[i].props.width;
+          const newHeight = next.children[i].props.height;
+          if (width !== newWidth || height !== newHeight) this.sizePropsUpdated = true;
+        }
       }
     }
   }
