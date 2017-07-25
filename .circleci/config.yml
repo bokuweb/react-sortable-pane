@@ -28,6 +28,9 @@ jobs:
           name: Install dependencies
           command: yarn
       - run:
+          name: Build
+          command: yarn run build
+      - run:
           name: Setup git
           command: |
             git config --global user.email "bokuweb12@gmail.com"
@@ -37,10 +40,6 @@ jobs:
           command: |
             echo "//registry.npmjs.org/:_authToken=${NPM_AUTH_TOKEN}" > ~/.npmrc
             npm whoami
-      - run:
-          name: Deploy services
-          command: |
-            yarn run deploy
       - run:
           name: Publish to npm
           command: |
@@ -52,6 +51,9 @@ jobs:
           name: Install dependencies
           command: yarn
       - run:
+          name: Build
+          command: yarn run build          
+      - run:
           name: Setup git
           command: |
             git config --global user.email "bokuweb12@gmail.com"
@@ -61,10 +63,6 @@ jobs:
           command: |
             echo "//registry.npmjs.org/:_authToken=${NPM_AUTH_TOKEN}" > ~/.npmrc
             npm whoami
-      - run:
-          name: Deploy services
-          command: |
-            yarn run deploy
       - run:
           name: Publish to npm
           command: |
