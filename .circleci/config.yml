@@ -1,0 +1,102 @@
+
+defaults: &defaults
+  working_directory: ~/react-sortable-pane
+  docker:
+    - image: quramy/node-nightmare
+      environment:
+        DISPLAY: ":99"
+
+version: 2
+jobs:
+  build:
+    <<: *defaults
+    steps:
+      - checkout
+      - run:
+          name: Install dependencies
+          command: yarn
+      - run:
+          name: Lint
+          command: yarn run lint
+      - run:
+          name: Test
+          command: yarn run test
+  patch_release:
+    <<: *defaults
+    steps:
+      - run:
+          name: Install dependencies
+          command: yarn
+      - run:
+          name: Setup git
+          command: |
+            git config --global user.email "bokuweb12@gmail.com"
+            git config --global user.name "bokuweb"
+      - run:
+          name: Login npm
+          command: |
+            echo "//registry.npmjs.org/:_authToken=${NPM_AUTH_TOKEN}" > ~/.npmrc
+            npm whoami
+      - run:
+          name: Deploy services
+          command: |
+            yarn run deploy
+      - run:
+          name: Publish to npm
+          command: |
+            sh deploy-patch.sh
+  minor_release:
+    <<: *defaults
+    steps:
+      - run:
+          name: Install dependencies
+          command: yarn
+      - run:
+          name: Setup git
+          command: |
+            git config --global user.email "bokuweb12@gmail.com"
+            git config --global user.name "bokuweb"
+      - run:
+          name: Login npm
+          command: |
+            echo "//registry.npmjs.org/:_authToken=${NPM_AUTH_TOKEN}" > ~/.npmrc
+            npm whoami
+      - run:
+          name: Deploy services
+          command: |
+            yarn run deploy
+      - run:
+          name: Publish to npm
+          command: |
+            sh deploy-minor.sh
+workflows:
+  version: 2
+  reg_build_pipeline:
+    jobs:
+      - build
+      - confirm_patch:
+          type: approval
+          filters:
+            branches:
+              only: master
+          requires:
+            - build
+      - confirm_minor:
+          type: approval
+          filters:
+            branches:
+              only: master
+          requires:
+            - build
+      - patch_release:
+          filters:
+            branches:
+              only: master
+          requires:
+            - confirm_patch
+      - minor_release:
+          filters:
+            branches:
+              only: master
+          requires:
+            - confirm_minor
