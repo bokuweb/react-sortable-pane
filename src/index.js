@@ -116,6 +116,7 @@ export default class Example extends React.Component {
           margin={20}
           onResize={this.onResize}
           onOrderChange={(pane) => console.dir(pane)}
+          onResize={(e, data) => console.dir(data)}
           order={this.state.order}
         >
           {this.state.list}
