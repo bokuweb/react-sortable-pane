@@ -69,7 +69,7 @@ jobs:
             sh deploy-minor.sh
 workflows:
   version: 2
-  reg_build_pipeline:
+  build_pipeline:
     jobs:
       - build
       - confirm_patch:
