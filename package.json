@@ -69,5 +69,8 @@
     "browse": "browser-sync start --s --index 'html/index.html' --files 'html/**/*.html, build/**/*.js' --no-notify",
     "start": "npm-run-all --parallel dev browse",
     "test": "npm run flow && npm run build"
-  }
+  },
+  "files": [
+    "lib"
+  ]
 }
