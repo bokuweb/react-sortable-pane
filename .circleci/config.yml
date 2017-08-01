@@ -24,6 +24,7 @@ jobs:
   patch_release:
     <<: *defaults
     steps:
+      - checkout
       - run:
           name: Install dependencies
           command: yarn
@@ -47,6 +48,7 @@ jobs:
   minor_release:
     <<: *defaults
     steps:
+      - checkout
       - run:
           name: Install dependencies
           command: yarn
