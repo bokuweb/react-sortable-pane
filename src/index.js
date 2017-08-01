@@ -91,6 +91,10 @@ export default class Example extends React.Component {
     this.setState({ list: this.state.list });
   }
 
+  onDragEnd = () => {
+    console.log('drag end !');
+  }
+
   render() {
     return (
       <div style={{ width: '800px', background: '#ccc' }}>
@@ -115,6 +119,7 @@ export default class Example extends React.Component {
           direction="vertical"
           margin={20}
           onResize={this.onResize}
+          onDragEnd={this.onDragEnd}
           onOrderChange={(pane) => console.dir(pane)}
           onResize={(e, data) => console.dir(data)}
           order={this.state.order}
@@ -127,4 +132,3 @@ export default class Example extends React.Component {
 }
 
 ReactDOM.render(<Example />, root);
-
