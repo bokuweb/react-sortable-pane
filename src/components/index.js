@@ -63,7 +63,7 @@ export type SortablePaneProps = $Exact<{
   onResize?: (e: SyntheticEvent, data: PaneResizeData) => void;
   onResizeStop?: (panes: IdWithPanes) => void;
   onResizeStart?: (panes: IdWithPanes) => void;
-  onDragStart?: (e: MouseEvent | Touch, id: PaneId, panes: PaneProperty[]) => void;
+  onDragStart?: (e: SyntheticMouseEvent | SyntheticTouchEvent, id: PaneId, panes: PaneProperty[]) => void;
   onDragStop?: (e: MouseEvent | TouchEvent, id: PaneId, panes: PaneProperty[]) => void;
   onOrderChange?: (oldPanes: PaneProperty[], newPanes: PaneProperty[]) => void;
   className?: string;
@@ -396,16 +396,16 @@ class SortablePane extends React.Component {
     pos: number,
     pressX: number,
     pressY: number,
-    e: MouseEvent | TouchEvent,
+    e: SyntheticMouseEvent | SyntheticTouchEvent,
   ) {
     let event;
-    if (e && e.touches && e.touches.length) {
+    if (e instanceof SyntheticTouchEvent) {
       event = e.touches[0];
     } else {
       event = e;
     }
     this.setState({
-      delta: this.isHorizontal() ? e.pageX - pressX : e.pageY - pressY,
+      delta: this.isHorizontal() ? event.pageX - pressX : event.pageY - pressY,
       mouse: this.isHorizontal() ? pressX : pressY,
       isPressed: true,
       lastPressed: pos,
