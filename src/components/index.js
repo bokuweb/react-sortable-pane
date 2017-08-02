@@ -63,8 +63,8 @@ export type SortablePaneProps = $Exact<{
   onResize?: (e: SyntheticEvent, data: PaneResizeData) => void;
   onResizeStop?: (panes: IdWithPanes) => void;
   onResizeStart?: (panes: IdWithPanes) => void;
-  onDragStart?: () => void;
-  onDragEnd?: (e: MouseEvent | TouchEvent, id: PaneId, panes: PaneProperty[]) => void;
+  onDragStart?: (e: MouseEvent | Touch, id: PaneId, panes: PaneProperty[]) => void;
+  onDragStop?: (e: MouseEvent | TouchEvent, id: PaneId, panes: PaneProperty[]) => void;
   onOrderChange?: (oldPanes: PaneProperty[], newPanes: PaneProperty[]) => void;
   className?: string;
   disableEffect?: boolean;
@@ -100,7 +100,7 @@ class SortablePane extends React.Component {
     onResize: () => null,
     onResizeStop: () => null,
     onDragStart: () => null,
-    onDragEnd: () => null,
+    onDragStop: () => null,
     onOrderChange: () => null,
     className: '',
     disableEffect: false,
@@ -396,20 +396,25 @@ class SortablePane extends React.Component {
     pos: number,
     pressX: number,
     pressY: number,
-    { pageX, pageY }: { pageX: number, pageY: number },
+    e: MouseEvent | TouchEvent,
   ) {
+    let event;
+    if (e && e.touches && e.touches.length) {
+      event = e.touches[0];
+    } else {
+      event = e;
+    }
     this.setState({
-      delta: this.isHorizontal() ? pageX - pressX : pageY - pressY,
+      delta: this.isHorizontal() ? e.pageX - pressX : e.pageY - pressY,
       mouse: this.isHorizontal() ? pressX : pressY,
       isPressed: true,
       lastPressed: pos,
     });
     if (!this.props.children) return;
-    if (this.props.children[pos].props.onDragStart) {
-      this.props.children[pos].props.onDragStart();
-    }
+    const child = this.props.children[pos];
+    if (!child) return;
     if (this.props.onDragStart) {
-      this.props.onDragStart();
+      this.props.onDragStart(e, child.props.id, this.state.panes);
     }
   }
 
@@ -433,7 +438,7 @@ class SortablePane extends React.Component {
   }
 
   handleTouchStart(key: number, x: number, y: number, e: SyntheticTouchEvent) {
-    this.handleMouseDown(key, x, y, e.touches[0]);
+    this.handleMouseDown(key, x, y, e);
   }
 
   handleTouchMove(e: TouchEvent) {
@@ -449,12 +454,8 @@ class SortablePane extends React.Component {
     const lastPressedId = child.props.id;
     const pane = this.state.panes.find(p => p.id === lastPressedId);
     if (!this.props.isSortable) return;
-    if (pane && child.props.onDragEnd) {
-      // TODO:
-      child.props.onDragEnd(e);
-    }
-    if (this.props.onDragEnd) {
-      this.props.onDragEnd(e, lastPressedId, this.state.panes);
+    if (this.props.onDragStop) {
+      this.props.onDragStop(e, lastPressedId, this.state.panes);
     }
   }
 

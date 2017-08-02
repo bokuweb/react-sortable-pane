@@ -16,8 +16,6 @@ export type PaneProps = {
   maxWidth?: number;
   minHeight?: number;
   maxHeight?: number;
-  onDragStart?: () => void;
-  onDragEnd?: (e: MouseEvent | TouchEvent) => void;
   style?: { [key: string]: string };
   className?: string;
   children?: string | React$Element<any>;
