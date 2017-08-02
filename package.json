@@ -56,7 +56,8 @@
     "rollup-plugin-node-globals": "1.1.0",
     "rollup-plugin-node-resolve": "3.0.0",
     "rollup-plugin-replace": "^1.1.1",
-    "rollup-watch": "4.0.0"
+    "rollup-watch": "4.0.0",
+    "@storybook/react": "^3.2.3"
   },
   "scripts": {
     "lint": "eslint src",
@@ -70,7 +71,9 @@
     "start": "npm-run-all --parallel dev browse",
     "test": "npm run flow && npm run build",
     "flow-copy": "flow-copy-source -v src/components lib && cp lib/index.js.flow lib/react-sortable-pane.js.flow && cp lib/index.js.flow lib/react-sortable-pane.es.js5.flow",
-    "prepublish": "npm run build && npm run flow-copy"
+    "prepublish": "npm run build && npm run flow-copy",
+    "storybook": "start-storybook -p 6006",
+    "build-storybook": "build-storybook"
   },
   "files": [
     "lib"
