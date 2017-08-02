@@ -24,12 +24,11 @@
   },
   "dependencies": {
     "lodash.isequal": "^4.1.1",
-    "prop-types": "^15.5.6",
     "react-motion": "^0.5.0",
     "react-resizable-box": "^2.0.6"
   },
   "devDependencies": {
-    "avaron": "^0.0.10",
+    "avaron": "^0.0.11",
     "babel-eslint": "^7.2.3",
     "babel-plugin-external-helpers": "6.22.0",
     "babel-plugin-transform-class-properties": "^6.24.1",
@@ -47,6 +46,7 @@
     "eslint-plugin-jsx-a11y": "^6.0.2",
     "eslint-plugin-react": "^7.1.0",
     "flow-bin": "^0.51.0",
+    "flow-copy-source": "^1.2.0",
     "npm-run-all": "4.0.2",
     "react": "^15.6.1",
     "react-dom": "^15.6.1",
@@ -68,7 +68,9 @@
     "dev": "rollup -c config/dev.js -w",
     "browse": "browser-sync start --s --index 'html/index.html' --files 'html/**/*.html, build/**/*.js' --no-notify",
     "start": "npm-run-all --parallel dev browse",
-    "test": "npm run flow && npm run build"
+    "test": "npm run flow && npm run build",
+    "flow-copy": "flow-copy-source -v src/components lib && cp lib/index.js.flow lib/react-sortable-pane.js.flow && cp lib/index.js.flow lib/react-sortable-pane.es.js5.flow",
+    "prepublish": "npm run build && npm run flow-copy"
   },
   "files": [
     "lib"
