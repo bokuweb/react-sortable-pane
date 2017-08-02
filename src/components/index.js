@@ -15,6 +15,12 @@ function reinsert<T>(array: Array<T>, from: number, to: number): Array<T> {
   return a;
 }
 
+const directionDict = {
+  right: 'x',
+  bottom: 'y',
+  bottomRight: 'xy',
+};
+
 const clamp = (n: number, min = n, max = n): number => Math.max(Math.min(n, max), min);
 
 type Spring = {
@@ -45,7 +51,7 @@ export type PaneMode = 'add' | 'remove';
 
 export type PaneResizeData = $Exact<{
   pane: PaneProperty;
-  direction: 'x' | 'y' | 'xy';
+  direction: $Values<typeof directionDict>;
   delta: PaneSize;
 }>
 
@@ -60,9 +66,9 @@ export type SortablePaneProps = $Exact<{
   margin?: number;
   style?: { [key: string]: string };
   children?: Pane[];
-  onResize?: (e: SyntheticEvent, data: PaneResizeData) => void;
-  onResizeStop?: (panes: IdWithPanes) => void;
-  onResizeStart?: (panes: IdWithPanes) => void;
+  onResize?: (e: MouseEvent | TouchEvent, id: PaneId, panes: PaneProperty[], data: PaneResizeData) => void;
+  onResizeStop?: (e: MouseEvent | TouchEvent, id: PaneId, panes: PaneProperty[], data: PaneResizeData) => void;
+  onResizeStart?: (e: SyntheticMouseEvent | SyntheticTouchEvent, id: PaneId, panes: PaneProperty[]) => void;
   onDragStart?: (e: SyntheticMouseEvent | SyntheticTouchEvent, id: PaneId, panes: PaneProperty[]) => void;
   onDragStop?: (e: MouseEvent | TouchEvent, id: PaneId, panes: PaneProperty[]) => void;
   onOrderChange?: (oldPanes: PaneProperty[], newPanes: PaneProperty[]) => void;
@@ -192,7 +198,7 @@ class SortablePane extends React.Component {
 
   onResize(
     i: number,
-    e: SyntheticEvent,
+    e: MouseEvent | TouchEvent,
     dir: Direction,
     refToElement: HTMLElement,
     delta: PaneSize,
@@ -212,16 +218,10 @@ class SortablePane extends React.Component {
       return pane;
     });
     this.setState({ panes });
-    // if (!this.props.onResize) return;
-    const directionDict = {
-      right: 'x',
-      bottom: 'y',
-      bottomRight: 'xy',
-    };
     const pane = panes[order.indexOf(i)];
     if (!pane) return;
     if (!this.props.onResize) return;
-    this.props.onResize(e, {
+    this.props.onResize(e, pane.id, panes, {
       pane,
       direction: directionDict[dir],
       delta,
@@ -370,25 +370,35 @@ class SortablePane extends React.Component {
     this.setState({ panes: newPanes });
   }
 
-  handleResizeStart(i: number) {
+  handleResizeStart(i: number, e: SyntheticMouseEvent | SyntheticTouchEvent) {
     const { panes } = this.state;
     const order = this.getPanePropsArrayOf('order');
     this.setState({ isResizing: true });
     const id = panes[order.indexOf(i)].id;
     if (!id) return;
     if (this.props.onResizeStart) {
-      this.props.onResizeStart({ id, panes });
+      this.props.onResizeStart(e, id, panes);
     }
   }
 
-  handleResizeStop(i: number /* , dir: Direction, size, rect */) {
+  handleResizeStop(
+    i: number,
+    e: MouseEvent | TouchEvent,
+    dir: Direction,
+    refToElement: HTMLElement,
+    delta: PaneSize, ) {
     const { panes } = this.state;
     const order = this.getPanePropsArrayOf('order');
     this.setState({ isResizing: false });
-    const id = panes[order.indexOf(i)].id;
+    const pane = panes[order.indexOf(i)];
+    const id = pane.id;
     if (!id) return;
     if (this.props.onResizeStop) {
-      this.props.onResizeStop({ id, panes });
+      this.props.onResizeStop(e, id, panes, {
+        pane,
+        direction: directionDict[dir],
+        delta,
+      });
     }
   }
 
@@ -398,14 +408,18 @@ class SortablePane extends React.Component {
     pressY: number,
     e: SyntheticMouseEvent | SyntheticTouchEvent,
   ) {
-    let event;
-    if (e instanceof SyntheticTouchEvent) {
-      event = e.touches[0];
-    } else {
-      event = e;
+    let delta;
+    if (e.nativeEvent instanceof TouchEvent) {
+      const event = e.nativeEvent.touches[0];
+      delta = this.isHorizontal() ? event.pageX - pressX : event.pageY - pressY;
+    } else if (e.nativeEvent instanceof MouseEvent) {
+      const event: MouseEvent = e.nativeEvent;
+      delta = this.isHorizontal()
+        ? event.pageX - pressX
+        : event.pageY - pressY;
     }
     this.setState({
-      delta: this.isHorizontal() ? event.pageX - pressX : event.pageY - pressY,
+      delta,
       mouse: this.isHorizontal() ? pressX : pressY,
       isPressed: true,
       lastPressed: pos,
