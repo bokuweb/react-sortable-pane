@@ -127,20 +127,17 @@ class SortablePane extends React.Component {
     this.handleTouchMove = this.handleTouchMove.bind(this);
     this.handleMouseUp = this.handleMouseUp.bind(this);
     this.handleMouseMove = this.handleMouseMove.bind(this);
-  }
 
-  bindEvents() {
-    if (typeof this.panes !== 'undefined') {
-      this.panes.addEventListener('touchmove', this.handleTouchMove);
-      this.panes.addEventListener('touchend', this.handleMouseUp);
-      this.panes.addEventListener('mousemove', this.handleMouseMove);
-      this.panes.addEventListener('mouseup', this.handleMouseUp);
+    if (typeof window !== 'undefined') {
+      window.addEventListener('touchmove', this.handleTouchMove);
+      window.addEventListener('touchend', this.handleMouseUp);
+      window.addEventListener('mousemove', this.handleMouseMove);
+      window.addEventListener('mouseup', this.handleMouseUp);
     }
   }
 
   componentDidMount() {
     this.setSize();
-    this.bindEvents();
   }
 
   componentWillReceiveProps(next: SortablePaneProps) {
@@ -185,11 +182,11 @@ class SortablePane extends React.Component {
   }
 
   componentWillUnmount() {
-    if (typeof this.panes !== 'undefined') {
-      this.panes.removeEventListener('touchmove', this.handleTouchMove);
-      this.panes.removeEventListener('touchend', this.handleMouseUp);
-      this.panes.removeEventListener('mousemove', this.handleMouseMove);
-      this.panes.removeEventListener('mouseup', this.handleMouseUp);
+    if (typeof window !== 'undefined') {
+      window.removeEventListener('touchmove', this.handleTouchMove);
+      window.removeEventListener('touchend', this.handleMouseUp);
+      window.removeEventListener('mousemove', this.handleMouseMove);
+      window.removeEventListener('mouseup', this.handleMouseUp);
     }
   }
 
