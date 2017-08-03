@@ -15,6 +15,12 @@ function reinsert<T>(array: Array<T>, from: number, to: number): Array<T> {
   return a;
 }
 
+const directionDict = {
+  right: 'x',
+  bottom: 'y',
+  bottomRight: 'xy',
+};
+
 const clamp = (n: number, min = n, max = n): number => Math.max(Math.min(n, max), min);
 
 type Spring = {
@@ -45,7 +51,7 @@ export type PaneMode = 'add' | 'remove';
 
 export type PaneResizeData = $Exact<{
   pane: PaneProperty;
-  direction: 'x' | 'y' | 'xy';
+  direction: $Values<typeof directionDict>;
   delta: PaneSize;
 }>
 
@@ -60,11 +66,33 @@ export type SortablePaneProps = $Exact<{
   margin?: number;
   style?: { [key: string]: string };
   children?: Pane[];
-  onResize?: (e: SyntheticEvent, data: PaneResizeData) => void;
-  onResizeStop?: (panes: IdWithPanes) => void;
-  onResizeStart?: (panes: IdWithPanes) => void;
-  onDragStart?: () => void;
-  onDragEnd?: (e: MouseEvent | TouchEvent, id: PaneId, panes: PaneProperty[]) => void;
+  onResize?: (
+    e: MouseEvent | TouchEvent,
+    id: PaneId,
+    panes: PaneProperty[],
+    data: PaneResizeData
+  ) => void;
+  onResizeStop?: (
+    e: MouseEvent | TouchEvent,
+    id: PaneId,
+    panes: PaneProperty[],
+    data: PaneResizeData
+  ) => void;
+  onResizeStart?: (
+    e: SyntheticMouseEvent | SyntheticTouchEvent,
+    id: PaneId,
+    panes: PaneProperty[]
+  ) => void;
+  onDragStart?: (
+    e: SyntheticMouseEvent | SyntheticTouchEvent,
+    id: PaneId,
+    panes: PaneProperty[]
+  ) => void;
+  onDragStop?: (
+    e: MouseEvent | TouchEvent,
+    id: PaneId,
+    panes: PaneProperty[]
+  ) => void;
   onOrderChange?: (oldPanes: PaneProperty[], newPanes: PaneProperty[]) => void;
   className?: string;
   disableEffect?: boolean;
@@ -100,7 +128,7 @@ class SortablePane extends React.Component {
     onResize: () => null,
     onResizeStop: () => null,
     onDragStart: () => null,
-    onDragEnd: () => null,
+    onDragStop: () => null,
     onOrderChange: () => null,
     className: '',
     disableEffect: false,
@@ -192,7 +220,7 @@ class SortablePane extends React.Component {
 
   onResize(
     i: number,
-    e: SyntheticEvent,
+    e: MouseEvent | TouchEvent,
     dir: Direction,
     refToElement: HTMLElement,
     delta: PaneSize,
@@ -212,16 +240,10 @@ class SortablePane extends React.Component {
       return pane;
     });
     this.setState({ panes });
-    // if (!this.props.onResize) return;
-    const directionDict = {
-      right: 'x',
-      bottom: 'y',
-      bottomRight: 'xy',
-    };
     const pane = panes[order.indexOf(i)];
     if (!pane) return;
     if (!this.props.onResize) return;
-    this.props.onResize(e, {
+    this.props.onResize(e, pane.id, panes, {
       pane,
       direction: directionDict[dir],
       delta,
@@ -370,25 +392,35 @@ class SortablePane extends React.Component {
     this.setState({ panes: newPanes });
   }
 
-  handleResizeStart(i: number) {
+  handleResizeStart(i: number, e: SyntheticMouseEvent | SyntheticTouchEvent) {
     const { panes } = this.state;
     const order = this.getPanePropsArrayOf('order');
     this.setState({ isResizing: true });
     const id = panes[order.indexOf(i)].id;
     if (!id) return;
     if (this.props.onResizeStart) {
-      this.props.onResizeStart({ id, panes });
+      this.props.onResizeStart(e, id, panes);
     }
   }
 
-  handleResizeStop(i: number /* , dir: Direction, size, rect */) {
+  handleResizeStop(
+    i: number,
+    e: MouseEvent | TouchEvent,
+    dir: Direction,
+    refToElement: HTMLElement,
+    delta: PaneSize) {
     const { panes } = this.state;
     const order = this.getPanePropsArrayOf('order');
     this.setState({ isResizing: false });
-    const id = panes[order.indexOf(i)].id;
+    const pane = panes[order.indexOf(i)];
+    const id = pane.id;
     if (!id) return;
     if (this.props.onResizeStop) {
-      this.props.onResizeStop({ id, panes });
+      this.props.onResizeStop(e, id, panes, {
+        pane,
+        direction: directionDict[dir],
+        delta,
+      });
     }
   }
 
@@ -396,20 +428,29 @@ class SortablePane extends React.Component {
     pos: number,
     pressX: number,
     pressY: number,
-    { pageX, pageY }: { pageX: number, pageY: number },
+    e: SyntheticMouseEvent | SyntheticTouchEvent,
   ) {
+    let delta;
+    if (e.nativeEvent instanceof TouchEvent) {
+      const event = e.nativeEvent.touches[0];
+      delta = this.isHorizontal() ? event.pageX - pressX : event.pageY - pressY;
+    } else if (e.nativeEvent instanceof MouseEvent) {
+      const event: MouseEvent = e.nativeEvent;
+      delta = this.isHorizontal()
+        ? event.pageX - pressX
+        : event.pageY - pressY;
+    }
     this.setState({
-      delta: this.isHorizontal() ? pageX - pressX : pageY - pressY,
+      delta,
       mouse: this.isHorizontal() ? pressX : pressY,
       isPressed: true,
       lastPressed: pos,
     });
     if (!this.props.children) return;
-    if (this.props.children[pos].props.onDragStart) {
-      this.props.children[pos].props.onDragStart();
-    }
+    const child = this.props.children[pos];
+    if (!child) return;
     if (this.props.onDragStart) {
-      this.props.onDragStart();
+      this.props.onDragStart(e, child.props.id, this.state.panes);
     }
   }
 
@@ -433,7 +474,7 @@ class SortablePane extends React.Component {
   }
 
   handleTouchStart(key: number, x: number, y: number, e: SyntheticTouchEvent) {
-    this.handleMouseDown(key, x, y, e.touches[0]);
+    this.handleMouseDown(key, x, y, e);
   }
 
   handleTouchMove(e: TouchEvent) {
@@ -447,14 +488,10 @@ class SortablePane extends React.Component {
     this.setState({ isPressed: false, delta: 0 });
     const child = children[this.state.lastPressed];
     const lastPressedId = child.props.id;
-    const pane = this.state.panes.find(p => p.id === lastPressedId);
+    // const pane = this.state.panes.find(p => p.id === lastPressedId);
     if (!this.props.isSortable) return;
-    if (pane && child.props.onDragEnd) {
-      // TODO:
-      child.props.onDragEnd(e);
-    }
-    if (this.props.onDragEnd) {
-      this.props.onDragEnd(e, lastPressedId, this.state.panes);
+    if (this.props.onDragStop) {
+      this.props.onDragStop(e, lastPressedId, this.state.panes);
     }
   }
 
