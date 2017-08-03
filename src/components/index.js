@@ -66,11 +66,33 @@ export type SortablePaneProps = $Exact<{
   margin?: number;
   style?: { [key: string]: string };
   children?: Pane[];
-  onResize?: (e: MouseEvent | TouchEvent, id: PaneId, panes: PaneProperty[], data: PaneResizeData) => void;
-  onResizeStop?: (e: MouseEvent | TouchEvent, id: PaneId, panes: PaneProperty[], data: PaneResizeData) => void;
-  onResizeStart?: (e: SyntheticMouseEvent | SyntheticTouchEvent, id: PaneId, panes: PaneProperty[]) => void;
-  onDragStart?: (e: SyntheticMouseEvent | SyntheticTouchEvent, id: PaneId, panes: PaneProperty[]) => void;
-  onDragStop?: (e: MouseEvent | TouchEvent, id: PaneId, panes: PaneProperty[]) => void;
+  onResize?: (
+    e: MouseEvent | TouchEvent,
+    id: PaneId,
+    panes: PaneProperty[],
+    data: PaneResizeData
+  ) => void;
+  onResizeStop?: (
+    e: MouseEvent | TouchEvent,
+    id: PaneId,
+    panes: PaneProperty[],
+    data: PaneResizeData
+  ) => void;
+  onResizeStart?: (
+    e: SyntheticMouseEvent | SyntheticTouchEvent,
+    id: PaneId,
+    panes: PaneProperty[]
+  ) => void;
+  onDragStart?: (
+    e: SyntheticMouseEvent | SyntheticTouchEvent,
+    id: PaneId,
+    panes: PaneProperty[]
+  ) => void;
+  onDragStop?: (
+    e: MouseEvent | TouchEvent,
+    id: PaneId,
+    panes: PaneProperty[]
+  ) => void;
   onOrderChange?: (oldPanes: PaneProperty[], newPanes: PaneProperty[]) => void;
   className?: string;
   disableEffect?: boolean;
@@ -386,7 +408,7 @@ class SortablePane extends React.Component {
     e: MouseEvent | TouchEvent,
     dir: Direction,
     refToElement: HTMLElement,
-    delta: PaneSize, ) {
+    delta: PaneSize) {
     const { panes } = this.state;
     const order = this.getPanePropsArrayOf('order');
     this.setState({ isResizing: false });
@@ -466,7 +488,7 @@ class SortablePane extends React.Component {
     this.setState({ isPressed: false, delta: 0 });
     const child = children[this.state.lastPressed];
     const lastPressedId = child.props.id;
-    const pane = this.state.panes.find(p => p.id === lastPressedId);
+    // const pane = this.state.panes.find(p => p.id === lastPressedId);
     if (!this.props.isSortable) return;
     if (this.props.onDragStop) {
       this.props.onDragStop(e, lastPressedId, this.state.panes);
