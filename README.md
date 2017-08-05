@@ -1,6 +1,15 @@
-# react-sortable-pane
+<p align="center"><img src ="https://github.com/bokuweb/react-rnd/blob/master/logo.png?raw=true" /></p>
 
-Sortable and resizable pane component for react.
+<p align="center">Sortable and resizable pane component for react.</p>
+
+<!-- <p align="center"><a href="https://travis-ci.org/bokuweb/react-rnd">
+<img src="https://img.shields.io/travis/bokuweb/react-rnd.svg" alt="Build Status" /></a> -->
+<a href="https://www.npmjs.com/package/react-sortable-pane">
+<img src="https://img.shields.io/npm/v/react-sortable-pane.svg" alt="Build Status" /></a> 
+<a href="https://www.npmjs.com/package/react-sortable-pane">
+<img src="https://img.shields.io/npm/dm/react-sortable-pane.svg" /></a> 
+
+
 
 ## Demo
 
