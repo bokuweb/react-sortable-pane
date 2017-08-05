@@ -22,15 +22,27 @@ export default () => {
               justifyContent: 'center',
               border: 'solid 1px #ddd',
               background: '#f0f0f0',
+              position: 'relative',
             }}
           >
+            <div
+              className="handle"
+              style={{
+                width: '10px',
+                height: '10px',
+                border: 'solid 1px #ccc',
+                position: 'absolute',
+                top: '10px',
+                left: '10px',
+                cursor: 'move',
+              }}
+            />
             <p
               style={{
                 fontSize: '32px',
                 fontWeight: 'bold',
                 color: '#aaa',
               }}
-              className="handle"
             >
               00{id}
             </p>
