@@ -14,6 +14,8 @@
 
 ## Demo
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/bokuweb/react-sortable-pane.svg)](https://greenkeeper.io/)
+
 ![screenshot](https://raw.githubusercontent.com/bokuweb/react-sortable-pane/master/screenshot/screenshot.gif)
 
 
