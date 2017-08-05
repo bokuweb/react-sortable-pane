@@ -13,72 +13,59 @@
 <img src="https://badges.greenkeeper.io/bokuweb/react-sortable-pane.svg" /></a>
 </p>
 
+## Table of Contents
 
+- [Demo](#demo)
+- [Install](#install)
+- [Usage](#usage)
+- [Props](#props)
+- [Callback](#callback)
+- [Method](#method)
+- [Test](#test)
+- [Changelog](#changelog)
+- [License](#license)
 
 ## Demo
 
 ![screenshot](https://raw.githubusercontent.com/bokuweb/react-sortable-pane/master/screenshot/screenshot.gif)
 
-
 See demo: [http://bokuweb.github.io/react-sortable-pane](http://bokuweb.github.io/react-sortable-pane)
 
-## Important Note
-
-This is an alpha release. Use with caution and hope.
-
-## Installation
+## Install
 
 ```sh
 npm i react-sortable-pane
 ```
 
-## Overview
+or 
 
-### Example
+```sh
+yarn add react-sortable-pane
+```
+
+## Usage
 
 ``` javascript
-import React, { Component } from 'react';
+import React from 'react';
 import { SortablePane, Pane } from 'react-sortable-pane';
 
-const style = {
-  fontSize: "40px",
-  textAlign:"center",
-  paddingTop:"60px",
-  height:"400px",
-  border: "solid 1px #ccc",
-  borderRadius: "5px",
-  backgroundColor: "#fff"
-};
-
-export default class Example extends Component{
-  render() {
-    return (
+export default () => {
+  return (
+    <div>
       <SortablePane
-          direction="vertical"
-          margin={10}
-          onResize={(id, dir, size, rect) => null}
-          onOrderChange={(panes) => null}
+        direction="horizontal"
+        margin={20}    
       >
-        <Pane
-           id="0"
-           width={200}
-           height={500}
-           style={style}
-        >
-          A
+        <Pane id={0} key={0} width={120} height="100%">
+          <p>0</p>
         </Pane>
-        <Pane
-           id="1"
-           width={300}
-           height={400}
-           style={style}
-         >
-          B
-        </Pane>
+        <Pane id={1} key={1} width={120} height="100%">
+          <p>1</p>
+        </Pane>          
       </SortablePane>
-    );
-  }
-}
+    </div>
+  );
+};
 ```
 
 ## Props
