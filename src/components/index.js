@@ -595,7 +595,7 @@ class SortablePane extends React.Component {
       <div
         ref={(c: HTMLDivElement) => { this.panes = c; }}
         className={className}
-        style={{ position: 'relative', ...style }}
+        style={{ position: 'relative', height: '100%', ...style }}
       >
         {this.renderPanes()}
       </div>
