@@ -26,8 +26,6 @@ export default class Pane extends React.Component {
   props: PaneProps;
 
   static defaultProps = {
-    onDragStart: () => null,
-    onDragEnd: () => null,
     minWidth: 0,
     minHeight: 0,
     maxWidth: undefined,

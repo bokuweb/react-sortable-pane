@@ -7,8 +7,10 @@ import './styles.css';
 // import { Button, Welcome } from '@storybook/react/demo';
 import VerticalPane from './vertical-pane-basic';
 import HorizontalPane from './horizontal-pane-basic';
+import VerticalPaneWithHandle from './vertical-pane-with-handle';
 
 storiesOf('SortablePane', module)
   .add('vertical pane basic', () => <VerticalPane />)
-  .add('horizontal basic pane basic', () => <HorizontalPane />);
+  .add('horizontal basic pane basic', () => <HorizontalPane />)
+  .add('vertical pane with drag handle', () => <VerticalPaneWithHandle />);
 
