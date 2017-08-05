@@ -98,6 +98,7 @@ export type SortablePaneProps = $Exact<{
   disableEffect?: boolean;
   isSortable?: boolean;
   zIndex?: number;
+  dragHandleClassName?: string;
 }>
 
 class SortablePane extends React.Component {
@@ -430,6 +431,13 @@ class SortablePane extends React.Component {
     pressY: number,
     e: SyntheticMouseEvent | SyntheticTouchEvent,
   ) {
+    if (this.props.dragHandleClassName) {
+      if (e.target instanceof HTMLElement) {
+        if (!e.target.classList.contains(this.props.dragHandleClassName)) {
+          return;
+        }
+      }
+    }
     let delta;
     if (e.nativeEvent instanceof TouchEvent) {
       const event = e.nativeEvent.touches[0];
