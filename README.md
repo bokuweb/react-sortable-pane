@@ -1,4 +1,4 @@
-<p align="center"><img src ="https://github.com/bokuweb/react-rnd/blob/master/logo.png?raw=true" /></p>
+<p align="center"><img src ="https://github.com/bokuweb/react-sortable-pane/blob/master/logo.png?raw=true" /></p>
 
 <p align="center">Sortable and resizable pane component for react.</p>
 
