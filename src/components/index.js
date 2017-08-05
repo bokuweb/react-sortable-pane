@@ -398,7 +398,7 @@ class SortablePane extends React.Component {
     const order = this.getPanePropsArrayOf('order');
     this.setState({ isResizing: true });
     const id = panes[order.indexOf(i)].id;
-    if (!id) return;
+    if (typeof id === 'undefined') return;
     if (this.props.onResizeStart) {
       this.props.onResizeStart(e, id, panes);
     }
@@ -415,7 +415,7 @@ class SortablePane extends React.Component {
     this.setState({ isResizing: false });
     const pane = panes[order.indexOf(i)];
     const id = pane.id;
-    if (!id) return;
+    if (typeof id === 'undefined') return;
     if (this.props.onResizeStop) {
       this.props.onResizeStop(e, id, panes, {
         pane,

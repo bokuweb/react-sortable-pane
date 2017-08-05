@@ -9,6 +9,20 @@ export default () => {
         direction="vertical"
         margin={20}
         dragHandleClassName="handle"
+        onResize={(e, id, panes, data) => {
+          console.log('onResize', e, id, panes, data);
+        }}
+        onResizeStart={(e, id, panes) => {
+          console.log('onResizeStart', e, id, panes);
+        }}
+        onResizeStop={(e, id, panes, data) => {
+          console.log('onResizeStop', e, id, panes, data);
+        }}
+        onOrderChange={(panes, next) => {
+          console.log('onOrderChange', panes, next);
+        }}
+        onDragStart={(e, id, panes) => console.log('onDragStart', e, id, panes)}
+        onDragStop={(e, id, panes) => console.log('onDragStop', e, id, panes)}        
       >
         {[0, 1, 2].map(id => (
           <Pane
