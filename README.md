@@ -87,10 +87,15 @@ Sorry, under construction...
 
 ## Changelog
 
+### V0.6.4
+
+- Fix Bug, `onResizeStart` and `onResizeStop` not fired.
+
 ### V0.6.2
 
 - Use flowtype
 - Use rollup
+- Change callback I/F
 
 ### V0.5.5
 
