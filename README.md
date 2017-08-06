@@ -72,40 +72,40 @@ export default () => {
 
 ### `SortablePane` Component
 
-#### `className`?: string
+#### `className?: string`
 
 The `className` property is used to set the css `classname` of a component.
 
-#### `style`?: {[key: string]: string }
+#### `style?: {[key: string]: string }`
 
 The `style` property is used to set the style of a component.
 
-#### `direction`?: 'horizontal' | 'vertical'
+#### `direction?: 'horizontal' | 'vertical'`
 
 The `direction` property is used to set the direction of a component.
 If omitted the default direction is `'horizontal'`.
 
-#### `margin`?: number
+#### `margin?: number`
 
 The `margin` property is used to set the margin between `Pane` component.
 If omitted the default margin is `0`.
 
-#### `zIndex`?: number
+#### `zIndex?: number`
 
 The `zIndex` property is used to set the zIndex of a component.
 If omitted the default margin is `100`.
 
-#### `isSortable`?: boolean
+#### `isSortable?: boolean`
 
 The `isSortable` property is used to control whether panes can be dragged or not.
 If omitted, the default value is `true`.
 
-#### `disableEffect`?: boolean
+#### `disableEffect?: boolean`
 
 The `disableEffect` property is used to disable floating effect.
 If omitted the default margin is `false`.
 
-#### `onOrderChange`?: (oldPanes: PaneProperty[], newPanes: PaneProperty[]) => void
+#### `onOrderChange?: (oldPanes: PaneProperty[], newPanes: PaneProperty[]) => void`
 
 It is called when `Pane` component order changed.
 
@@ -120,11 +120,11 @@ type PaneProperty = $Exact<{
 }>
 ```
 
-#### `onResizeStart`?: (e: SyntheticMouseEvent | SyntheticTouchEvent, id: PaneId, panes: PaneProperty[]) => void
+#### `onResizeStart?: (e: SyntheticMouseEvent | SyntheticTouchEvent, id: PaneId, panes: PaneProperty[]) => void`
 
 It is called when `Pane` component resize start.
 
-#### `onResize`?: (e: SyntheticMouseEvent | SyntheticTouchEvent, id: PaneId, panes: PaneProperty[], data: PaneResizeData) => void
+#### `onResize?: (e: SyntheticMouseEvent | SyntheticTouchEvent, id: PaneId, panes: PaneProperty[], data: PaneResizeData) => void`
 
 It is called when `Pane` component resize.
 
@@ -138,7 +138,7 @@ type PaneResizeData = $Exact<{
 }>
 ```
 
-#### `onResizeStop`?: (e: SyntheticMouseEvent | SyntheticTouchEvent, id: PaneId, panes: PaneProperty[], data: PaneResizeData) => void
+#### `onResizeStop?: (e: SyntheticMouseEvent | SyntheticTouchEvent, id: PaneId, panes: PaneProperty[], data: PaneResizeData) => void`
 
 It is called when `Pane` component resize stop.
 
@@ -152,57 +152,55 @@ type PaneResizeData = $Exact<{
 }>
 ```
 
-#### `onDragStart`?: (e: SyntheticMouseEvent | SyntheticTouchEvent, id: PaneId, panes: PaneProperty[]) => void;
+#### `onDragStart?: (e: SyntheticMouseEvent | SyntheticTouchEvent, id: PaneId, panes: PaneProperty[]) => void`
 
 It is called when `Pane` component dragging starts.
 
-#### `onDragStartStop`?: (e: SyntheticMouseEvent | SyntheticTouchEvent, id: PaneId, panes: PaneProperty[]) => void;
+#### `onDragStartStop?: (e: SyntheticMouseEvent | SyntheticTouchEvent, id: PaneId, panes: PaneProperty[]) => void`
 
 It is called when `Pane` component dragging stop.
 
-# 
-
 ## Pane Component
 
-#### `id`: string | number
+#### `id: string | number`
 
 The `id` property is used to `Pane` component id.
 
-#### `width`: number | string
+#### `width: number | string`
 
 The `width` property is used to set the width of a Pane component.
 For example, it can be 300, '300px', or 50%.
 
-#### `height`: number | string
+#### `height: number | string`
 
 The `height` property is used to set the width of a Pane component.
 For example, it can be 300, '300px', or 50%.
 
-#### `minWidth`?: number
+#### `minWidth?: number`
 
 The `minWidth` property is used to set the minimum width of a Pane component.
 
-#### `minHeight`?: number
+#### `minHeight?: number`
 
 The `minHeight` property is used to set the minimum height of a Pane component.
 
-#### `maxWidth`?: number
+#### `maxWidth?: number`
 
 The `maxWidth` property is used to set the maximum width of a Pane component.
 
-#### `maxHeight`?: number
+#### `maxHeight?: number`
 
 The `maxHeight` property is used to set the maximum height of a Pane component.
 
-#### `className`?: string
+#### `className?: string`
 
-The `className` property is used to set the css class name of a Pane component.
+The `className` property is used to set the css classname of a Pane component.
 
-#### `style`?: {[key: string]: string }
+#### `style?: {[key: string]: string }`
 
 The `style` property is used to set the style of a Pane component.
 
-#### `isResizable`?: { x: boolean, y: boolean, xy: boolean }
+#### `isResizable?: { x: boolean, y: boolean, xy: boolean }`
 
 The `isResizable` property is used to set the resizable permission of a component.
 
