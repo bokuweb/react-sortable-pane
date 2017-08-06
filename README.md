@@ -70,9 +70,151 @@ export default () => {
 
 ## Props
 
-Sorry, under construction...
+### `SortablePane` Component
+
+#### `className`?: string
+
+The `className` property is used to set the css `classname` of a component.
+
+#### `style`?: {[key: string]: string }
+
+The `style` property is used to set the style of a component.
+
+#### `direction`?: 'horizontal' | 'vertical'
+
+The `direction` property is used to set the direction of a component.
+If omitted the default direction is `'horizontal'`.
+
+#### `margin`?: number
+
+The `margin` property is used to set the margin between `Pane` component.
+If omitted the default margin is `0`.
+
+#### `zIndex`?: number
+
+The `zIndex` property is used to set the zIndex of a component.
+If omitted the default margin is `100`.
+
+#### `isSortable`?: boolean
+
+The `isSortable` property is used to control whether panes can be dragged or not.
+If omitted, the default value is `true`.
+
+#### `disableEffect`?: boolean
+
+The `disableEffect` property is used to disable floating effect.
+If omitted the default margin is `false`.
+
+#### `onOrderChange`?: (oldPanes: PaneProperty[], newPanes: PaneProperty[]) => void
+
+It is called when `Pane` component order changed.
+
+`PaneProperty` definition is below.
+
+``` js
+type PaneProperty = $Exact<{
+  id: PaneId;
+  width: number | string;
+  height: number | string;
+  order: number;
+}>
+```
+
+#### `onResizeStart`?: (e: SyntheticMouseEvent | SyntheticTouchEvent, id: PaneId, panes: PaneProperty[]) => void
+
+It is called when `Pane` component resize start.
+
+#### `onResize`?: (e: SyntheticMouseEvent | SyntheticTouchEvent, id: PaneId, panes: PaneProperty[], data: PaneResizeData) => void
+
+It is called when `Pane` component resize.
+
+`PaneResizeData` definition is below.
+
+``` js
+type PaneResizeData = $Exact<{
+  pane: PaneProperty;
+  direction: $Values<typeof directionDict>; // 'x' | 'y' | 'xy'
+  delta: PaneSize;                          // { width: number; height: number }
+}>
+```
+
+#### `onResizeStop`?: (e: SyntheticMouseEvent | SyntheticTouchEvent, id: PaneId, panes: PaneProperty[], data: PaneResizeData) => void
+
+It is called when `Pane` component resize stop.
+
+`PaneResizeData` definition is below.
+
+``` js
+type PaneResizeData = $Exact<{
+  pane: PaneProperty;
+  direction: $Values<typeof directionDict>; // 'x' | 'y' | 'xy'
+  delta: PaneSize;                          // { width: number; height: number }
+}>
+```
+
+#### `onDragStart`?: (e: SyntheticMouseEvent | SyntheticTouchEvent, id: PaneId, panes: PaneProperty[]) => void;
+
+It is called when `Pane` component dragging starts.
+
+#### `onDragStartStop`?: (e: SyntheticMouseEvent | SyntheticTouchEvent, id: PaneId, panes: PaneProperty[]) => void;
+
+It is called when `Pane` component dragging stop.
+
+# 
+
+## Pane Component
+
+#### `id`: string | number
+
+The `id` property is used to `Pane` component id.
+
+#### `width`: number | string
+
+The `width` property is used to set the width of a Pane component.
+For example, it can be 300, '300px', or 50%.
+
+#### `height`: number | string
+
+The `height` property is used to set the width of a Pane component.
+For example, it can be 300, '300px', or 50%.
+
+#### `minWidth`?: number
+
+The `minWidth` property is used to set the minimum width of a Pane component.
+
+#### `minHeight`?: number
+
+The `minHeight` property is used to set the minimum height of a Pane component.
+
+#### `maxWidth`?: number
+
+The `maxWidth` property is used to set the maximum width of a Pane component.
+
+#### `maxHeight`?: number
+
+The `maxHeight` property is used to set the maximum height of a Pane component.
+
+#### `className`?: string
+
+The `className` property is used to set the css class name of a Pane component.
+
+#### `style`?: {[key: string]: string }
+
+The `style` property is used to set the style of a Pane component.
+
+#### `isResizable`?: { x: boolean, y: boolean, xy: boolean }
+
+The `isResizable` property is used to set the resizable permission of a component.
+
+The permission of `x`, `y`, `xy` direction resizing.
+If omitted the default value is `{ x: true, y: true, xy: true }`.
+If you want to permit only x direction resizing, please set `{ x: true, y: false, xy: false }`.
 
 ## Changelog
+
+### V0.6.5
+
+- Update README.
 
 ### V0.6.4
 
