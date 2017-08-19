@@ -21,6 +21,9 @@ jobs:
       - run:
           name: Test
           command: yarn run test
+      - run:
+          name: Deploy
+          command: yarn run deploy          
   patch_release:
     <<: *defaults
     steps:

@@ -28,6 +28,7 @@
     "react-resizable-box": "^2.0.6"
   },
   "devDependencies": {
+    "@storybook/react": "^3.2.3",
     "avaron": "^0.0.12",
     "babel-eslint": "^7.2.3",
     "babel-plugin-external-helpers": "6.22.0",
@@ -47,6 +48,7 @@
     "eslint-plugin-react": "^7.1.0",
     "flow-bin": "^0.52.0",
     "flow-copy-source": "^1.2.0",
+    "gh-pages": "^1.0.0",
     "npm-run-all": "4.0.2",
     "react": "^15.6.1",
     "react-dom": "^15.6.1",
@@ -56,8 +58,7 @@
     "rollup-plugin-node-globals": "1.1.0",
     "rollup-plugin-node-resolve": "3.0.0",
     "rollup-plugin-replace": "^1.1.1",
-    "rollup-watch": "4.3.1",
-    "@storybook/react": "^3.2.3"
+    "rollup-watch": "4.3.1"
   },
   "scripts": {
     "lint": "eslint src",
@@ -73,7 +74,8 @@
     "flow-copy": "flow-copy-source -v src/components lib && cp lib/index.js.flow lib/react-sortable-pane.js.flow && cp lib/index.js.flow lib/react-sortable-pane.es.js5.flow",
     "prepublish": "npm run build && npm run flow-copy",
     "storybook": "start-storybook -p 6006",
-    "build-storybook": "build-storybook"
+    "build-storybook": "build-storybook",
+    "deploy": "npm run build-storybook && gh-pages -d storybook-static"
   },
   "files": [
     "lib"
