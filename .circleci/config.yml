@@ -101,12 +101,10 @@ workflows:
   build_pipeline:
     jobs:
       - build
-      - deploy
+      - deploy:
           filters:
             branches:
-              only: master    
-          requires:
-            - build              
+              only: master
       - confirm_patch:
           type: approval
           filters:
