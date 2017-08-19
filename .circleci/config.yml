@@ -21,6 +21,9 @@ jobs:
       - run:
           name: Test
           command: yarn run test
+      - add-ssh-keys:
+          fingerprints:
+            - "7c:17:bc:7b:8a:a2:ef:6b:11:f3:56:a0:ac:15:4c:9a"          
       - run:
           name: Setup git
           command: |
