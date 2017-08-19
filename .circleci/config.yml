@@ -21,6 +21,13 @@ jobs:
       - run:
           name: Test
           command: yarn run test
+  deploy:
+    <<: *defaults
+    steps:
+      - checkout
+      - run:
+          name: Install dependencies
+          command: yarn
       - add-ssh-keys:
           fingerprints:
             - "7c:17:bc:7b:8a:a2:ef:6b:11:f3:56:a0:ac:15:4c:9a"          
@@ -31,7 +38,10 @@ jobs:
             git config --global user.name "bokuweb"          
       - run:
           name: Deploy
-          command: yarn run deploy          
+          filters:
+            branches:
+              only: master
+          command: yarn run deploy                   
   patch_release:
     <<: *defaults
     steps:
@@ -91,6 +101,10 @@ workflows:
   build_pipeline:
     jobs:
       - build
+      - deploy:
+          filters:
+            branches:
+              only: master
       - confirm_patch:
           type: approval
           filters:
