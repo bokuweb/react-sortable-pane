@@ -23,9 +23,6 @@ jobs:
           command: yarn run test
   deploy:
     <<: *defaults
-    filters:
-      branches:
-        only: master    
     steps:
       - checkout
       - run:
@@ -105,6 +102,11 @@ workflows:
     jobs:
       - build
       - deploy
+          filters:
+            branches:
+              only: master    
+          requires:
+            - build              
       - confirm_patch:
           type: approval
           filters:
