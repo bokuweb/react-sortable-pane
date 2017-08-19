@@ -31,6 +31,9 @@ jobs:
             git config --global user.name "bokuweb"          
       - run:
           name: Deploy
+          filters:
+            branches:
+              only: master
           command: yarn run deploy          
   patch_release:
     <<: *defaults
