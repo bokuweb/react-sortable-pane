@@ -21,6 +21,9 @@ jobs:
       - run:
           name: Test
           command: yarn run test
+      - run:
+          name: Screener test
+          command: yarn run test-storybook
   deploy:
     <<: *defaults
     steps:
