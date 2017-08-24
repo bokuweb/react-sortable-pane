@@ -44,7 +44,7 @@ export default () => {
                 color: '#aaa',
               }}
             >
-              00{id}
+              0000{id}
             </p>
           </Pane>
         ))}
