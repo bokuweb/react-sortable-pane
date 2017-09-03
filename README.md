@@ -95,6 +95,10 @@ If omitted the default margin is `0`.
 The `zIndex` property is used to set the zIndex of a component.
 If omitted the default margin is `100`.
 
+#### `grid?: Array<number>;`
+
+The `grid` property is used to specify the increments that resizing should snap to. Defaults to `[1, 1]`.
+
 #### `isSortable?: boolean`
 
 The `isSortable` property is used to control whether panes can be dragged or not.
