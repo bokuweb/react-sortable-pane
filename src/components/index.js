@@ -1,8 +1,10 @@
 /* @flow */
 
-import React from 'react';
+import * as React from 'react';
+// $FlowIgnore
 import { Motion, spring } from 'react-motion';
 import Resizable from 'react-resizable-box';
+// $FlowIgnore
 import type { Direction } from 'react-resizable-box';
 import isEqual from 'lodash.isequal';
 import Pane from './pane';
@@ -79,12 +81,12 @@ export type SortablePaneProps = $Exact<{
     data: PaneResizeData
   ) => void;
   onResizeStart?: (
-    e: SyntheticMouseEvent | SyntheticTouchEvent,
+    e: SyntheticMouseEvent<HTMLElement> | SyntheticTouchEvent<HTMLElement>,
     id: PaneId,
     panes: PaneProperty[]
   ) => void;
   onDragStart?: (
-    e: SyntheticMouseEvent | SyntheticTouchEvent,
+    e: SyntheticMouseEvent<HTMLElement> | SyntheticTouchEvent<HTMLElement>,
     id: PaneId,
     panes: PaneProperty[]
   ) => void;
@@ -102,17 +104,15 @@ export type SortablePaneProps = $Exact<{
   grid?: [number, number];
 }>
 
-class SortablePane extends React.Component {
-  props: SortablePaneProps;
-  state: {
-    delta: number;
-    mouse: number;
-    isPressed: boolean;
-    lastPressed: number;
-    isResizing: boolean;
-    panes: Array<PaneProperty>;
-  };
-  panes: HTMLDivElement;
+class SortablePane extends React.Component<SortablePaneProps, {
+  delta: number;
+  mouse: number;
+  isPressed: boolean;
+  lastPressed: number;
+  isResizing: boolean;
+  panes: Array<PaneProperty>;
+}> {
+  panes: (React$ElementRef<'div'> | null);
   sizePropsUpdated: boolean;
   handleTouchMove: () => void;
   handleMouseUp: () => void;
@@ -230,7 +230,7 @@ class SortablePane extends React.Component {
     let { panes } = this.state;
     const order = this.getPanePropsArrayOf('order');
     panes = panes.map((pane: PaneProperty, index: number) => {
-      if (order.indexOf(i) === index) {
+      if (order.indexOf(i) === index && this.panes) {
         const { offsetWidth, offsetHeight } = this.panes.children[i];
         return {
           width: offsetWidth,
@@ -329,9 +329,11 @@ class SortablePane extends React.Component {
   }
 
   setSize() {
+    if (!this.panes || !this.panes.children) return;
+    const panes = this.panes;
     const children = this.props.children || [];
-    const panes = children.map((child, i) => {
-      const { offsetWidth, offsetHeight } = this.panes.children[i];
+    const newPanes = children.map((child, i) => {
+      const { offsetWidth, offsetHeight } = panes.children[i];
       return {
         id: child.props.id,
         width: offsetWidth,
@@ -339,7 +341,7 @@ class SortablePane extends React.Component {
         order: i,
       };
     });
-    if (!isEqual(panes, this.state.panes)) this.setState({ panes });
+    if (!isEqual(newPanes, this.state.panes)) this.setState({ panes: newPanes });
   }
 
   getItemPositionByIndex(index: number) {
@@ -366,6 +368,8 @@ class SortablePane extends React.Component {
   }
 
   addPane() {
+    if (!this.panes || !this.panes.children) return;
+    const panes = this.panes;
     let newPanes = this.state.panes;
     const children = this.props.children || [];
     children.forEach((child, i) => {
@@ -373,7 +377,7 @@ class SortablePane extends React.Component {
       if (ids.indexOf(child.props.id) === -1) {
         newPanes = this.updateOrder(newPanes, i, 'add');
         const { id } = child.props;
-        const { width, height } = this.panes.children[i].getBoundingClientRect();
+        const { width, height } = panes.children[i].getBoundingClientRect();
         const pane = { id, width, height, order: i };
         newPanes.splice(i, 0, pane);
       }
@@ -394,7 +398,10 @@ class SortablePane extends React.Component {
     this.setState({ panes: newPanes });
   }
 
-  handleResizeStart(i: number, e: SyntheticMouseEvent | SyntheticTouchEvent) {
+  handleResizeStart(
+    i: number,
+    e: SyntheticMouseEvent<HTMLElement> | SyntheticTouchEvent<HTMLElement>,
+  ) {
     const { panes } = this.state;
     const order = this.getPanePropsArrayOf('order');
     this.setState({ isResizing: true });
@@ -430,7 +437,7 @@ class SortablePane extends React.Component {
     pos: number,
     pressX: number,
     pressY: number,
-    e: SyntheticMouseEvent | SyntheticTouchEvent,
+    e: SyntheticMouseEvent<HTMLElement> | SyntheticTouchEvent<HTMLElement>,
   ) {
     if (this.props.dragHandleClassName) {
       if (e.target instanceof HTMLElement) {
@@ -482,7 +489,7 @@ class SortablePane extends React.Component {
     }
   }
 
-  handleTouchStart(key: number, x: number, y: number, e: SyntheticTouchEvent) {
+  handleTouchStart(key: number, x: number, y: number, e: SyntheticTouchEvent<HTMLElement>) {
     this.handleMouseDown(key, x, y, e);
   }
 
@@ -603,7 +610,7 @@ class SortablePane extends React.Component {
     const { style, className } = this.props;
     return (
       <div
-        ref={(c: HTMLDivElement) => { this.panes = c; }}
+        ref={(c: (React$ElementRef<'div'> | null)) => { this.panes = c; }}
         className={className}
         style={{ position: 'relative', height: '100%', ...style }}
       >
