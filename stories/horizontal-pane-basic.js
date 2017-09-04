@@ -27,7 +27,7 @@ export default () => {
           <Pane
             id={id}
             key={id}
-            width={120}
+            width={id === 0 ? 200 : 120}
             height="100%"
             style={{
               display: 'flex',
