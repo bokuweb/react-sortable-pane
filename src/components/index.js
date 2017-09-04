@@ -112,7 +112,7 @@ class SortablePane extends React.Component<SortablePaneProps, {
   isResizing: boolean;
   panes: Array<PaneProperty>;
 }> {
-  panes: (React$ElementRef<*> | null);
+  panes: (React$ElementRef<'div'> | null);
   sizePropsUpdated: boolean;
   handleTouchMove: () => void;
   handleMouseUp: () => void;
@@ -610,7 +610,7 @@ class SortablePane extends React.Component<SortablePaneProps, {
     const { style, className } = this.props;
     return (
       <div
-        ref={(c: (React$ElementRef<*> | null)) => { this.panes = c; }}
+        ref={(c: (React$ElementRef<'div'> | null)) => { this.panes = c; }}
         className={className}
         style={{ position: 'relative', height: '100%', ...style }}
       >
