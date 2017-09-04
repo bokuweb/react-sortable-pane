@@ -99,6 +99,7 @@ export type SortablePaneProps = $Exact<{
   isSortable?: boolean;
   zIndex?: number;
   dragHandleClassName?: string;
+  grid?: [number, number];
 }>
 
 class SortablePane extends React.Component {
@@ -587,6 +588,7 @@ class SortablePane extends React.Component {
                 onResizeStart={onResizeStart}
                 onResizeStop={onResizeStop}
                 extendsProps={extendsProps}
+                grid={this.props.grid}
               >
                 {child.props.children}
               </Resizable>
