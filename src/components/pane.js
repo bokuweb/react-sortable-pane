@@ -1,6 +1,6 @@
 /* @flow */
 
-import React from 'react';
+import * as React from 'react';
 
 export type IsPaneResizable = {
   x?: boolean;
@@ -18,13 +18,11 @@ export type PaneProps = {
   maxHeight?: number;
   style?: { [key: string]: string };
   className?: string;
-  children?: string | React$Element<any>;
+  children?: string | React.Element<any>;
   isResizable: IsPaneResizable;
 }
 
-export default class Pane extends React.Component {
-  props: PaneProps;
-
+export default class Pane extends React.Component<PaneProps> {
   static defaultProps = {
     minWidth: 0,
     minHeight: 0,
