@@ -214,6 +214,10 @@ If you want to permit only x direction resizing, please set `{ x: true, y: false
 
 ## Changelog
 
+### V0.6.6
+
+- Add `grid` props. (#93)
+
 ### V0.6.5
 
 - Update README.
