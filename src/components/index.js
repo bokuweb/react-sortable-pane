@@ -81,12 +81,12 @@ export type SortablePaneProps = $Exact<{
     data: PaneResizeData
   ) => void;
   onResizeStart?: (
-    e: SyntheticMouseEvent<> | SyntheticTouchEvent<>,
+    e: SyntheticMouseEvent<HTMLElement> | SyntheticTouchEvent<HTMLElement>,
     id: PaneId,
     panes: PaneProperty[]
   ) => void;
   onDragStart?: (
-    e: SyntheticMouseEvent<> | SyntheticTouchEvent<>,
+    e: SyntheticMouseEvent<HTMLElement> | SyntheticTouchEvent<HTMLElement>,
     id: PaneId,
     panes: PaneProperty[]
   ) => void;
@@ -398,7 +398,10 @@ class SortablePane extends React.Component<SortablePaneProps, {
     this.setState({ panes: newPanes });
   }
 
-  handleResizeStart(i: number, e: SyntheticMouseEvent<> | SyntheticTouchEvent<>) {
+  handleResizeStart(
+    i: number,
+    e: SyntheticMouseEvent<HTMLElement> | SyntheticTouchEvent<HTMLElement>,
+  ) {
     const { panes } = this.state;
     const order = this.getPanePropsArrayOf('order');
     this.setState({ isResizing: true });
@@ -434,7 +437,7 @@ class SortablePane extends React.Component<SortablePaneProps, {
     pos: number,
     pressX: number,
     pressY: number,
-    e: SyntheticMouseEvent<> | SyntheticTouchEvent<>,
+    e: SyntheticMouseEvent<HTMLElement> | SyntheticTouchEvent<HTMLElement>,
   ) {
     if (this.props.dragHandleClassName) {
       if (e.target instanceof HTMLElement) {
@@ -486,7 +489,7 @@ class SortablePane extends React.Component<SortablePaneProps, {
     }
   }
 
-  handleTouchStart(key: number, x: number, y: number, e: SyntheticTouchEvent<>) {
+  handleTouchStart(key: number, x: number, y: number, e: SyntheticTouchEvent<HTMLElement>) {
     this.handleMouseDown(key, x, y, e);
   }
 
@@ -612,7 +615,7 @@ class SortablePane extends React.Component<SortablePaneProps, {
         style={{ position: 'relative', height: '100%', ...style }}
       >
         {this.renderPanes()}
-      </div >
+      </div>
     );
   }
 }
