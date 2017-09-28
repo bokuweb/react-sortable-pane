@@ -160,7 +160,7 @@ type PaneResizeData = $Exact<{
 
 It is called when `Pane` component dragging starts.
 
-#### `onDragStartStop?: (e: SyntheticMouseEvent | SyntheticTouchEvent, id: PaneId, panes: PaneProperty[]) => void`
+#### `onDragStop?: (e: SyntheticMouseEvent | SyntheticTouchEvent, id: PaneId, panes: PaneProperty[]) => void`
 
 It is called when `Pane` component dragging stop.
 
