@@ -1,6 +1,6 @@
 {
   "name": "react-sortable-pane",
-  "version": "0.6.7",
+  "version": "0.6.8",
   "title": "react-sortable-pane",
   "main": "./lib/react-sortable-pane.es5.js",
   "module": "./lib/react-sortable-pane.js",
