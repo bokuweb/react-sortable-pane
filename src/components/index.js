@@ -160,8 +160,8 @@ class SortablePane extends React.Component<SortablePaneProps, {
   }
 
   componentDidMount() {
-    if (typeof window !== "undefined" && this.panes) {
-      const panes = this.panes
+    if (typeof window !== 'undefined' && this.panes) {
+      const panes = this.panes;
       panes.addEventListener('touchmove', this.handleTouchMove);
       panes.addEventListener('touchend', this.handleMouseUp);
       panes.addEventListener('mousemove', this.handleMouseMove);
@@ -213,7 +213,7 @@ class SortablePane extends React.Component<SortablePaneProps, {
 
   componentWillUnmount() {
     if (typeof window !== 'undefined' && this.panes) {
-      const panes = this.panes
+      const panes = this.panes;
       panes.removeEventListener('touchmove', this.handleTouchMove);
       panes.removeEventListener('touchend', this.handleMouseUp);
       panes.removeEventListener('mousemove', this.handleMouseMove);
@@ -517,7 +517,7 @@ class SortablePane extends React.Component<SortablePaneProps, {
     const order = this.getPanePropsArrayOf('order');
     const { disableEffect, isSortable, zIndex } = this.props;
     const children = this.props.children || [];
-    return children.map((child, i) => {
+    return children.map((child: Pane, i) => {
       const springPosition = spring(this.getItemPositionByIndex(order.indexOf(i)), springConfig);
       const style = lastPressed === i && isPressed
         ? {
