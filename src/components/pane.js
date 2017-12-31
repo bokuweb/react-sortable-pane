@@ -23,6 +23,8 @@ export type PaneProps = {
 }
 
 export default class Pane extends React.Component<PaneProps> {
+  props: PaneProps;
+
   static defaultProps = {
     minWidth: 0,
     minHeight: 0,
