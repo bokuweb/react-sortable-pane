@@ -109,6 +109,10 @@ If omitted, the default value is `true`.
 The `disableEffect` property is used to disable floating effect.
 If omitted the default margin is `false`.
 
+#### `dragHandleClassName?: string`
+
+The `dragHandleClassName` property is a class name of an element which should handle drag events for panes.
+
 #### `onOrderChange?: (oldPanes: PaneProperty[], newPanes: PaneProperty[]) => void`
 
 It is called when `Pane` component order changed.
@@ -204,7 +208,7 @@ The `className` property is used to set the css classname of a Pane component.
 
 The `style` property is used to set the style of a Pane component.
 
-#### `isResizable?: { x: boolean, y: boolean, xy: boolean }`
+#### `isResizable?: { x?: boolean, y?: boolean, xy?: boolean }`
 
 The `isResizable` property is used to set the resizable permission of a component.
 
