@@ -5267,7 +5267,7 @@ negotiator@0.6.1:
   version "0.6.1"
   resolved "https://registry.yarnpkg.com/negotiator/-/negotiator-0.6.1.tgz#2b327184e8992101177b28563fb5e7102acd0ca9"
 
-"ngrok@github:screener-io/ngrok":
+ngrok@screener-io/ngrok:
   version "2.2.24"
   resolved "https://codeload.github.com/screener-io/ngrok/tar.gz/ca2e459b401722ae8c033491aaacaf87125cd238"
   dependencies:
@@ -6328,6 +6328,10 @@ rc@^1.0.1, rc@^1.1.2, rc@^1.1.6, rc@^1.1.7:
     ini "~1.3.0"
     minimist "^1.2.0"
     strip-json-comments "~2.0.1"
+
+re-resizable@^4.3.2:
+  version "4.3.2"
+  resolved "https://registry.yarnpkg.com/re-resizable/-/re-resizable-4.3.2.tgz#2f3c106f0d5d3156ff1648ea3bb15b314a4f4cb8"
 
 react-docgen@^2.15.0:
   version "2.17.0"

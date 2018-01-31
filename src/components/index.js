@@ -3,9 +3,9 @@
 import * as React from 'react';
 // $FlowIgnore
 import { Motion, spring } from 'react-motion';
-import Resizable from 'react-resizable-box';
+import Resizable from 're-resizable';
 // $FlowIgnore
-import type { Direction } from 'react-resizable-box';
+import type { Direction } from 're-resizable';
 import isEqual from 'lodash.isequal';
 import Pane from './pane';
 
@@ -104,14 +104,16 @@ export type SortablePaneProps = $Exact<{
   grid?: [number, number];
 }>
 
-class SortablePane extends React.Component<SortablePaneProps, {
+type State = {
   delta: number;
   mouse: number;
   isPressed: boolean;
   lastPressed: number;
   isResizing: boolean;
   panes: Array<PaneProperty>;
-}> {
+};
+
+class SortablePane extends React.Component<SortablePaneProps, State> {
   panes: (React$ElementRef<'div'> | null);
   sizePropsUpdated: boolean;
   handleTouchMove: () => void;
@@ -586,8 +588,10 @@ class SortablePane extends React.Component<SortablePaneProps, {
                   bottomLeft: false,
                   topLeft: false,
                 }}
-                width={child.props.width}
-                height={child.props.height}
+                defaultSize={{
+                  width: child.props.width,
+                  height: child.props.height,
+                }}
                 minWidth={child.props.minWidth}
                 minHeight={child.props.minHeight}
                 maxWidth={child.props.maxWidth}
@@ -595,8 +599,8 @@ class SortablePane extends React.Component<SortablePaneProps, {
                 style={customStyle}
                 onResizeStart={onResizeStart}
                 onResizeStop={onResizeStop}
-                extendsProps={extendsProps}
                 grid={this.props.grid}
+                {...extendsProps}
               >
                 {child.props.children}
               </Resizable>
