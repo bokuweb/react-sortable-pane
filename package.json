@@ -29,6 +29,7 @@
   },
   "devDependencies": {
     "@storybook/react": "^3.3.11",
+    "babel-core": "^6.26.0",
     "babel-eslint": "^8.0.0",
     "babel-plugin-external-helpers": "6.22.0",
     "babel-plugin-transform-class-properties": "^6.24.1",
@@ -46,6 +47,9 @@
     "flow-copy-source": "^1.2.2",
     "gh-pages": "^1.1.0",
     "npm-run-all": "^4.1.2",
+    "prettier": "^1.10.2",
+    "prettier-eslint": "^8.8.1",
+    "prettier-eslint-cli": "^4.7.0",
     "rollup": "^0.55.1",
     "rollup-plugin-babel": "3.0.3",
     "rollup-plugin-commonjs": "^8.3.0",
@@ -55,11 +59,10 @@
     "screener-storybook": "^0.10.2"
   },
   "scripts": {
-    "lint": "eslint src",
+    "lint": "prettier-eslint src",
     "flow": "flow",
     "build:prod:main": "rollup -c config/prod.js",
     "build:prod:es5": "rollup -c config/prod.es5.js",
-    "build:prod:umd": "rollup -c config/prod.umd.js",
     "build": "npm-run-all --parallel build:prod:*",
     "start": "npm run storybook",
     "test": "npm run flow && npm run build",
@@ -68,6 +71,7 @@
     "storybook": "start-storybook -p 6086",
     "build-storybook": "build-storybook",
     "test-storybook": "screener-storybook --conf screener.config.js",
+    "prettier": "prettier --write --single-quote --semi=true \"src/**/*.js\" ",
     "deploy": "npm run build-storybook && gh-pages -d storybook-static"
   },
   "files": [

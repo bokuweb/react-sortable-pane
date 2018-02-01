@@ -2,16 +2,20 @@ import babel from 'rollup-plugin-babel';
 import replace from 'rollup-plugin-replace';
 
 export default {
-    entry: 'src/components/index.js',
-    plugins: [
-        babel(),
-        replace({ 'process.env.NODE_ENV': JSON.stringify('production') })
-    ],
-    sourceMap: true,
+  input: 'src/components/index.js',
+  plugins: [
+    babel({
+      plugins: ['external-helpers'],
+    }),
+    replace({ 'process.env.NODE_ENV': JSON.stringify('production') }),
+  ],
+  external: ['react', 'react-motion', 're-resizable', 'lodash.isequal'],
+  output: {
+    sourcemap: true,
     exports: 'named',
-    moduleName: 'react-sortable-pane',
-    external: [ 'react' ],
+    name: 'react-sortable-pane',
     globals: {
-        'react': 'React',
-    }
+      'react': 'React',
+    },
+  },
 };
