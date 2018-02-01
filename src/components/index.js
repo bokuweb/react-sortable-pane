@@ -350,6 +350,7 @@ class SortablePane extends React.Component<SortablePaneProps, State> {
   getItemPositionByIndex(index: number) {
     const size = this.getPaneSizeList();
     let sum = 0;
+    if (size.some(s => typeof s === 'string')) return 0;
     for (let i = 0; i < index; i += 1) {
       sum += size[i] + this.props.margin;
     }
@@ -565,7 +566,9 @@ class SortablePane extends React.Component<SortablePaneProps, State> {
               WebkitTransform: `translate3d(${x}px, ${y}px, 0px) scale(${scale})`,
               MozTransform: `translate3d(${x}px, ${y}px, 0px) scale(${scale})`,
               MsTransform: `translate3d(${x}px, ${y}px, 0px) scale(${scale})`,
-              zIndex: i === lastPressed ? zIndex + children.length : zIndex + i,
+              zIndex: i === lastPressed && this.state.isPressed
+                ? 9999
+                : (child.props.style && child.props.style.zIndex) || 'auto',
               position: 'absolute',
             }, userSelect);
 
