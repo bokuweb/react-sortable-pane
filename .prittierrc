@@ -8,5 +8,6 @@
     "jsxBracketSameLine": false,
     "parser": "flow",
     "semi": true,
-    "rcVerbose": true
+    "rcVerbose": true,
+    "trailing-comma": "es6"
 }

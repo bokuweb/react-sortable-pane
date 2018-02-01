@@ -90,10 +90,6 @@ If omitted the default direction is `'horizontal'`.
 The `margin` property is used to set the margin between `Pane` component.
 If omitted the default margin is `0`.
 
-#### `zIndex?: number`
-
-The `zIndex` property is used to set the zIndex of a component.
-If omitted the default margin is `100`.
 
 #### `grid?: Array<number>;`
 

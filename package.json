@@ -59,7 +59,7 @@
     "screener-storybook": "^0.10.2"
   },
   "scripts": {
-    "lint": "prettier-eslint src",
+    "lint": "eslint src",
     "flow": "flow",
     "build:prod:main": "rollup -c config/prod.js",
     "build:prod:es5": "rollup -c config/prod.es5.js",
@@ -71,7 +71,7 @@
     "storybook": "start-storybook -p 6086",
     "build-storybook": "build-storybook",
     "test-storybook": "screener-storybook --conf screener.config.js",
-    "prettier": "prettier --write --single-quote --semi=true \"src/**/*.js\" ",
+    "format": "prettier-eslint --write --single-quote --semi=true \"src/**/*.js\" ",
     "deploy": "npm run build-storybook && gh-pages -d storybook-static"
   },
   "files": [
