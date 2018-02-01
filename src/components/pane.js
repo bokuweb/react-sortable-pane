@@ -3,24 +3,24 @@
 import * as React from 'react';
 
 export type IsPaneResizable = {
-  x?: boolean;
-  y?: boolean;
-  xy?: boolean;
+  x?: boolean,
+  y?: boolean,
+  xy?: boolean,
 };
 
 export type PaneProps = {
-  id: string | number;
-  width: string | number;
-  height: string | number;
-  minWidth?: number;
-  maxWidth?: number;
-  minHeight?: number;
-  maxHeight?: number;
-  style?: { [key: string]: string };
-  className?: string;
-  children?: string | React.Element<any>;
-  isResizable: IsPaneResizable;
-}
+  id: string | number,
+  width: string | number,
+  height: string | number,
+  minWidth?: number,
+  maxWidth?: number,
+  minHeight?: number,
+  maxHeight?: number,
+  style?: { [key: string]: string },
+  className?: string,
+  children?: string | React.Element<any>,
+  isResizable: IsPaneResizable,
+};
 
 export default class Pane extends React.Component<PaneProps> {
   props: PaneProps;
@@ -41,10 +41,6 @@ export default class Pane extends React.Component<PaneProps> {
   };
 
   render() {
-    return (
-      <div className={this.props.className}>
-        {this.props.children}
-      </div>
-    );
+    return <div className={this.props.className}>{this.props.children}</div>;
   }
 }

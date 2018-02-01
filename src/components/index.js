@@ -3,9 +3,9 @@
 import * as React from 'react';
 // $FlowIgnore
 import { Motion, spring } from 'react-motion';
-import Resizable from 'react-resizable-box';
+import Resizable from 're-resizable';
 // $FlowIgnore
-import type { Direction } from 'react-resizable-box';
+import type { Direction } from 're-resizable';
 import isEqual from 'lodash.isequal';
 import Pane from './pane';
 
@@ -26,10 +26,10 @@ const directionDict = {
 const clamp = (n: number, min = n, max = n): number => Math.max(Math.min(n, max), min);
 
 type Spring = {
-  damping?: number;
-  stiffness?: number;
-  precision?: number;
-}
+  damping?: number,
+  stiffness?: number,
+  precision?: number,
+};
 
 const springConfig: Spring = {
   damping: 30,
@@ -38,81 +38,78 @@ const springConfig: Spring = {
 
 type PaneId = string | number;
 
-export type PaneSize = { width: number; height: number; }
+export type PaneSize = { width: number, height: number };
 
 export type PaneProperty = $Exact<{
-  id: PaneId;
-  width: number | string;
-  height: number | string;
-  order: number;
-}>
+  id: PaneId,
+  width: number | string,
+  height: number | string,
+  order: number,
+}>;
 
 export type PaneDirection = 'horizontal' | 'vertical';
 
 export type PaneMode = 'add' | 'remove';
 
 export type PaneResizeData = $Exact<{
-  pane: PaneProperty;
-  direction: $Values<typeof directionDict>;
-  delta: PaneSize;
-}>
+  pane: PaneProperty,
+  direction: $Values<typeof directionDict>,
+  delta: PaneSize,
+}>;
 
 export type IdWithPanes = {
-  id: PaneId;
-  panes: PaneProperty[];
-}
+  id: PaneId,
+  panes: PaneProperty[],
+};
 
 export type SortablePaneProps = $Exact<{
-  order: number[];
-  direction?: Direction;
-  margin?: number;
-  style?: { [key: string]: string };
-  children?: Pane[];
+  order: number[],
+  direction?: Direction,
+  margin?: number,
+  style?: { [key: string]: string },
+  children?: Pane[],
   onResize?: (
     e: MouseEvent | TouchEvent,
     id: PaneId,
     panes: PaneProperty[],
-    data: PaneResizeData
-  ) => void;
+    data: PaneResizeData,
+  ) => void,
   onResizeStop?: (
     e: MouseEvent | TouchEvent,
     id: PaneId,
     panes: PaneProperty[],
-    data: PaneResizeData
-  ) => void;
+    data: PaneResizeData,
+  ) => void,
   onResizeStart?: (
     e: SyntheticMouseEvent<HTMLElement> | SyntheticTouchEvent<HTMLElement>,
     id: PaneId,
-    panes: PaneProperty[]
-  ) => void;
+    panes: PaneProperty[],
+  ) => void,
   onDragStart?: (
     e: SyntheticMouseEvent<HTMLElement> | SyntheticTouchEvent<HTMLElement>,
     id: PaneId,
-    panes: PaneProperty[]
-  ) => void;
-  onDragStop?: (
-    e: MouseEvent | TouchEvent,
-    id: PaneId,
-    panes: PaneProperty[]
-  ) => void;
-  onOrderChange?: (oldPanes: PaneProperty[], newPanes: PaneProperty[]) => void;
-  className?: string;
-  disableEffect?: boolean;
-  isSortable?: boolean;
-  zIndex?: number;
-  dragHandleClassName?: string;
-  grid?: [number, number];
-}>
+    panes: PaneProperty[],
+  ) => void,
+  onDragStop?: (e: MouseEvent | TouchEvent, id: PaneId, panes: PaneProperty[]) => void,
+  onOrderChange?: (oldPanes: PaneProperty[], newPanes: PaneProperty[]) => void,
+  className?: string,
+  disableEffect?: boolean,
+  isSortable?: boolean,
+  dragHandleClassName?: string,
+  grid?: [number, number],
+}>;
 
-class SortablePane extends React.Component<SortablePaneProps, {
-  delta: number;
-  mouse: number;
-  isPressed: boolean;
-  lastPressed: number;
-  isResizing: boolean;
-  panes: Array<PaneProperty>;
-}> {
-  panes: (React$ElementRef<'div'> | null);
+type State = {
+  delta: number,
+  mouse: number,
+  isPressed: boolean,
+  lastPressed: number,
+  isResizing: boolean,
+  panes: Array<PaneProperty>,
+};
+
+class SortablePane extends React.Component<SortablePaneProps, State> {
+  panes: React$ElementRef<'div'> | null;
   sizePropsUpdated: boolean;
   handleTouchMove: () => void;
   handleMouseUp: () => void;
@@ -135,7 +132,6 @@ class SortablePane extends React.Component<SortablePaneProps, {
     className: '',
     disableEffect: false,
     isSortable: true,
-    zIndex: 100,
   };
 
   constructor(props: SortablePaneProps) {
@@ -291,26 +287,29 @@ class SortablePane extends React.Component<SortablePaneProps, {
     const nextPane = currentPane + 1;
     const prevPane = currentPane - 1;
 
-    return sizes.reduce((sums, val, index) => {
-      const newSums = {};
-      if (index < prevPane) {
-        newSums.previous = sums.previous + val + margin;
-      } else if (index === prevPane) {
-        newSums.previous = sums.previous + (val / 2);
-      } else {
-        newSums.previous = sums.previous;
-      }
+    return sizes.reduce(
+      (sums, val, index) => {
+        const newSums = {};
+        if (index < prevPane) {
+          newSums.previous = sums.previous + val + margin;
+        } else if (index === prevPane) {
+          newSums.previous = (sums.previous + val) / 2;
+        } else {
+          newSums.previous = sums.previous;
+        }
 
-      if (index < nextPane) {
-        newSums.next = sums.next + val + margin;
-      } else if (index === nextPane) {
-        newSums.next = sums.next + (val / 2);
-      } else {
-        newSums.next = sums.next;
-      }
-      return newSums;
-    }, { previous: 0, next: 0 });
-  }
+        if (index < nextPane) {
+          newSums.next = sums.next + val + margin;
+        } else if (index === nextPane) {
+          newSums.next = (sums.next + val) / 2;
+        } else {
+          newSums.next = sums.next;
+        }
+        return newSums;
+      },
+      { previous: 0, next: 0 },
+    );
+  };
 
   /**
    * Determine where a particular pane should be ordered
@@ -348,6 +347,7 @@ class SortablePane extends React.Component<SortablePaneProps, {
   getItemPositionByIndex(index: number) {
     const size = this.getPaneSizeList();
     let sum = 0;
+    if (size.some(s => typeof s === 'string')) return 0;
     for (let i = 0; i < index; i += 1) {
       sum += size[i] + this.props.margin;
     }
@@ -362,11 +362,16 @@ class SortablePane extends React.Component<SortablePaneProps, {
     return panes.map((pane: any) => {
       if (pane.order >= index) {
         const { id, width, height, order } = pane;
-        return { id, width, height, order: mode === 'add' ? order + 1 : order - 1 };
+        return {
+          id,
+          width,
+          height,
+          order: mode === 'add' ? order + 1 : order - 1,
+        };
       }
       return pane;
     });
-  }
+  };
 
   addPane() {
     if (!this.panes || !this.panes.children) return;
@@ -418,7 +423,8 @@ class SortablePane extends React.Component<SortablePaneProps, {
     e: MouseEvent | TouchEvent,
     dir: Direction,
     refToElement: HTMLElement,
-    delta: PaneSize) {
+    delta: PaneSize,
+  ) {
     const { panes } = this.state;
     const order = this.getPanePropsArrayOf('order');
     this.setState({ isResizing: false });
@@ -453,9 +459,7 @@ class SortablePane extends React.Component<SortablePaneProps, {
       delta = this.isHorizontal() ? event.pageX - pressX : event.pageY - pressY;
     } else if (e.nativeEvent instanceof MouseEvent) {
       const event: MouseEvent = e.nativeEvent;
-      delta = this.isHorizontal()
-        ? event.pageX - pressX
-        : event.pageY - pressY;
+      delta = this.isHorizontal() ? event.pageX - pressX : event.pageY - pressY;
     }
     this.setState({
       delta,
@@ -515,23 +519,24 @@ class SortablePane extends React.Component<SortablePaneProps, {
   renderPanes() {
     const { mouse, isPressed, lastPressed, isResizing } = this.state;
     const order = this.getPanePropsArrayOf('order');
-    const { disableEffect, isSortable, zIndex } = this.props;
+    const { disableEffect, isSortable } = this.props;
     const children = this.props.children || [];
     return children.map((child: Pane, i) => {
       const springPosition = spring(this.getItemPositionByIndex(order.indexOf(i)), springConfig);
-      const style = lastPressed === i && isPressed
-        ? {
-          scale: disableEffect ? 1 : spring(1.05, springConfig),
-          shadow: disableEffect ? 0 : spring(16, springConfig),
-          x: this.isHorizontal() ? mouse : 0,
-          y: !this.isHorizontal() ? mouse : 0,
-        }
-        : {
-          scale: disableEffect ? 1 : spring(1, springConfig),
-          shadow: disableEffect ? 0 : spring(0, springConfig),
-          x: this.isHorizontal() ? springPosition : 0,
-          y: !this.isHorizontal() ? springPosition : 0,
-        };
+      const style =
+        lastPressed === i && isPressed
+          ? {
+            scale: disableEffect ? 1 : spring(1.05, springConfig),
+            shadow: disableEffect ? 0 : spring(16, springConfig),
+            x: this.isHorizontal() ? mouse : 0,
+            y: !this.isHorizontal() ? mouse : 0,
+          }
+          : {
+            scale: disableEffect ? 1 : spring(1, springConfig),
+            shadow: disableEffect ? 0 : spring(0, springConfig),
+            x: this.isHorizontal() ? springPosition : 0,
+            y: !this.isHorizontal() ? springPosition : 0,
+          };
       return (
         <Motion style={style} key={child.props.id}>
           {({ scale, shadow, x, y }) => {
@@ -540,32 +545,41 @@ class SortablePane extends React.Component<SortablePaneProps, {
             const onTouchStart = this.handleTouchStart.bind(this, i, x, y);
             const onResizeStart = this.handleResizeStart.bind(this, i);
             const onResizeStop = this.handleResizeStop.bind(this, i);
-            const userSelect = (isPressed || isResizing)
-              ? {
-                userSelect: 'none',
-                MozUserSelect: 'none',
-                WebkitUserSelect: 'none',
-                MsUserSelect: 'none',
-              } : {
-                userSelect: 'auto',
-                MozUserSelect: 'auto',
-                WebkitUserSelect: 'auto',
-                MsUserSelect: 'auto',
-              };
+            const userSelect =
+              isPressed || isResizing
+                ? {
+                  userSelect: 'none',
+                  MozUserSelect: 'none',
+                  WebkitUserSelect: 'none',
+                  MsUserSelect: 'none',
+                }
+                : {
+                  userSelect: 'auto',
+                  MozUserSelect: 'auto',
+                  WebkitUserSelect: 'auto',
+                  MsUserSelect: 'auto',
+                };
 
             // take a copy rather than direct-manipulating the child's prop, which violates React
             // and causes problems if the child's prop is a static default {}, which then will be
             // shared across all children!
             const customStyle = Object.assign({}, child.props.style);
-            Object.assign(customStyle, {
-              boxShadow: `rgba(0, 0, 0, 0.2) 0px ${shadow}px ${2 * shadow}px 0px`,
-              transform: `translate3d(${x}px, ${y}px, 0px) scale(${scale})`,
-              WebkitTransform: `translate3d(${x}px, ${y}px, 0px) scale(${scale})`,
-              MozTransform: `translate3d(${x}px, ${y}px, 0px) scale(${scale})`,
-              MsTransform: `translate3d(${x}px, ${y}px, 0px) scale(${scale})`,
-              zIndex: i === lastPressed ? zIndex + children.length : zIndex + i,
-              position: 'absolute',
-            }, userSelect);
+            Object.assign(
+              customStyle,
+              {
+                boxShadow: `rgba(0, 0, 0, 0.2) 0px ${shadow}px ${2 * shadow}px 0px`,
+                transform: `translate3d(${x}px, ${y}px, 0px) scale(${scale})`,
+                WebkitTransform: `translate3d(${x}px, ${y}px, 0px) scale(${scale})`,
+                MozTransform: `translate3d(${x}px, ${y}px, 0px) scale(${scale})`,
+                MsTransform: `translate3d(${x}px, ${y}px, 0px) scale(${scale})`,
+                zIndex:
+                  i === lastPressed && this.state.isPressed
+                    ? 9999
+                    : (child.props.style && child.props.style.zIndex) || 'auto',
+                position: 'absolute',
+              },
+              userSelect,
+            );
 
             const extendsProps = {
               onMouseDown,
@@ -586,8 +600,10 @@ class SortablePane extends React.Component<SortablePaneProps, {
                   bottomLeft: false,
                   topLeft: false,
                 }}
-                width={child.props.width}
-                height={child.props.height}
+                defaultSize={{
+                  width: child.props.width,
+                  height: child.props.height,
+                }}
                 minWidth={child.props.minWidth}
                 minHeight={child.props.minHeight}
                 maxWidth={child.props.maxWidth}
@@ -595,8 +611,8 @@ class SortablePane extends React.Component<SortablePaneProps, {
                 style={customStyle}
                 onResizeStart={onResizeStart}
                 onResizeStop={onResizeStop}
-                extendsProps={extendsProps}
                 grid={this.props.grid}
+                {...extendsProps}
               >
                 {child.props.children}
               </Resizable>
@@ -611,7 +627,9 @@ class SortablePane extends React.Component<SortablePaneProps, {
     const { style, className } = this.props;
     return (
       <div
-        ref={(c: (React$ElementRef<'div'> | null)) => { this.panes = c; }}
+        ref={(c: React$ElementRef<'div'> | null) => {
+          this.panes = c;
+        }}
         className={className}
         style={{ position: 'relative', height: '100%', ...style }}
       >

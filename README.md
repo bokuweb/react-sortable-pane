@@ -90,10 +90,6 @@ If omitted the default direction is `'horizontal'`.
 The `margin` property is used to set the margin between `Pane` component.
 If omitted the default margin is `0`.
 
-#### `zIndex?: number`
-
-The `zIndex` property is used to set the zIndex of a component.
-If omitted the default margin is `100`.
 
 #### `grid?: Array<number>;`
 
@@ -174,15 +170,17 @@ It is called when `Pane` component dragging stop.
 
 The `id` property is used to `Pane` component id.
 
-#### `width: number | string`
+#### `width:? number | string`
 
 The `width` property is used to set the width of a Pane component.
 For example, it can be 300, '300px', or 50%.
+If ommited, set `auto`.
 
-#### `height: number | string`
+#### `height:? number | string`
 
 The `height` property is used to set the width of a Pane component.
 For example, it can be 300, '300px', or 50%.
+If ommited, set `auto`.
 
 #### `minWidth?: number`
 
@@ -217,6 +215,14 @@ If omitted the default value is `{ x: true, y: true, xy: true }`.
 If you want to permit only x direction resizing, please set `{ x: true, y: false, xy: false }`.
 
 ## Changelog
+
+### V0.6.8
+
+- Feature: Add `grid` props.
+
+### V0.6.7
+
+- Chore: Upgrade dependencies.
 
 ### V0.6.6
 
@@ -353,7 +359,7 @@ publised.
 
 The MIT License (MIT)
 
-Copyright (c) 2017 @Bokuweb
+Copyright (c) 2018 @Bokuweb
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 
