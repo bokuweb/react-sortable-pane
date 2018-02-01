@@ -174,15 +174,17 @@ It is called when `Pane` component dragging stop.
 
 The `id` property is used to `Pane` component id.
 
-#### `width: number | string`
+#### `width:? number | string`
 
 The `width` property is used to set the width of a Pane component.
 For example, it can be 300, '300px', or 50%.
+If ommited, set `auto`.
 
-#### `height: number | string`
+#### `height:? number | string`
 
 The `height` property is used to set the width of a Pane component.
 For example, it can be 300, '300px', or 50%.
+If ommited, set `auto`.
 
 #### `minWidth?: number`
 
