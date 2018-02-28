@@ -50,7 +50,7 @@
     "prettier": "^1.10.2",
     "prettier-eslint": "^8.8.1",
     "prettier-eslint-cli": "^4.7.0",
-    "rollup": "^0.55.1",
+    "rollup": "^0.56.0",
     "rollup-plugin-babel": "3.0.3",
     "rollup-plugin-commonjs": "^8.3.0",
     "rollup-plugin-node-globals": "1.1.0",
