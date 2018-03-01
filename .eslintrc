@@ -10,6 +10,7 @@
     "react/sort-comp": 0,
     "react/prefer-stateless-function": 0,
     "react/jsx-filename-extension": 0,
+    "react/default-props-match-prop-types": 0,
     "jsx-a11y/href-no-hash": 0,
     "react/prop-types": 0,
     "flowtype/define-flow-type": 1,
