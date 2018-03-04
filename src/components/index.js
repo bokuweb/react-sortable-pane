@@ -1,12 +1,9 @@
 /* @flow */
 
 import * as React from 'react';
-// $FlowIgnore
 import { Motion, spring } from 'react-motion';
-// $FlowIgnore
 import Resizable from 're-resizable';
-// $FlowIgnore
-import type { Direction } from 're-resizable';
+import type { ResizeDirection } from 're-resizable';
 import isEqual from 'lodash.isequal';
 import Pane from './pane';
 
@@ -54,7 +51,7 @@ export type PaneMode = 'add' | 'remove';
 
 export type PaneResizeData = $Exact<{
   pane: PaneProperty,
-  direction: $Values<typeof directionDict>,
+  direction: 'x' | 'y' | 'xy',
   delta: PaneSize,
 }>;
 
@@ -65,7 +62,7 @@ export type IdWithPanes = {
 
 export type SortablePaneProps = $Exact<{
   order: number[],
-  direction?: Direction,
+  direction?: 'horizontal' | 'vertical',
   margin?: number,
   style?: { [key: string]: string },
   children?: Pane[],
@@ -220,7 +217,7 @@ class SortablePane extends React.Component<SortablePaneProps, State> {
   onResize(
     i: number,
     e: MouseEvent | TouchEvent,
-    dir: Direction,
+    dir: ResizeDirection,
     refToElement: HTMLElement,
     delta: PaneSize,
   ) {
@@ -242,9 +239,15 @@ class SortablePane extends React.Component<SortablePaneProps, State> {
     const pane = panes[order.indexOf(i)];
     if (!pane) return;
     if (!this.props.onResize) return;
+    let direction;
+    if (dir === 'right' || dir === 'bottom' || dir === 'bottomRight') {
+      direction = directionDict[dir];
+    } else {
+      return;
+    }
     this.props.onResize(e, pane.id, panes, {
       pane,
-      direction: directionDict[dir],
+      direction,
       delta,
     });
   }
@@ -424,7 +427,7 @@ class SortablePane extends React.Component<SortablePaneProps, State> {
   handleResizeStop(
     i: number,
     e: MouseEvent | TouchEvent,
-    dir: Direction,
+    dir: ResizeDirection,
     refToElement: HTMLElement,
     delta: PaneSize,
   ) {
@@ -435,9 +438,15 @@ class SortablePane extends React.Component<SortablePaneProps, State> {
     const { id } = pane;
     if (typeof id === 'undefined') return;
     if (this.props.onResizeStop) {
+      let direction;
+      if (dir === 'right' || dir === 'bottom' || dir === 'bottomRight') {
+        direction = directionDict[dir];
+      } else {
+        return;
+      }
       this.props.onResizeStop(e, id, panes, {
         pane,
-        direction: directionDict[dir],
+        direction,
         delta,
       });
     }
@@ -547,8 +556,8 @@ class SortablePane extends React.Component<SortablePaneProps, State> {
       return (
         <Motion style={style} key={child.props.id}>
           {({
- scale, shadow, x, y,
-}) => {
+            scale, shadow, x, y,
+          }) => {
             const onResize = this.onResize.bind(this, i);
             const onMouseDown = isSortable ? this.handleMouseDown.bind(this, i, x, y) : () => null;
             const onTouchStart = this.handleTouchStart.bind(this, i, x, y);
@@ -557,17 +566,17 @@ class SortablePane extends React.Component<SortablePaneProps, State> {
             const userSelect =
               isPressed || isResizing
                 ? {
-                    userSelect: 'none',
-                    MozUserSelect: 'none',
-                    WebkitUserSelect: 'none',
-                    MsUserSelect: 'none',
-                  }
+                  userSelect: 'none',
+                  MozUserSelect: 'none',
+                  WebkitUserSelect: 'none',
+                  MsUserSelect: 'none',
+                }
                 : {
-                    userSelect: 'auto',
-                    MozUserSelect: 'auto',
-                    WebkitUserSelect: 'auto',
-                    MsUserSelect: 'auto',
-                  };
+                  userSelect: 'auto',
+                  MozUserSelect: 'auto',
+                  WebkitUserSelect: 'auto',
+                  MsUserSelect: 'auto',
+                };
 
             // take a copy rather than direct-manipulating the child's prop, which violates React
             // and causes problems if the child's prop is a static default {}, which then will be

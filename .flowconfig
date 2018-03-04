@@ -4,12 +4,10 @@
 .*/node_modules/findup.*
 .*/node_modules/radium.*
 .*/node_modules/eslint-plugin-jsx-a11y.*
-.*/lib.*
-
+./lib.*
 [include]
 
 [libs]
-./decls
 
 [options]
 suppress_comment=\\(.\\|\n\\)*\\s*\\$FlowIgnore.*
