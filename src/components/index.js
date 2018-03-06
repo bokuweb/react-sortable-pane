@@ -163,6 +163,7 @@ class SortablePane extends React.Component<SortablePaneProps, State> {
       panes.addEventListener('touchend', this.handleMouseUp);
       panes.addEventListener('mousemove', this.handleMove);
       panes.addEventListener('mouseup', this.handleMouseUp);
+      panes.addEventListener('mouseleave', this.handleMouseUp);
       this.resizeObserver = new ResizeObserver(this.debounceUpdate);
     }
     if (this.panes && this.panes.parentElement instanceof Element) {
