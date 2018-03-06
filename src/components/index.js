@@ -207,7 +207,7 @@ class SortablePane extends React.Component<SortablePaneProps, State> {
     i: number,
     e: MouseEvent | TouchEvent,
     dir: ResizeDirection,
-    refToElement: HTMLElement,
+    elementRef: HTMLElement,
     delta: PaneSize,
   ) {
     let { panes } = this.state;
@@ -395,7 +395,7 @@ class SortablePane extends React.Component<SortablePaneProps, State> {
     i: number,
     e: MouseEvent | TouchEvent,
     dir: ResizeDirection,
-    refToElement: HTMLElement,
+    elementRef: HTMLElement,
     delta: PaneSize,
   ) {
     const { panes } = this.state;
