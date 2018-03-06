@@ -3,6 +3,7 @@
 import * as React from 'react';
 import { Motion, spring } from 'react-motion';
 import Resizable from 're-resizable';
+import ResizeObserver from 'resize-observer-polyfill';
 import type { ResizeDirection } from 're-resizable';
 import isEqual from 'lodash.isequal';
 import Pane from './pane';
@@ -110,6 +111,7 @@ class SortablePane extends React.Component<SortablePaneProps, State> {
   handleTouchMove: () => void;
   handleMouseUp: () => void;
   handleMove: (e: MouseEvent | Touch) => void;
+  resizeObserver: ResizeObserver;
 
   static defaultProps = {
     direction: 'horizontal',
@@ -147,6 +149,7 @@ class SortablePane extends React.Component<SortablePaneProps, State> {
     this.handleTouchMove = this.handleTouchMove.bind(this);
     this.handleMouseUp = this.handleMouseUp.bind(this);
     this.handleMove = this.handleMove.bind(this);
+    this.updateSize = this.updateSize.bind(this);
   }
 
   componentDidMount() {
@@ -156,8 +159,10 @@ class SortablePane extends React.Component<SortablePaneProps, State> {
       panes.addEventListener('touchend', this.handleMouseUp);
       panes.addEventListener('mousemove', this.handleMove);
       panes.addEventListener('mouseup', this.handleMouseUp);
+      this.resizeObserver = new ResizeObserver(this.updateSize);
+      this.resizeObserver.observe(this.panes.parentElement);
     }
-    this.setSize();
+    this.updateSize();
   }
 
   componentDidUpdate() {
@@ -167,7 +172,7 @@ class SortablePane extends React.Component<SortablePaneProps, State> {
     if (children.length < panes.length) return this.removePane();
     if (this.sizePropsUpdated) {
       this.sizePropsUpdated = false;
-      this.setSize();
+      this.updateSize();
     }
     return undefined;
   }
@@ -179,6 +184,7 @@ class SortablePane extends React.Component<SortablePaneProps, State> {
       panes.removeEventListener('touchend', this.handleMouseUp);
       panes.removeEventListener('mousemove', this.handleMove);
       panes.removeEventListener('mouseup', this.handleMouseUp);
+      this.resizeObserver.unobserve(this.panes.parentElement);
     }
   }
 
@@ -306,7 +312,10 @@ class SortablePane extends React.Component<SortablePaneProps, State> {
     return paneIndex;
   }
 
-  setSize() {
+  /**
+   * Update pane size
+   */
+  updateSize() {
     if (!this.panes || !this.panes.children) return;
     const { panes } = this;
     const newPanes = (this.props.children || []).map((child, i) => {
