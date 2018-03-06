@@ -106,6 +106,8 @@ type State = {
   panes: Array<PaneProperty>,
 };
 
+const HYSTERESIS = 10;
+
 class SortablePane extends React.Component<SortablePaneProps, State> {
   panes: React$ElementRef<'div'> | null;
   sizePropsUpdated: boolean;
@@ -278,20 +280,20 @@ class SortablePane extends React.Component<SortablePaneProps, State> {
     const prevPane = currentPane - 1;
 
     return sizes.reduce(
-      (sums, val, index) => {
+      (sums, size, index) => {
         const newSums = {};
         if (index < prevPane) {
-          newSums.previous = sums.previous + val + margin;
+          newSums.previous = sums.previous + size + margin;
         } else if (index === prevPane) {
-          newSums.previous = (sums.previous + val) / 2;
+          newSums.previous = sums.previous + (size / 2);
         } else {
           newSums.previous = sums.previous;
         }
 
         if (index < nextPane) {
-          newSums.next = sums.next + val + margin;
+          newSums.next = sums.next + size + margin;
         } else if (index === nextPane) {
-          newSums.next = (sums.next + val) / 2;
+          newSums.next = sums.next + (size / 2);
         } else {
           newSums.next = sums.next;
         }
@@ -312,9 +314,8 @@ class SortablePane extends React.Component<SortablePaneProps, State> {
     const size: number[] = this.getPaneSizeList();
     const { margin } = this.props;
     const halfSizes = this.getSurroundingHalfSizes(paneIndex, size, margin || 0);
-
-    if (position + size[paneIndex] > halfSizes.next) return paneIndex + 1;
-    if (position < halfSizes.previous) return paneIndex - 1;
+    if (position + size[paneIndex] > halfSizes.next + HYSTERESIS) return paneIndex + 1;
+    if (position < halfSizes.previous - HYSTERESIS) return paneIndex - 1;
     return paneIndex;
   }
 
