@@ -74,7 +74,7 @@ export default () => {
 
 #### `className?: string`
 
-The `className` property is used to set the css `classname` of a component.
+The `className` property is used to set the css `className` of a component.
 
 #### `style?: {[key: string]: string }`
 
@@ -89,7 +89,6 @@ If omitted the default direction is `'horizontal'`.
 
 The `margin` property is used to set the margin between `Pane` component.
 If omitted the default margin is `0`.
-
 
 #### `grid?: Array<number>;`
 
@@ -120,7 +119,6 @@ type PaneProperty = $Exact<{
   id: PaneId;
   width: number | string;
   height: number | string;
-  order: number;
 }>
 ```
 
@@ -317,7 +315,7 @@ If you want to permit only x direction resizing, please set `{ x: true, y: false
 ### V0.2.5
 
 - Add order props to change order by parent component.
-- Add husky and prepush hook.
+- Add husky and pre push hook.
 
 ### V0.2.4
 
@@ -337,7 +335,7 @@ If you want to permit only x direction resizing, please set `{ x: true, y: false
 
 ### V0.2.0
 
-- Support pane appen and remove.
+- Support pane append and remove.
 - Support vertical mode.
 - Fix pane size calculator.
 
