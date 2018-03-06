@@ -6,6 +6,7 @@ import Resizable from 're-resizable';
 import ResizeObserver from 'resize-observer-polyfill';
 import type { ResizeDirection } from 're-resizable';
 import isEqual from 'lodash.isequal';
+import debounce from 'lodash.debounce';
 import Pane from './pane';
 
 function reinsert<T>(array: Array<T>, from: number, to: number): Array<T> {
@@ -112,6 +113,7 @@ class SortablePane extends React.Component<SortablePaneProps, State> {
   handleMouseUp: () => void;
   handleMove: (e: MouseEvent | Touch) => void;
   resizeObserver: ResizeObserver;
+  debounceUpdate: () => void;
 
   static defaultProps = {
     direction: 'horizontal',
@@ -149,7 +151,7 @@ class SortablePane extends React.Component<SortablePaneProps, State> {
     this.handleTouchMove = this.handleTouchMove.bind(this);
     this.handleMouseUp = this.handleMouseUp.bind(this);
     this.handleMove = this.handleMove.bind(this);
-    this.updateSize = this.updateSize.bind(this);
+    this.debounceUpdate = debounce(this.updateSize.bind(this), 100);
   }
 
   componentDidMount() {
@@ -159,7 +161,9 @@ class SortablePane extends React.Component<SortablePaneProps, State> {
       panes.addEventListener('touchend', this.handleMouseUp);
       panes.addEventListener('mousemove', this.handleMove);
       panes.addEventListener('mouseup', this.handleMouseUp);
-      this.resizeObserver = new ResizeObserver(this.updateSize);
+      this.resizeObserver = new ResizeObserver(this.debounceUpdate);
+    }
+    if (this.panes && this.panes.parentElement instanceof Element) {
       this.resizeObserver.observe(this.panes.parentElement);
     }
     this.updateSize();
@@ -184,11 +188,13 @@ class SortablePane extends React.Component<SortablePaneProps, State> {
       panes.removeEventListener('touchend', this.handleMouseUp);
       panes.removeEventListener('mousemove', this.handleMove);
       panes.removeEventListener('mouseup', this.handleMouseUp);
-      this.resizeObserver.unobserve(this.panes.parentElement);
+      if (this.panes && this.panes.parentElement instanceof Element) {
+        this.resizeObserver.unobserve(this.panes.parentElement);
+      }
     }
   }
 
-  get order() {
+  get order(): number[] {
     const children = this.props.children || [];
     return this.state.panes.map((p) => {
       return children.findIndex((c) => {

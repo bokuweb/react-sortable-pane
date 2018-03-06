@@ -4,7 +4,7 @@
 .*/node_modules/findup.*
 .*/node_modules/radium.*
 .*/node_modules/eslint-plugin-jsx-a11y.*
-./lib.*
+./lib/react-sortable-pane.*.js
 [include]
 
 [libs]
