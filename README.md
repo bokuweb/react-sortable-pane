@@ -214,6 +214,20 @@ If you want to permit only x direction resizing, please set `{ x: true, y: false
 
 ## Changelog
 
+### V0.8.0
+
+- fix: remove unused `order` property.
+- fix: fix position when parent element resized.
+- chore: update deps.
+
+### V0.7.1
+
+- fix: sort, Drag, Resize does not work in Safari #128
+
+### V0.7.0
+
+- chore: update deps (use `re-resizable` instead of `react-resizable-box`)
+
 ### V0.6.8
 
 - Feature: Add `grid` props.
