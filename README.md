@@ -11,25 +11,40 @@
 <img src="https://img.shields.io/npm/dm/react-sortable-pane.svg" /></a>
 <a href="https://greenkeeper.io/">
 <img src="https://badges.greenkeeper.io/bokuweb/react-sortable-pane.svg" /></a>
+<a href="https://github.com/prettier/prettier">
+<img src="https://img.shields.io/badge/styled_with-prettier-ff69b4.svg" /></a>
 </p>
 
 ## Table of Contents
 
-- [Demo](#demo)
-- [Install](#install)
-- [Usage](#usage)
-- [Props](#props)
-- [Callback](#callback)
-- [Method](#method)
-- [Test](#test)
-- [Changelog](#changelog)
-- [License](#license)
 
-## Demo
+* [Screenshot](#Screenshot)
+* [Live Demo](#live-demo)
+  * [Storybook](#storybook)
+  * [CodeSandbox](#codesandbox)
+* [Install](#install)
+* [Usage](#usage)
+* [Props](#props)
+* [Callback](#callback)
+* [Method](#method)
+* [Test](#test)
+* [Changelog](#changelog)
+* [License](#license)
+
+## Screenshot
 
 ![screenshot](https://raw.githubusercontent.com/bokuweb/react-sortable-pane/master/screenshot/screenshot.gif)
 
-See demo: [http://bokuweb.github.io/react-sortable-pane](http://bokuweb.github.io/react-sortable-pane)
+## Live Demo
+
+### Storybook
+
+[Storybook](http://bokuweb.github.io/react-sortable-pane/)
+
+### CodeSandbox
+
+[CodeSandbox](https://codesandbox.io/s/7345yp2yn6)
+
 
 ## Install
 
@@ -90,7 +105,7 @@ If omitted the default direction is `'horizontal'`.
 The `margin` property is used to set the margin between `Pane` component.
 If omitted the default margin is `0`.
 
-#### `grid?: Array<number>;`
+#### `grid?: [number, number];`
 
 The `grid` property is used to specify the increments that resizing should snap to. Defaults to `[1, 1]`.
 
