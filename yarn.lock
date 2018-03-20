@@ -7004,9 +7004,9 @@ screener-runner@^0.8.2:
     request "~2.78.0"
     request-promise "~4.1.1"
 
-screener-storybook@0.11.3:
-  version "0.11.3"
-  resolved "https://registry.yarnpkg.com/screener-storybook/-/screener-storybook-0.11.3.tgz#db56ab9002e78e124e52cbcf93b4e57adb4f8cb6"
+screener-storybook@0.11.5:
+  version "0.11.5"
+  resolved "https://registry.yarnpkg.com/screener-storybook/-/screener-storybook-0.11.5.tgz#01e4f7d4f8edf2a330c4ccac54fc63e18ff31843"
   dependencies:
     bluebird "~3.4.6"
     colors "~1.1.2"
