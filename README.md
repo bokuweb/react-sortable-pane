@@ -227,6 +227,10 @@ If you want to permit only x direction resizing, please set `{ x: true, y: false
 
 ## Changelog
 
+### V0.8.2
+
+- chore: update deps.
+
 ### V0.8.1
 
 - fix: add hysteresis and fix sort position
