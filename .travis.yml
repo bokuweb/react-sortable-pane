@@ -15,6 +15,6 @@ install:
   - yarn install
 
 script:
-  - yarn run flow
+  # - yarn run flow
   - yarn run lint
   - yarn run test
