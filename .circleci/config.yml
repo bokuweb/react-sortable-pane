@@ -15,9 +15,9 @@ jobs:
       - run:
           name: Install dependencies
           command: yarn
-      - run:
-          name: Lint
-          command: yarn run lint
+      # - run:
+      #     name: Lint
+      #     command: yarn run lint
       - run:
           name: Test
           command: yarn run test

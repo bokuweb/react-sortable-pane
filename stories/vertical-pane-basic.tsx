@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { SortablePane, Pane } from '../src';
+import { SortablePane, Pane } from '../src/index';
 
 export default () => {
   const panes = [0, 1, 2].map(id => (

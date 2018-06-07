@@ -311,7 +311,7 @@ class SortablePane extends React.Component<SortablePaneProps, State> {
    */
   updateSize() {
     if (!this.panes || !this.panes.children) return;
-    const panes = (Array.from(this.panes.children) || []);
+    const panes = Array.from(this.panes.children) || [];
     const newPanes = (this.props.children || []).map((child, i) => {
       const { offsetWidth, offsetHeight } = panes[i] as HTMLElement;
       return {
@@ -319,7 +319,7 @@ class SortablePane extends React.Component<SortablePaneProps, State> {
         width: offsetWidth,
         height: offsetHeight,
       };
-    })
+    });
     if (!isEqual(newPanes, this.state.panes)) this.setState({ panes: newPanes });
   }
 
