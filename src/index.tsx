@@ -122,7 +122,7 @@ class SortablePane extends React.Component<SortablePaneProps, State> {
 
   constructor(props: SortablePaneProps) {
     super(props);
-    const order = props.defaultOrder; // TODO: || props.order
+    const order = props.order || props.defaultOrder;
     const children = props.children || [];
     this.state = {
       delta: 0,
@@ -197,7 +197,14 @@ class SortablePane extends React.Component<SortablePaneProps, State> {
 
   get _order(): number[] {
     const children = this.props.children || [];
-    console.log(this.state.panes);
+    if (this.props.order) {
+      return this.props.order.map(key => {
+        return children.findIndex(c => {
+          return key === c.key;
+        });
+      });
+    }
+    const children = this.props.children || [];
     return this.state.panes.map(p => {
       return children.findIndex(c => {
         return p.key === c.key;
@@ -322,7 +329,7 @@ class SortablePane extends React.Component<SortablePaneProps, State> {
    */
   updateSize() {
     if (!this.panes || !this.panes.children) return;
-    const panes = Array.from(this.panes.children) || [];
+    const panes = [].slice.apply(this.panes.children) || [];
     const newPanes = this.state.panes.map((pane, i) => {
       const { offsetWidth, offsetHeight } = panes[i] as HTMLElement;
       return {
@@ -462,7 +469,8 @@ class SortablePane extends React.Component<SortablePaneProps, State> {
       if (!this.props.onOrderChange) return;
       if (!isEqual(panes, newPanes)) {
         if (this.props.onOrderChange) {
-          this.props.onOrderChange(panes, newPanes);
+          // this.props.onOrderChange(panes, newPanes);
+          this.props.onOrderChange(newPanes.map(p => p.key));
         }
       }
     }
@@ -494,7 +502,6 @@ class SortablePane extends React.Component<SortablePaneProps, State> {
     const { disableEffect, isSortable } = this.props;
     const children = this.props.children || [];
     return children.map((child, i) => {
-      console.log(this._order, child.key);
       const pos = this.getItemPositionByIndex(this._order.indexOf(i));
       const springPosition = spring(pos, springConfig);
       const style =
