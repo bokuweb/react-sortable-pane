@@ -33,12 +33,12 @@ const springConfig: Spring = {
   stiffness: 500,
 };
 
-type PaneId = string | number | null;
+type PaneKey = string | number | null;
 
 export type PaneSize = { width: number; height: number };
 
 export type PaneProperty = {
-  key: PaneId;
+  key: PaneKey;
   width: number | string;
   height: number | string;
 };
@@ -54,7 +54,7 @@ export type PaneResizeData = {
 };
 
 // export type IdWithPanes = {
-//   key: PaneId;
+//   key: PaneKey;
 //   panes: PaneProperty[];
 // };
 
@@ -63,25 +63,26 @@ export type SortablePaneProps = {
   margin?: number;
   style?: { [key: string]: string };
   children: JSX.Element[];
-  onResize?: (e: MouseEvent | TouchEvent, id: PaneId, panes: PaneProperty[], data: PaneResizeData) => void;
-  onResizeStop?: (e: MouseEvent | TouchEvent, id: PaneId, panes: PaneProperty[], data: PaneResizeData) => void;
+  onResize?: (e: MouseEvent | TouchEvent, id: PaneKey, panes: PaneProperty[], data: PaneResizeData) => void;
+  onResizeStop?: (e: MouseEvent | TouchEvent, id: PaneKey, panes: PaneProperty[], data: PaneResizeData) => void;
   onResizeStart?: (
     e: React.MouseEvent<HTMLElement> | React.TouchEvent<HTMLElement>,
-    id: PaneId,
+    id: PaneKey,
     panes: PaneProperty[],
   ) => void;
   onDragStart?: (
     e: React.MouseEvent<HTMLElement> | React.TouchEvent<HTMLElement>,
-    id: PaneId,
+    id: PaneKey,
     panes: PaneProperty[],
   ) => void;
-  onDragStop?: (e: MouseEvent | TouchEvent, id: PaneId, panes: PaneProperty[]) => void;
-  onOrderChange?: (oldPanes: PaneProperty[], newPanes: PaneProperty[]) => void;
+  onDragStop?: (e: MouseEvent | TouchEvent, id: PaneKey, panes: PaneProperty[]) => void;
+  onOrderChange?: (order: string[]) => void;
   className?: string;
   disableEffect?: boolean;
   isSortable?: boolean;
   dragHandleClassName?: string;
   defaultOrder?: string[];
+  order?: string[];
 };
 
 type State = {
@@ -204,7 +205,6 @@ class SortablePane extends React.Component<SortablePaneProps, State> {
         });
       });
     }
-    const children = this.props.children || [];
     return this.state.panes.map(p => {
       return children.findIndex(c => {
         return p.key === c.key;
@@ -469,8 +469,7 @@ class SortablePane extends React.Component<SortablePaneProps, State> {
       if (!this.props.onOrderChange) return;
       if (!isEqual(panes, newPanes)) {
         if (this.props.onOrderChange) {
-          // this.props.onOrderChange(panes, newPanes);
-          this.props.onOrderChange(newPanes.map(p => p.key));
+          this.props.onOrderChange(newPanes.map(p => String(p.key)));
         }
       }
     }
