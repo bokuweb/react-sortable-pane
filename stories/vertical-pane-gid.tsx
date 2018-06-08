@@ -14,6 +14,7 @@ export default () => {
         border: 'solid 1px #ddd',
         backgroundColor: '#f0f0f0',
       }}
+       grid={[20, 20 * (id + 1)]}
     >
       <p
         style={{
@@ -28,7 +29,7 @@ export default () => {
   ));
   return (
     <div style={{ padding: '10px' }}>
-      <SortablePane direction="vertical" margin={20} defaultOrder={['2', '1', '0']}>
+      <SortablePane direction="vertical" margin={20}>
         {panes}
       </SortablePane>
     </div>
