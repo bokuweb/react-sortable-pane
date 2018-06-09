@@ -3,11 +3,11 @@ import typescript from 'rollup-plugin-typescript2';
 
 export default {
   input: 'src/index.tsx',
-  ignore: ['./stories'],
+  ignore: ['stories'],
   plugins: [
     typescript({
       tsconfig: 'tsconfig.json',
-      exclude: ['*.d.ts', './stories'],
+      exclude: ['*.d.ts', 'stories'],
     }),
     replace({ 'process.env.NODE_ENV': JSON.stringify('production') }),
   ],

@@ -63,7 +63,6 @@
     "build": "npm-run-all --serial build:prod:*",
     "start": "npm run storybook",
     "test": "npm run build",
-    "prepublish": "npm run build",
     "storybook": "start-storybook -p 6096",
     "build-storybook": "build-storybook",
     "format": "prettier-eslint --write --single-quote --semi=true \"src/**/*.js\" ",

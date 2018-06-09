@@ -155,6 +155,10 @@ class SortablePane extends React.Component<SortablePaneProps, State> {
     this.debounceUpdate = debounce(this.updateSize.bind(this), 100);
   }
 
+  // static getDerivedStateFromProps(props, state) {
+  //   if (!isEqual(state.panes.map()))
+  // }
+
   componentDidMount() {
     if (typeof window !== 'undefined' && this.panes) {
       const { panes } = this;
@@ -171,14 +175,29 @@ class SortablePane extends React.Component<SortablePaneProps, State> {
     this.updateSize();
   }
 
-  componentDidUpdate() {
+  componentDidUpdate(prevProps: SortablePaneProps) {
     const { panes } = this.state;
     const children = this.props.children || [];
     if (children.length > panes.length) return this.addPane();
     if (children.length < panes.length) return this.removePane();
-    if (this.sizePropsUpdated) {
-      this.sizePropsUpdated = false;
-      this.updateSize();
+    // if (this.sizePropsUpdated) {
+    //   this.sizePropsUpdated = false;
+    //   this.updateSize();
+    // }
+    if (!isEqual(prevProps.order, this.props.order)) {
+      if (!this.panes) return;
+      const newPanes = (this.props.order || []).map((key: string) => {
+        const index = Array.from(this.props.children).findIndex(c => {
+          return c.key === key;
+        });
+        const { offsetWidth, offsetHeight } = (this.panes as HTMLDivElement).children[index] as HTMLElement;
+        return {
+          width: offsetWidth,
+          height: offsetHeight,
+          key,
+        };
+      });
+      this.setState({ panes: newPanes });
     }
     return undefined;
   }
@@ -501,7 +520,9 @@ class SortablePane extends React.Component<SortablePaneProps, State> {
     const { disableEffect, isSortable } = this.props;
     const children = this.props.children || [];
     return children.map((child, i) => {
-      const pos = this.getItemPositionByIndex(this._order.indexOf(i));
+      const pos = this.props.order
+        ? this.getItemPositionByIndex(this.props.order.indexOf(String(child.key)))
+        : this.getItemPositionByIndex(this._order.indexOf(i));
       const springPosition = spring(pos, springConfig);
       const style =
         lastPressed === i && isPressed && !isResizing

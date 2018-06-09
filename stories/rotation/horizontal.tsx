@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { SortablePane, Pane } from '../src/index';
+import { SortablePane, Pane } from '../../src/index';
 import { Button } from '@storybook/react/demo';
 
 type State = {
@@ -15,17 +15,17 @@ export default class Example extends React.Component<{}, State> {
   }
 
   render() {
-    const panes = [0, 1, 2].map(id => (
+    const panes = [0, 1, 2].map(key => (
       <Pane
-        key={id}
-        width="100%"
-        height={120}
+        key={key}
+        width={120}
+        height="100%"
         style={{
-          display: 'flex' as 'flex',
+          display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
           border: 'solid 1px #ddd',
-          backgroundColor: '#f0f0f0',
+          background: '#f0f0f0',
         }}
       >
         <p
@@ -35,7 +35,7 @@ export default class Example extends React.Component<{}, State> {
             color: '#aaa',
           }}
         >
-          00{id}
+          00{key}
         </p>
       </Pane>
     ));
@@ -49,7 +49,7 @@ export default class Example extends React.Component<{}, State> {
           Rotate
         </Button>
         <SortablePane
-          direction="vertical"
+          direction="horizontal"
           margin={20}
           order={this.state.order}
           onOrderChange={order => {
