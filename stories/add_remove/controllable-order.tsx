@@ -10,7 +10,7 @@ type State = {
   order: string[];
 };
 
-export default class VerticalPaneWithController extends React.Component {
+export default class ControllableOrder extends React.Component {
   id = 3;
   state = {
     list: [],

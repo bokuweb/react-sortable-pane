@@ -7,7 +7,7 @@ type State = {
   order: string[];
 };
 
-export default class Example extends React.Component<{}, State> {
+export default class RotationHorizontal extends React.Component<{}, State> {
   constructor(props) {
     super(props);
     this.state = {

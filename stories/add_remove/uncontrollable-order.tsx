@@ -8,7 +8,7 @@ import { textStyle, paneStyle } from '../styles';
 type State = {
   list: Element[];
 };
-export default class VerticalPaneWithController extends React.Component<{}, State> {
+export default class UncontrollableOrder extends React.Component<{}, State> {
   id = 3;
   state = {
     list: [],
