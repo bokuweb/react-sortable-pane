@@ -6,6 +6,7 @@ import SimpleVertical from './simple/vertical';
 import SimpleHorizontal from './simple/horizontal';
 
 import ControlledOrder from './controlled/order';
+import ControlledSize from './controlled/size';
 
 import RotationVertical from './rotation/vertical';
 import RotationHorizontal from './rotation/horizontal';
@@ -19,7 +20,7 @@ storiesOf('000. Simple (uncontrolled)', module)
 
 storiesOf('001. Controlled', module)
   .add('order only', () => <ControlledOrder />)
-  // .add('horizontal', () => <SimpleHorizontal />);
+  .add('size (height) only', () => <ControlledSize />);
 
 storiesOf('Add & Remove', module)
   .add('uncontrollable order', () => <AddAndRemoveWithUncontrollableOrder />)
