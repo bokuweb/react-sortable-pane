@@ -1,7 +1,7 @@
 /* eslint-disable */
 
-import React from 'react';
-import { SortablePane, Pane } from '../src/components';
+import * as React from 'react';
+import { SortablePane, Pane } from '../src/index';
 import { Button } from '@storybook/react/demo';
 
 const style = {
@@ -13,14 +13,17 @@ const style = {
 };
 
 export default class VerticalPaneWithController extends React.Component {
-  constructor() {
-    super();
+  state = {
+    list: [],
+  }
+
+  constructor(props) {
+    super(props);
     this.id = 3;
     this.state = {
       order: [0, 1, 2],
       list: [0, 1, 2].map(id => (
         <Pane
-          id={id}
           key={id}
           width="100%"
           height={120}
@@ -43,8 +46,7 @@ export default class VerticalPaneWithController extends React.Component {
   add() {
     this.state.list.splice(~~(Math.random() * this.state.list.length), 0, (
       <Pane
-        id={++this.id}
-        key={this.id}
+        key={this.id++}
         width="100%"
         height={120}
         style={style}
@@ -76,20 +78,6 @@ export default class VerticalPaneWithController extends React.Component {
         <SortablePane
           direction="vertical"
           margin={20}
-          onResize={(e, id, panes, data) => {
-            console.log('onResize', e, id, panes, data);
-          }}
-          onResizeStart={(e, id, panes) => {
-            console.log('onResizeStart', e, id, panes);
-          }}
-          onResizeStop={(e, id, panes, data) => {
-            console.log('onResizeStop', e, id, panes, data);
-          }}
-          onOrderChange={(panes, next) => {
-            console.log('onOrderChange', panes, next);
-          }}
-          onDragStart={(e, id, panes) => console.log('onDragStart', e, id, panes)}
-          onDragStop={(e, id, panes) => console.log('onDragStop', e, id, panes)}
         >
           {this.state.list}
         </SortablePane>

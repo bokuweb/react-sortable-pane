@@ -4,12 +4,16 @@ import './styles.css';
 import VerticalPane from './vertical-pane-basic';
 import RotationVertical from './rotation/vertical';
 import RotationHorizontal from './rotation/horizontal';
+
+import C from './vertical-pane-with-controller';
 // import HorizontalPane from './horizontal-pane-basic';
 // import VerticalPaneWithHandle from './vertical-pane-with-handle';
 // import VerticalPercentPanes from './vertical-percent-panes';
 // import VerticalPaneWithController from './vertical-pane-with-controller';
 
 storiesOf('SortablePane', module).add('vertical pane basic', () => <VerticalPane />);
+
+storiesOf('SortablePane/C', module).add('vertical pane basic', () => <C />);
 
 storiesOf('SortablePane/Rotation', module)
   .add('horizontal', () => <RotationHorizontal />)

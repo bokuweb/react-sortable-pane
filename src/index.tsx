@@ -379,8 +379,8 @@ class SortablePane extends React.Component<SortablePaneProps, State> {
     const newPanes = this.state.panes;
     const children = this.props.children || [];
     children.forEach((child, i) => {
-      const ids = this.state.panes.map(pane => pane.key);
-      if (ids.indexOf(child.props.id) === -1) {
+      const keys = this.state.panes.map(pane => pane.key);
+      if (keys.indexOf(child.key) === -1) {
         const { key } = child;
         const { panes } = this;
         if (!panes) return;
@@ -389,6 +389,7 @@ class SortablePane extends React.Component<SortablePaneProps, State> {
         newPanes.splice(i, 0, pane);
       }
     });
+    console.log('add', newPanes, children)
     this.setState({ panes: newPanes });
   }
 
@@ -519,6 +520,7 @@ class SortablePane extends React.Component<SortablePaneProps, State> {
     const { mouse, isPressed, lastPressed, isResizing } = this.state;
     const { disableEffect, isSortable } = this.props;
     const children = this.props.children || [];
+    // console.log(children)
     return children.map((child, i) => {
       const pos = this.props.order
         ? this.getItemPositionByIndex(this.props.order.indexOf(String(child.key)))
@@ -538,8 +540,9 @@ class SortablePane extends React.Component<SortablePaneProps, State> {
               x: this.isHorizontal() ? springPosition : 0,
               y: !this.isHorizontal() ? springPosition : 0,
             };
+            // console.log(this._order)
       return (
-        <Motion style={style} key={child.props.id}>
+        <Motion style={style} key={child.props.key}>
           {({ scale, shadow, x, y }) => {
             const onResize = this.onResize.bind(this, i);
             const onMouseDown = isSortable ? this.handleMouseDown.bind(this, i, x, y) : () => null;
