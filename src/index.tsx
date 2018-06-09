@@ -53,11 +53,6 @@ export type PaneResizeData = {
   delta: PaneSize;
 };
 
-// export type IdWithPanes = {
-//   key: PaneKey;
-//   panes: PaneProperty[];
-// };
-
 export type SortablePaneProps = {
   direction?: 'horizontal' | 'vertical';
   margin?: number;

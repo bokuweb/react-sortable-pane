@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { SortablePane, Pane } from '../../src/index';
 import { Button } from '@storybook/react/demo';
+import { textStyle, paneStyle } from '../styles';
 
 type State = {
   order: string[];
@@ -16,27 +17,8 @@ export default class Example extends React.Component<{}, State> {
 
   render() {
     const panes = [0, 1, 2].map(key => (
-      <Pane
-        key={key}
-        width={120}
-        height="100%"
-        style={{
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          border: 'solid 1px #ddd',
-          background: '#f0f0f0',
-        }}
-      >
-        <p
-          style={{
-            fontSize: '32px',
-            fontWeight: 'bold',
-            color: '#aaa',
-          }}
-        >
-          00{key}
-        </p>
+      <Pane key={key} width={120} height="100%" style={paneStyle}>
+        <p style={textStyle}>00{key}</p>
       </Pane>
     ));
     return (

@@ -3,38 +3,27 @@
 import * as React from 'react';
 import { SortablePane, Pane } from '../../src/index';
 import { Button } from '@storybook/react/demo';
+import { textStyle, paneStyle } from '../styles';
 
-const style = {
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'center',
-  border: 'solid 1px #ddd',
-  background: '#f0f0f0',
+type State = {
+  list: Element[];
+  order: string[];
 };
 
 export default class VerticalPaneWithController extends React.Component {
+  id = 3;
+  state = {
+    list: [],
+    order: [],
+  };
 
   constructor(props) {
     super(props);
-    this.id = 3;
     this.state = {
-      order: ['0', '1', '2'],
+      order: ['hoge0', 'hoge1', 'hoge2'],
       list: [0, 1, 2].map(id => (
-        <Pane
-          key={id}
-          width="100%"
-          height={120}
-          style={style}
-        >
-          <p
-            style={{
-              fontSize: '32px',
-              fontWeight: 'bold',
-              color: '#aaa',
-            }}
-          >
-            00{id}
-          </p>
+        <Pane key={`hoge${id}`} width="100%" height={120} style={paneStyle}>
+          <p style={textStyle}>00{id}</p>
         </Pane>
       )),
     };
@@ -42,32 +31,20 @@ export default class VerticalPaneWithController extends React.Component {
 
   add() {
     const order = [String(this.id), ...this.state.order];
-    this.state.list.splice(~~(Math.random() * this.state.list.length), 0, (
-      <Pane
-        key={this.id}
-        width="100%"
-        height={120}
-        style={style}
-      >
-        <p
-          style={{
-            fontSize: '32px',
-            fontWeight: 'bold',
-            color: '#aaa',
-          }}
-        >
-          00{this.id++}
-        </p>
-      </Pane>
-    ));
+    this.state.list.splice(
+      ~~(Math.random() * this.state.list.length),
+      0,
+      <Pane key={this.id} width="100%" height={120} style={paneStyle}>
+        <p style={textStyle}>00{this.id++}</p>
+      </Pane>,
+    );
     this.setState({ list: this.state.list, order });
   }
 
   remove() {
     const index = ~~(Math.random() * this.state.list.length);
-    const a = this.state.list.splice(index, 1);
-    console.log('aaa', a[0].key)
-    const order = this.state.order.filter(o => o !== a[0].key);
+    const pane = this.state.list.splice(index, 1);
+    const order = this.state.order.filter(o => o !== pane[0].key);
     this.setState({ list: this.state.list, order });
   }
 
