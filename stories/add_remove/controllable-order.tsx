@@ -22,7 +22,7 @@ export default class VerticalPaneWithController extends React.Component {
     this.state = {
       order: ['hoge0', 'hoge1', 'hoge2'],
       list: [0, 1, 2].map(id => (
-        <Pane key={`hoge${id}`} width="100%" height={120} style={paneStyle}>
+        <Pane key={`hoge${id}`} defaultSize={{ width: '100%', height: 120 }} style={paneStyle}>
           <p style={textStyle}>00{id}</p>
         </Pane>
       )),
@@ -34,7 +34,7 @@ export default class VerticalPaneWithController extends React.Component {
     this.state.list.splice(
       ~~(Math.random() * this.state.list.length),
       0,
-      <Pane key={this.id} width="100%" height={120} style={paneStyle}>
+      <Pane key={this.id} defaultSize={{ width: '100%', height: 120 }} style={paneStyle}>
         <p style={textStyle}>00{this.id++}</p>
       </Pane>,
     );

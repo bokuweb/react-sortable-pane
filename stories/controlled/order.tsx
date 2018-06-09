@@ -6,14 +6,14 @@ type State = {
   order: string[];
 };
 
-export default class Example extends React.Component<{}, State> {
+export default class ControlledOrder extends React.Component<{}, State> {
   state = {
     order: ['2', '1', '0'],
   };
 
   render() {
     const panes = [0, 1, 2].map(key => (
-      <Pane key={key} width="100%" height={120} style={paneStyle}>
+      <Pane key={key} defaultSize={{ width: '100%', height: 120 }} style={paneStyle}>
         <p style={textStyle}>00{key}</p>
       </Pane>
     ));

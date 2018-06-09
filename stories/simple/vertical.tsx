@@ -4,7 +4,7 @@ import { textStyle, paneStyle } from '../styles';
 
 export default function SimpleVertical() {
   const panes = [0, 1, 2].map(key => (
-    <Pane key={key} width="100%" height={120} style={paneStyle}>
+    <Pane key={key} defaultSize={{ width: '100%', height: 120 }} style={paneStyle}>
       <p style={textStyle}>00{key}</p>
     </Pane>
   ));

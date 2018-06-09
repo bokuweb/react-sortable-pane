@@ -17,7 +17,7 @@ export default class Example extends React.Component<{}, State> {
 
   render() {
     const panes = [0, 1, 2].map(id => (
-      <Pane key={id} width="100%" height={120} style={paneStyle}>
+      <Pane key={id} defaultSize={{ width: '100%', height: 120 }} style={paneStyle}>
         <p style={textStyle}>00{id}</p>
       </Pane>
     ));

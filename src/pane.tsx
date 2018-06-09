@@ -8,8 +8,14 @@ export type IsPaneResizable = {
 };
 
 export type PaneProps = {
-  width?: string | number;
-  height?: string | number;
+  defaultSize?: {
+    width?: string | number;
+    height?: string | number;
+  };
+  size?: {
+    width?: string | number;
+    height?: string | number;
+  };
   minWidth?: number;
   maxWidth?: number;
   minHeight?: number;
@@ -21,31 +27,24 @@ export type PaneProps = {
   grid?: [number, number];
 };
 
-/*
-export default class Pane extends React.Component<PaneProps> {
-  static defaultProps = {
-    minWidth: 0,
-    minHeight: 0,
-    maxWidth: undefined,
-    maxHeight: undefined,
-    style: {},
-    className: '',
-    isResizable: {
-      x: true,
-      y: true,
-      xy: true,
-    },
-    children: '',
-  };
-
-  render() {
-    return <div className={this.props.className}>{this.props.children}</div>;
-  }
-}
-*/
-
 export const Pane: React.SFC<PaneProps> = (props: PaneProps) => {
-  return <Resizable {...props}>{props.children}</Resizable>;
+  return (
+    <Resizable
+      {...props}
+      enable={{
+        top: false,
+        right: props.isResizable && props.isResizable.x,
+        bottom: props.isResizable && props.isResizable.y,
+        left: false,
+        topRight: false,
+        bottomRight: props.isResizable && props.isResizable.xy,
+        bottomLeft: false,
+        topLeft: false,
+      }}
+    >
+      {props.children}
+    </Resizable>
+  );
 };
 
 Pane.defaultProps = {
