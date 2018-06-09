@@ -454,7 +454,6 @@ class SortablePane extends React.Component<SortablePaneProps, State> {
       }
     }
     let delta = 0;
-    //     if (window && window.TouchEvent && e.nativeEvent instanceof window.TouchEvent) {
     if (window && TouchEvent && e.nativeEvent instanceof TouchEvent) {
       const event = e.nativeEvent.touches[0];
       delta = this.isHorizontal() ? event.pageX - pressX : event.pageY - pressY;
@@ -519,7 +518,6 @@ class SortablePane extends React.Component<SortablePaneProps, State> {
     const { mouse, isPressed, lastPressed, isResizing } = this.state;
     const { disableEffect, isSortable } = this.props;
     const children = this.props.children || [];
-    console.log('-------', children, this.panes, this.props.order)
     return children.map((child, i) => {
       const pos = this.props.order
         ? this.getItemPositionByIndex(this.props.order.indexOf(String(child.key)))
@@ -539,7 +537,6 @@ class SortablePane extends React.Component<SortablePaneProps, State> {
               x: this.isHorizontal() ? springPosition : 0,
               y: !this.isHorizontal() ? springPosition : 0,
             };
-      // console.log(this.order)
       return (
         <Motion style={style} key={child.props.key}>
           {({ scale, shadow, x, y }) => {
@@ -548,18 +545,6 @@ class SortablePane extends React.Component<SortablePaneProps, State> {
             const onTouchStart = this.handleTouchStart.bind(this, i, x, y);
             const onResizeStart = this.handleResizeStart.bind(this, i);
             const onResizeStop = this.handleResizeStop.bind(this, i);
-            const userSelect =
-              isPressed || isResizing
-                ? {
-                    userSelect: 'none' as 'none',
-                  }
-                : {
-                    userSelect: 'auto' as 'auto',
-                  };
-
-            // take a copy rather than direct-manipulating the child's prop, which violates React
-            // and causes problems if the child's prop is a static default {}, which then will be
-            // shared across all children!
             const style = {
               ...child.props.style,
               boxShadow: `rgba(0, 0, 0, 0.2) 0px ${shadow}px ${2 * shadow}px 0px`,
@@ -571,7 +556,7 @@ class SortablePane extends React.Component<SortablePaneProps, State> {
                 ? 999999
                 : (child.props.style && child.props.style.zIndex) || 'auto') as 'auto' | number,
               position: 'absolute' as 'absolute',
-              ...userSelect,
+              userSelect: isPressed || isResizing ? ('none' as 'none') : ('auto' as 'auto'),
             };
             return React.cloneElement(child, {
               onMouseDown,
