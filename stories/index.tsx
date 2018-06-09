@@ -5,7 +5,8 @@ import VerticalPane from './vertical-pane-basic';
 import RotationVertical from './rotation/vertical';
 import RotationHorizontal from './rotation/horizontal';
 
-import C from './vertical-pane-with-controller';
+import AddAndRemoveWithUncontrollableOrder from './add_remove/uncontrollable-order';
+import AddAndRemoveWithControllableOrder from './add_remove/controllable-order';
 // import HorizontalPane from './horizontal-pane-basic';
 // import VerticalPaneWithHandle from './vertical-pane-with-handle';
 // import VerticalPercentPanes from './vertical-percent-panes';
@@ -13,9 +14,11 @@ import C from './vertical-pane-with-controller';
 
 storiesOf('SortablePane', module).add('vertical pane basic', () => <VerticalPane />);
 
-storiesOf('SortablePane/C', module).add('vertical pane basic', () => <C />);
+storiesOf('Add & Remove', module)
+  .add('uncontrollable order', () => <AddAndRemoveWithUncontrollableOrder />)
+  .add('controllable order', () => <AddAndRemoveWithControllableOrder />);
 
-storiesOf('SortablePane/Rotation', module)
+storiesOf('Rotation', module)
   .add('horizontal', () => <RotationHorizontal />)
   .add('vertical', () => <RotationVertical />);
 // .add('horizontal basic pane basic', () => <HorizontalPane />)
