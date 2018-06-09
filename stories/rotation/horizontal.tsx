@@ -25,7 +25,9 @@ export default class Example extends React.Component<{}, State> {
       <div style={{ padding: '10px' }}>
         <Button
           onClick={() => {
-            this.setState({ order: this.state.order.map(o => String((Number(o) + 1) % this.state.order.length)) });
+            const order = [...this.state.order];
+            order.unshift(order.pop());
+            this.setState({ order });
           }}
         >
           Rotate
