@@ -17,17 +17,20 @@
 
 ## Table of Contents
 
-
-* [Screenshot](#Screenshot)
-* [Live Demo](#live-demo)
-  * [Storybook](#storybook)
-  * [CodeSandbox](#codesandbox)
-* [Install](#install)
-* [Usage](#usage)
-* [Props](#props)
-* [Test](#test)
-* [Changelog](#changelog)
-* [License](#license)
+- [Screenshot](#Screenshot)
+- [Live Demo](#live-demo)
+  - [Storybook](#storybook)
+  - [CodeSandbox](#codesandbox)
+- [Install](#install)
+- [Usage](#usage)
+  - [uncontrolled](#uncontrolled)
+  - [controlled](#controlled)
+- [Props](#props)
+  - [SortablePaneComponent](#sortablepanecomponent)
+  - [PaneComponent](#panecomponent)
+- [Test](#test)
+- [Changelog](#changelog)
+- [License](#license)
 
 ## Screenshot
 
@@ -43,14 +46,13 @@
 
 [CodeSandbox](https://codesandbox.io/s/7345yp2yn6)
 
-
 ## Install
 
 ```sh
 npm i react-sortable-pane
 ```
 
-or 
+or
 
 ```sh
 yarn add react-sortable-pane
@@ -58,38 +60,87 @@ yarn add react-sortable-pane
 
 ## Usage
 
-``` javascript
-import React from 'react';
+### Uncontrolled
+
+If you need not to control `SortablePane` state, please use `defaultSize` and `defaultOrder`.
+
+```typescript
+import * as React from 'react';
 import { SortablePane, Pane } from 'react-sortable-pane';
 
-export default () => {
+export default function SimpleUncontrolledExample() {
+  const panes = [0, 1, 2].map(key => (
+    <Pane key={key} defaultSize={{ width: '100%', height: 120 }}>
+      00{key}
+    </Pane>
+  ));
   return (
     <div>
-      <SortablePane
-        direction="horizontal"
-        margin={20}    
-      >
-        <Pane id={0} key={0} width={120} height="100%">
-          <p>0</p>
-        </Pane>
-        <Pane id={1} key={1} width={120} height="100%">
-          <p>1</p>
-        </Pane>          
+      <SortablePane direction="vertical" margin={20} defaultOrder={['0', '1', '2']}>
+        {panes}
       </SortablePane>
     </div>
   );
+}
+```
+
+### Controlled
+
+If you need to control `SortablePane`state by yourself, please use `size` and `order`.
+
+```typescript
+import * as React from 'react';
+import { SortablePane, Pane } from 'react-sortable-pane';
+
+type State = {
+  order: string[];
+  panes: { [key: string]: { height: number } };
 };
+
+export default class SimpleControlledFullExample extends React.Component<{}, State> {
+  state = {
+    order: ['2', '1', '0'],
+    panes: { '0': { height: 100 }, '1': { height: 200 }, '2': { height: 300 } },
+  };
+
+  render() {
+    const panes = [0, 1, 2].map(key => (
+      <Pane key={key} size={{ width: '100%', height: this.state.panes[key].height }}>
+        00{key}
+      </Pane>
+    ));
+    return (
+      <div>
+        <SortablePane
+          direction="vertical"
+          margin={20}
+          order={this.state.order}
+          onOrderChange={order => {
+            this.setState({ order });
+          }}
+          onResizeStop={(e, key, dir, ref, d) => {
+            this.setState({
+              panes: { ...this.state.panes, [key]: { height: this.state.panes[key].height + d.height } },
+            });
+          }}
+        >
+          {panes}
+        </SortablePane>
+      </div>
+    );
+  }
+}
 ```
 
 ## Props
 
-### `SortablePane` Component
+### SortablePaneComponent
 
 #### `className?: string`
 
 The `className` property is used to set the css `className` of a component.
 
-#### `style?: {[key: string]: string }`
+#### `style?: React.CssProperties`
 
 The `style` property is used to set the style of a component.
 
@@ -103,10 +154,6 @@ If omitted the default direction is `'horizontal'`.
 The `margin` property is used to set the margin between `Pane` component.
 If omitted the default margin is `0`.
 
-#### `grid?: [number, number];`
-
-The `grid` property is used to specify the increments that resizing should snap to. Defaults to `[1, 1]`.
-
 #### `isSortable?: boolean`
 
 The `isSortable` property is used to control whether panes can be dragged or not.
@@ -115,105 +162,73 @@ If omitted, the default value is `true`.
 #### `disableEffect?: boolean`
 
 The `disableEffect` property is used to disable floating effect.
-If omitted the default margin is `false`.
+If omitted the default value is `false`.
 
 #### `dragHandleClassName?: string`
 
 The `dragHandleClassName` property is a class name of an element which should handle drag events for panes.
 
-#### `onOrderChange?: (oldPanes: PaneProperty[], newPanes: PaneProperty[]) => void`
+#### `onOrderChange?: (order: string[]) => void`
 
-It is called when `Pane` component order changed.
+It is called when `Pane` component order changed. The argument `order` is array of react element's `key`.
 
-`PaneProperty` definition is below.
-
-``` js
-type PaneProperty = $Exact<{
-  id: PaneId;
-  width: number | string;
-  height: number | string;
-}>
-```
-
-#### `onResizeStart?: (e: SyntheticMouseEvent | SyntheticTouchEvent, id: PaneId, panes: PaneProperty[]) => void`
+#### `onResizeStart?: (e: React.MouseEvent<HTMLElement> | React.TouchEvent<HTMLElement>, key: string, dir: PaneResizeDirection) => void`
 
 It is called when `Pane` component resize start.
 
-#### `onResize?: (e: SyntheticMouseEvent | SyntheticTouchEvent, id: PaneId, panes: PaneProperty[], data: PaneResizeData) => void`
+#### `onResize?: (e: MouseEvent | TouchEvent, key: string, dir: PaneResizeDirection, elementRef: HTMLElement, delta: PaneSize) => void`
 
 It is called when `Pane` component resize.
 
-`PaneResizeData` definition is below.
-
-``` js
-type PaneResizeData = $Exact<{
-  pane: PaneProperty;
-  direction: $Values<typeof directionDict>; // 'x' | 'y' | 'xy'
-  delta: PaneSize;                          // { width: number; height: number }
-}>
-```
-
-#### `onResizeStop?: (e: SyntheticMouseEvent | SyntheticTouchEvent, id: PaneId, panes: PaneProperty[], data: PaneResizeData) => void`
+#### `onResizeStop?: (e: MouseEvent | TouchEvent, key: string, dir: PaneResizeDirection, elementRef: HTMLElement, delta: PaneSize) => void`
 
 It is called when `Pane` component resize stop.
 
-`PaneResizeData` definition is below.
-
-``` js
-type PaneResizeData = $Exact<{
-  pane: PaneProperty;
-  direction: $Values<typeof directionDict>; // 'x' | 'y' | 'xy'
-  delta: PaneSize;                          // { width: number; height: number }
-}>
-```
-
-#### `onDragStart?: (e: SyntheticMouseEvent | SyntheticTouchEvent, id: PaneId, panes: PaneProperty[]) => void`
+#### `onDragStart?: (e: React.MouseEvent<HTMLElement> | React.TouchEvent<HTMLElement>,  key: string, elementRef: HTMLElement) => void`
 
 It is called when `Pane` component dragging starts.
 
-#### `onDragStop?: (e: SyntheticMouseEvent | SyntheticTouchEvent, id: PaneId, panes: PaneProperty[]) => void`
+#### `onDragStop?: (e: MouseEvent | TouchEvent, key: PaneKey, elementRef: HTMLElement) => void`
 
 It is called when `Pane` component dragging stop.
 
-## Pane Component
+## PaneComponent
 
-#### `id: string | number`
+#### `defaultSize?: { width?: (number | string), height?: (number | string) }`;
 
-The `id` property is used to `Pane` component id.
+Specifies the width and height that the dragged item should start at. For example, you can set 300, '300px', 50%. If both defaultSize and size omitted, set 'auto'.
+defaultSize will be ignored when size set.
 
-#### `width:? number | string`
+#### `size?: { width?: (number | string), height?: (number | string) }`;
 
-The `width` property is used to set the width of a Pane component.
-For example, it can be 300, '300px', or 50%.
-If ommited, set `auto`.
+The size property is used to set the size of the component. For example, you can set 300, '300px', 50%.
+Use size if you need to control size state by yourself.
 
-#### `height:? number | string`
+#### `minWidth?: number | string;`
 
-The `height` property is used to set the width of a Pane component.
-For example, it can be 300, '300px', or 50%.
-If ommited, set `auto`.
+The `minWidth` property is used to set the minimum width of a Pane component. Defaults to 10px.
 
-#### `minWidth?: number`
+#### `minHeight?: number | string;`
 
-The `minWidth` property is used to set the minimum width of a Pane component.
+The `minHeight` property is used to set the minimum height of a Pane component. Defaults to 10px.
 
-#### `minHeight?: number`
-
-The `minHeight` property is used to set the minimum height of a Pane component.
-
-#### `maxWidth?: number`
+#### `maxWidth?: number | string;`
 
 The `maxWidth` property is used to set the maximum width of a Pane component.
 
-#### `maxHeight?: number`
+#### `maxHeight?: number | string`;
 
 The `maxHeight` property is used to set the maximum height of a Pane component.
+
+#### `grid?: [number, number];`
+
+The `grid` property is used to specify the increments that resizing should snap to. Defaults to `[1, 1]`.
 
 #### `className?: string`
 
 The `className` property is used to set the css classname of a Pane component.
 
-#### `style?: {[key: string]: string }`
+#### `style?: React.CssProperties`
 
 The `style` property is used to set the style of a Pane component.
 
@@ -227,6 +242,13 @@ If you want to permit only x direction resizing, please set `{ x: true, y: false
 
 ## Changelog
 
+### V1.0.0-beta.0
+
+- feat: Use `TypeScript` instead of `flowtype`.
+- feat: Add `defaultSize`, `defaultOrder`, `order`, `size` props to control(or uncontrol) `SortablePane` state. 
+- fix: Some tiny bugs.
+- chore: Add some stories.
+
 ### V0.8.2
 
 - chore: update deps.
@@ -234,7 +256,7 @@ If you want to permit only x direction resizing, please set `{ x: true, y: false
 ### V0.8.1
 
 - fix: add hysteresis and fix sort position
-- fix: add mouseleave to panes node 
+- fix: add mouseleave to panes node
 
 ### V0.8.0
 
@@ -283,7 +305,7 @@ If you want to permit only x direction resizing, please set `{ x: true, y: false
 
 ### V0.5.4
 
-- Support server side rendering. #50 thanks @lazreg87 
+- Support server side rendering. #50 thanks @lazreg87
 
 ### V0.5.3
 
@@ -291,7 +313,7 @@ If you want to permit only x direction resizing, please set `{ x: true, y: false
 
 ### V0.5.2
 
-- Use babel-preset-es2015-ie  babel-preset-es2015-ie #47 thanks @PabloDiablo
+- Use babel-preset-es2015-ie babel-preset-es2015-ie #47 thanks @PabloDiablo
 
 ### V0.5.1
 
@@ -393,7 +415,7 @@ publised.
 
 The MIT License (MIT)
 
-Copyright (c) 2018 @Bokuweb
+Copyright (c) 2018 @bokuweb
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 

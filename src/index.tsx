@@ -55,7 +55,6 @@ export type SortablePaneProps = {
   direction?: 'horizontal' | 'vertical';
   margin?: number;
   style?: React.CSSProperties;
-  children: React.ReactElement<PaneProps>[];
   onResize?: (
     e: MouseEvent | TouchEvent,
     key: PaneKey,
@@ -88,6 +87,7 @@ export type SortablePaneProps = {
   dragHandleClassName?: string;
   defaultOrder?: string[];
   order?: string[];
+  children: React.ReactElement<PaneProps>[];
 };
 
 type State = {
@@ -155,7 +155,7 @@ class SortablePane extends React.Component<SortablePaneProps, State> {
     this.handleTouchMove = this.handleTouchMove.bind(this);
     this.handleMouseUp = this.handleMouseUp.bind(this);
     this.handleMove = this.handleMove.bind(this);
-    this.debounceUpdate = debounce((() => this.forceUpdate()), 100);
+    this.debounceUpdate = debounce(() => this.forceUpdate(), 100);
   }
 
   componentDidMount() {
