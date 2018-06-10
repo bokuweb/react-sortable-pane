@@ -16,6 +16,8 @@ import RotationHorizontal from './rotation/horizontal';
 import AddAndRemoveWithUncontrollableOrder from './add_remove/uncontrollable-order';
 import AddAndRemoveWithControllableOrder from './add_remove/controllable-order';
 
+import PanePropsGrid from './pane_props/grid';
+
 storiesOf('000. Simple (uncontrolled)', module)
   .add('vertical', () => <SimpleVertical />)
   .add('horizontal', () => <SimpleHorizontal />);
@@ -24,13 +26,14 @@ storiesOf('001. Controlled', module)
   .add('order only', () => <ControlledOrder />)
   .add('size (height) only', () => <ControlledSize />);
 
-storiesOf('002. SizeUpDown', module)
-  .add('horizontal', () => <SizeUpDownHorizontal />);
+storiesOf('002. SizeUpDown', module).add('horizontal', () => <SizeUpDownHorizontal />);
 
-storiesOf('Add & Remove', module)
+storiesOf('003. Add & Remove', module)
   .add('uncontrollable order', () => <AddAndRemoveWithUncontrollableOrder />)
   .add('controllable order', () => <AddAndRemoveWithControllableOrder />);
 
-storiesOf('Rotation', module)
+storiesOf('004. Rotation', module)
   .add('horizontal', () => <RotationHorizontal />)
   .add('vertical', () => <RotationVertical />);
+
+storiesOf('005. Pane props', module).add('grid', () => <PanePropsGrid />);
