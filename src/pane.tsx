@@ -1,5 +1,6 @@
 import * as React from 'react';
 import Resizable from 're-resizable';
+import isEqual from 'lodash.isequal';
 
 export type IsPaneResizable = {
   x?: boolean;
@@ -25,39 +26,48 @@ export type PaneProps = {
   children?: string | React.ReactNode;
   isResizable?: IsPaneResizable;
   grid?: [number, number];
+  onSizeChange?: () => void;
 };
 
-export const Pane: React.SFC<PaneProps> = (props: PaneProps) => {
-  return (
-    <Resizable
-      {...props}
-      enable={{
-        top: false,
-        right: props.isResizable && props.isResizable.x,
-        bottom: props.isResizable && props.isResizable.y,
-        left: false,
-        topRight: false,
-        bottomRight: props.isResizable && props.isResizable.xy,
-        bottomLeft: false,
-        topLeft: false,
-      }}
-    >
-      {props.children}
-    </Resizable>
-  );
-};
+export class Pane extends React.Component<PaneProps> {
+  static defaultProps = {
+    minWidth: 0,
+    minHeight: 0,
+    maxWidth: undefined,
+    maxHeight: undefined,
+    style: {},
+    className: '',
+    grid: [1, 1],
+    isResizable: {
+      x: true,
+      y: true,
+      xy: true,
+    },
+  };
 
-Pane.defaultProps = {
-  minWidth: 0,
-  minHeight: 0,
-  maxWidth: undefined,
-  maxHeight: undefined,
-  style: {},
-  className: '',
-  grid: [1, 1],
-  isResizable: {
-    x: true,
-    y: true,
-    xy: true,
-  },
-};
+  componentDidUpdate(prevProps: PaneProps) {
+    if (isEqual(prevProps.size, this.props.size)) return;
+    if (!this.props.onSizeChange) return;
+    this.props.onSizeChange();
+  }
+
+  render() {
+    return (
+      <Resizable
+        {...this.props}
+        enable={{
+          top: false,
+          right: this.props.isResizable && this.props.isResizable.x,
+          bottom: this.props.isResizable && this.props.isResizable.y,
+          left: false,
+          topRight: false,
+          bottomRight: this.props.isResizable && this.props.isResizable.xy,
+          bottomLeft: false,
+          topLeft: false,
+        }}
+      >
+        {this.props.children}
+      </Resizable>
+    );
+  }
+}
