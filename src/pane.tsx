@@ -27,6 +27,7 @@ export type PaneProps = {
   isResizable?: IsPaneResizable;
   grid?: [number, number];
   onSizeChange?: () => void;
+  [otherProps: string]: any;
 };
 
 export class Pane extends React.Component<PaneProps> {
