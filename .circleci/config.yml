@@ -15,15 +15,15 @@ jobs:
       - run:
           name: Install dependencies
           command: yarn
-      - run:
-          name: Lint
-          command: yarn run lint
+      # - run:
+      #     name: Lint
+      #     command: yarn run lint
       - run:
           name: Test
           command: yarn run test
-      - run:
-          name: Screener test
-          command: yarn run test-storybook
+      #- run:
+      #    name: Screener test
+      #    command: yarn run test-storybook
   deploy:
     <<: *defaults
     steps:
