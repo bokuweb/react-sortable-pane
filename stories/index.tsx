@@ -7,6 +7,7 @@ import SimpleHorizontal from './simple/horizontal';
 
 import ControlledOrder from './controlled/order';
 import ControlledSize from './controlled/size';
+import ControlledFull from './controlled/full';
 
 import SizeUpDownHorizontal from './size_up_down/horizontal';
 
@@ -24,7 +25,8 @@ storiesOf('000. Simple (uncontrolled)', module)
 
 storiesOf('001. Controlled', module)
   .add('order only', () => <ControlledOrder />)
-  .add('size (height) only', () => <ControlledSize />);
+  .add('size (height) only', () => <ControlledSize />)
+  .add('full', () => <ControlledFull />);
 
 storiesOf('002. SizeUpDown', module).add('horizontal', () => <SizeUpDownHorizontal />);
 
