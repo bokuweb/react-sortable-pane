@@ -6,7 +6,7 @@
   "module": "./lib/react-sortable-pane.js",
   "jsnext:main": "./lib/react-sortable-pane.js",
   "description": "",
-  "types": "./lib/src/index.d.ts",
+  "types": "./lib/index.d.ts",
   "keywords": [
     "React"
   ],
