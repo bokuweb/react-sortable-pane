@@ -30,7 +30,7 @@
     "resize-observer-polyfill": "^1.5.0"
   },
   "devDependencies": {
-    "@storybook/react": "3.4.0",
+    "@storybook/react": "3.4.7",
     "babel-core": "6.26.0",
     "babel-eslint": "8.2.2",
     "babel-plugin-external-helpers": "6.22.0",
