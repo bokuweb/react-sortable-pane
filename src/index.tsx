@@ -7,6 +7,7 @@ import debounce from 'lodash.debounce';
 import { Pane } from './pane';
 
 const MAXIMUM_Z_INDEX = 2147483647;
+const HYSTERESIS = 10;
 
 function reinsert<T>(array: Array<T>, from: number, to: number): Array<T> {
   const a = array.slice(0);
@@ -41,8 +42,6 @@ export type PaneSize = { width: number; height: number };
 
 export type PaneProperty = {
   key: PaneKey;
-  // width: number | string;
-  // height: number | string;
   ref: Element | null;
 };
 
@@ -97,8 +96,6 @@ type State = {
   isResizing: boolean;
   panes: Array<PaneProperty>;
 };
-
-const HYSTERESIS = 10;
 
 class SortablePane extends React.Component<SortablePaneProps, State> {
   panesWrapper!: HTMLDivElement;
@@ -156,7 +153,7 @@ class SortablePane extends React.Component<SortablePaneProps, State> {
     this.handleTouchMove = this.handleTouchMove.bind(this);
     this.handleMouseUp = this.handleMouseUp.bind(this);
     this.handleMove = this.handleMove.bind(this);
-    this.debounceUpdate = debounce(this.updateSize.bind(this), 100);
+    this.debounceUpdate = debounce(this.forceUpdate.bind(this), 100);
   }
 
   componentDidMount() {
@@ -172,36 +169,15 @@ class SortablePane extends React.Component<SortablePaneProps, State> {
     if (this.panesWrapper && this.panesWrapper.parentElement instanceof Element) {
       this.resizeObserver.observe(this.panesWrapper);
     }
-    // this.updateSize();
-
-    //////////////////////////
     if (!this.panesWrapper || !this.panesWrapper.children) return;
     const panes = [].slice.apply(this.panesWrapper.children) || [];
     const newPanes = this.panes.map((pane, i) => {
-      // console.log(pane.key, this.order.indexOf(i));
-      // const { offsetWidth, offsetHeight } = panes[this.order.indexOf(i)] as HTMLElement;
       return {
         key: pane.key,
-        // width: offsetWidth,
-        // height: offsetHeight,
         ref: panes[this.order.indexOf(i)],
       };
     });
-    // const newPanes = this.panes.map((pane, i) => {
-    //   // if (child.key !== pane.key) return pane;
-    //   const p = panes[this.order.indexOf(i)];
-    //   const { offsetWidth, offsetHeight } = p as HTMLElement;
-    //   return {
-    //     key: pane.key,
-    //     width: offsetWidth,
-    //     height: offsetHeight,
-    //   };
-    // });
-
-    console.log('update size', this.panes, newPanes);
-    // if (!isEqual(newPanes, this.panes))  {
     this.setState({ panes: newPanes });
-    //}
   }
 
   componentDidUpdate(prevProps: SortablePaneProps) {
@@ -215,10 +191,7 @@ class SortablePane extends React.Component<SortablePaneProps, State> {
         const index = Array.from(this.props.children).findIndex(c => {
           return c.key === key;
         });
-        // const { offsetWidth, offsetHeight } = this.panesWrapper.children[index] as HTMLElement;
         return {
-          // width: offsetWidth,
-          // height: offsetHeight,
           ref: this.panesWrapper.children[index],
           key,
         };
@@ -262,21 +235,8 @@ class SortablePane extends React.Component<SortablePaneProps, State> {
   }
 
   onResize(i: number, e: MouseEvent | TouchEvent, dir: ResizableDirection, elementRef: HTMLElement, delta: PaneSize) {
-    let { panes } = this.state;
-    // panes = panes.map((pane: PaneProperty, index: number) => {
-    //   if (this.order.indexOf(i) === index && this.panesWrapper) {
-    //     const { offsetWidth, offsetHeight } = this.panesWrapper.children[i] as HTMLDivElement;
-    //     return {
-    //       width: offsetWidth,
-    //       height: offsetHeight,
-    //       key: pane.key,
-    //     };
-    //   }
-    //   return pane;
-    // });
-    // this.setState({ panes });
+    const { panes } = this.state;
     this.forceUpdate();
-
     const pane = panes[this.order.indexOf(i)];
     if (!pane) return;
     if (!this.props.onResize) return;
@@ -375,39 +335,6 @@ class SortablePane extends React.Component<SortablePaneProps, State> {
     return paneIndex;
   }
 
-  /**
-   * Update pane size
-   */
-  updateSize() {
-    this.forceUpdate();
-    /*
-    if (!this.panesWrapper || !this.panesWrapper.children) return;
-    const panes = [].slice.apply(this.panesWrapper.children) || [];
-    const newPanes = this.panes.map((pane, i) => {
-      console.log(pane.key, this.order.indexOf(i));
-      const { offsetWidth, offsetHeight } = panes[this.order.indexOf(i)] as HTMLElement;
-      return {
-        key: pane.key,
-        width: offsetWidth,
-        height: offsetHeight,
-      };
-    });
-    // const newPanes = this.panes.map((pane, i) => {
-    //   // if (child.key !== pane.key) return pane;
-    //   const p = panes[this.order.indexOf(i)];
-    //   const { offsetWidth, offsetHeight } = p as HTMLElement;
-    //   return {
-    //     key: pane.key,
-    //     width: offsetWidth,
-    //     height: offsetHeight,
-    //   };
-    // });
-
-    console.log('update size', this.panes, newPanes);
-    if (!isEqual(newPanes, this.panes)) this.setState({ panes: newPanes });
-    */
-  }
-
   getItemPositionByIndex(index: number) {
     const size = this.getPaneSizeList();
     let sum = 0;
@@ -431,8 +358,6 @@ class SortablePane extends React.Component<SortablePaneProps, State> {
       if (keys.indexOf(child.key) === -1) {
         const { key } = child;
         const { panesWrapper } = this;
-        // if (!panesWrapper) return;
-        // const { width, height } = panesWrapper.children[i].getBoundingClientRect();
         const pane = { key, ref: panesWrapper.children[i] };
         newPanes.splice(i, 0, pane);
       }
@@ -463,7 +388,6 @@ class SortablePane extends React.Component<SortablePaneProps, State> {
 
   handleResizeStop(
     i: number,
-    // f: (e: MouseEvent | TouchEvent, dir: ResizableDirection, ref: HTMLElement, data: PaneSize) => {},
     e: MouseEvent | TouchEvent,
     dir: ResizableDirection,
     elementRef: HTMLElement,
@@ -474,8 +398,6 @@ class SortablePane extends React.Component<SortablePaneProps, State> {
     const pane = panes[this.order.indexOf(i)];
     const { key } = pane;
     if (typeof key === 'undefined') return;
-
-    // f(e, dir, elementRef, delta);
 
     if (this.props.onResizeStop) {
       let direction;
@@ -592,23 +514,8 @@ class SortablePane extends React.Component<SortablePaneProps, State> {
             const onMouseDown = isSortable ? this.handleMouseDown.bind(this, i, x, y) : () => null;
             const onTouchStart = this.handleTouchStart.bind(this, i, x, y);
             const onResizeStart = this.handleResizeStart.bind(this, i);
-            const onResizeStop = this.handleResizeStop.bind(this, i /*, child.props.onResizeStop */);
-            const onSizeChange = () => {
-              // const panes = [].slice.apply(this.panesWrapper.children) || [];
-              // const newPanes = this.panes.map((pane, i) => {
-              //   if (child.key !== pane.key) return pane;
-              //   const p = panes[this.order.indexOf(i)];
-              //   const { offsetWidth, offsetHeight } = p as HTMLElement;
-              //   return {
-              //     key: pane.key,
-              //     width: offsetWidth,
-              //     height: offsetHeight,
-              //   };
-              // });
-              // console.log('onSizeChnage', this.panes, newPanes);
-              // this.setState({ panes: newPanes });
-              this.forceUpdate();
-            };
+            const onResizeStop = this.handleResizeStop.bind(this, i);
+            const onSizeChange = () => this.forceUpdate();
             const style = {
               ...child.props.style,
               boxShadow: `rgba(0, 0, 0, 0.2) 0px ${shadow}px ${2 * shadow}px 0px`,
