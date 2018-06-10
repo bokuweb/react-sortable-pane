@@ -9,6 +9,12 @@ import { Pane, PaneProps } from './pane';
 const MAXIMUM_Z_INDEX = 2147483647;
 const HYSTERESIS = 10;
 
+declare global {
+  interface Window {
+    TouchEvent: TouchEvent;
+  }
+}
+
 function reinsert<T>(array: Array<T>, from: number, to: number): Array<T> {
   const a = array.slice(0);
   const v = a[from];
@@ -432,7 +438,7 @@ class SortablePane extends React.Component<SortablePaneProps, State> {
       }
     }
     let delta = 0;
-    if (window && TouchEvent && e.nativeEvent instanceof TouchEvent) {
+    if (window && window.TouchEvent && e.nativeEvent instanceof TouchEvent) {
       const event = e.nativeEvent.touches[0];
       delta = this.isHorizontal() ? event.pageX - pressX : event.pageY - pressY;
     } else if (MouseEvent && e.nativeEvent instanceof MouseEvent) {
