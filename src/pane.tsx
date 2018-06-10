@@ -52,10 +52,18 @@ export class Pane extends React.Component<PaneProps> {
     this.props.onSizeChange();
   }
 
+  get createAllowedProps(): PaneProps {
+    const props: PaneProps = {};
+    return Object.keys(this.props).reduce((acc: PaneProps, key: string) => {
+      if (['isResizable', 'onSizeChange'].indexOf(key) !== -1) return acc;
+      acc[key] = this.props[key];
+      return acc;
+    }, props);
+  }
+
   render() {
     return (
       <Resizable
-        {...this.props}
         enable={{
           top: false,
           right: this.props.isResizable && this.props.isResizable.x,
@@ -66,6 +74,7 @@ export class Pane extends React.Component<PaneProps> {
           bottomLeft: false,
           topLeft: false,
         }}
+        {...this.createAllowedProps}
       >
         {this.props.children}
       </Resizable>
