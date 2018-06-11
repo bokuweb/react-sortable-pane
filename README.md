@@ -171,6 +171,11 @@ export default class SimpleControlledFullExample extends React.Component<{}, Sta
 
 ## Changelog
 
+
+### V1.0.0-beta.1
+
+- fix: fixed a TouchEvent error in IE11.
+
 ### V1.0.0-beta.0
 
 - feat: Use `TypeScript` instead of `flowtype`.
