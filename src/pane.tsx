@@ -8,19 +8,21 @@ export type IsPaneResizable = {
   xy?: boolean;
 };
 
+export type PaneSize = string | number;
+
 export type PaneProps = {
   defaultSize?: {
-    width?: string | number;
-    height?: string | number;
+    width?: PaneSize;
+    height?: PaneSize;
   };
   size?: {
-    width?: string | number;
-    height?: string | number;
+    width?: PaneSize;
+    height?: PaneSize;
   };
-  minWidth?: number;
-  maxWidth?: number;
-  minHeight?: number;
-  maxHeight?: number;
+  minWidth?: PaneSize;
+  maxWidth?: PaneSize;
+  minHeight?: PaneSize;
+  maxHeight?: PaneSize;
   style?: React.CSSProperties;
   className?: string;
   children?: string | React.ReactNode;

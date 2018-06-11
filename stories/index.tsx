@@ -3,7 +3,7 @@ import { storiesOf } from '@storybook/react';
 import './styles.css';
 
 import SimpleVertical from './simple/vertical';
-import SimpleHorizontal from './simple/horizontal';
+import SimpleHorizontal from './simple/horizontal.stories';
 
 import ControlledOrder from './controlled/order';
 import ControlledSize from './controlled/size';
@@ -18,6 +18,10 @@ import AddAndRemoveWithUncontrollableOrder from './add_remove/uncontrollable-ord
 import AddAndRemoveWithControllableOrder from './add_remove/controllable-order';
 
 import PanePropsGrid from './pane_props/grid';
+import PanePropsMax from './pane_props/max';
+import PanePropsMin from './pane_props/min';
+
+import Callback from './callbacks/callback';
 
 storiesOf('000. Simple (uncontrolled)', module)
   .add('vertical', () => <SimpleVertical />)
@@ -38,4 +42,11 @@ storiesOf('004. Rotation', module)
   .add('horizontal', () => <RotationHorizontal />)
   .add('vertical', () => <RotationVertical />);
 
-storiesOf('005. Pane props', module).add('grid', () => <PanePropsGrid />);
+storiesOf('005. Pane props', module)
+  .add('grid', () => <PanePropsGrid />)
+  .add('minimum size', () => <PanePropsMin />)
+  .add('maximum size', () => <PanePropsMax />);
+
+storiesOf('006. Callbacks', module)
+  .add('callback', () => <Callback />);
+  

@@ -29,6 +29,21 @@ export default class SizeUpDownHorizontal extends React.Component<{}, State> {
         >
           Width + 20px
         </Button>
+        <Button
+          onClick={() => {
+            this.setState({
+              panes: {
+                ...this.state.panes,
+                '0': {
+                  width:
+                    this.state.panes[0].width - 20 > 0 ? this.state.panes[0].width - 20 : this.state.panes[0].width,
+                },
+              },
+            });
+          }}
+        >
+          Width - 20px
+        </Button>
         <SortablePane
           direction="horizontal"
           margin={20}
