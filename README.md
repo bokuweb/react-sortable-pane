@@ -136,61 +136,23 @@ export default class SimpleControlledFullExample extends React.Component<{}, Sta
 
 ### SortablePaneComponent
 
-#### `className?: string`
-
-The `className` property is used to set the css `className` of a component.
-
-#### `style?: React.CssProperties`
-
-The `style` property is used to set the style of a component.
-
-#### `direction?: 'horizontal' | 'vertical'`
-
-The `direction` property is used to set the direction of a component.
-If omitted the default direction is `'horizontal'`.
-
-#### `margin?: number`
-
-The `margin` property is used to set the margin between `Pane` component.
-If omitted the default margin is `0`.
-
-#### `isSortable?: boolean`
-
-The `isSortable` property is used to control whether panes can be dragged or not.
-If omitted, the default value is `true`.
-
-#### `disableEffect?: boolean`
-
-The `disableEffect` property is used to disable floating effect.
-If omitted the default value is `false`.
-
-#### `dragHandleClassName?: string`
-
-The `dragHandleClassName` property is a class name of an element which should handle drag events for panes.
-
-#### `onOrderChange?: (order: string[]) => void`
-
-It is called when `Pane` component order changed. The argument `order` is array of react element's `key`.
-
-#### `onResizeStart?: (e: React.MouseEvent<HTMLElement> | React.TouchEvent<HTMLElement>, key: string, dir: PaneResizeDirection) => void`
-
-It is called when `Pane` component resize start.
-
-#### `onResize?: (e: MouseEvent | TouchEvent, key: string, dir: PaneResizeDirection, elementRef: HTMLElement, delta: PaneSize) => void`
-
-It is called when `Pane` component resize.
-
-#### `onResizeStop?: (e: MouseEvent | TouchEvent, key: string, dir: PaneResizeDirection, elementRef: HTMLElement, delta: PaneSize) => void`
-
-It is called when `Pane` component resize stop.
-
-#### `onDragStart?: (e: React.MouseEvent<HTMLElement> | React.TouchEvent<HTMLElement>,  key: string, elementRef: HTMLElement) => void`
-
-It is called when `Pane` component dragging starts.
-
-#### `onDragStop?: (e: MouseEvent | TouchEvent, key: PaneKey, elementRef: HTMLElement) => void`
-
-It is called when `Pane` component dragging stop.
+| Props                | Required | Type                                                                                                                  | Default              | Description                                                                                                                                                          |
+|:---------------------|:---------:-----------------------------------------------------------------------------------------------------------------------|:---------------------|:---------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `className`          |          |`string`                                                                                                               | `undefined`          | Specify `className` of component.                                                                                                                                    | 
+| `style`              |          |`React.CssProperties`                                                                                                  | `{}`                 | Original style of component.                                                                                                                                         |        
+| `direction`          |          |`'horizontal' | 'vertical'`                                                                                            | `horizontal`         | The `direction` is used to set the direction of a component.                                                                                                         |
+| `order`              |          |`string[]`                                                                                                             | `undefined`          | The `order` is used to control `Pane` order. If you need not to control `Pane` state, you can omit this property. (See also, [controlled](#controlled))              |
+| `defaultOrder`       |          |`string[]`                                                                                                             | `undefined`          | The `defaultOrder` is used to set default `Pane` order. If you need to control `Pane` state, please use `order` property. (See also, [uncontrolled](#uncontrolled))  |
+| `margin`             |          |`number`                                                                                                               | `0`                  | The `margin` is used to set the margin between `Pane` component.                                                                                                     |
+| `isSortable`         |          |`boolean`                                                                                                              | `true`               | The `isSortable` is used to control whether panes can be dragged or not.                                                                                             |
+| `disableEffect`      |          |`boolean`                                                                                                              | `false`              | The `disableEffect` is used to disable floating effect.                                                                                                              |
+| `dragHandleClassName`|          |`string`                                                                                                               | `undefined`          | The `dragHandleClassName` is a class name of an element which should handle drag events for panes.                                                                   | 
+| `onOrderChange`      |          |`(order: string[]) => void`                                                                                            | `undefined`          | It is called when `Pane` component order changed. The argument `order` is array of react element's `key`.                                                            |
+| `onResizeStart`      |          |`(e: React.MouseEvent | React.TouchEvent, key: string, dir: PaneResizeDirection) => void`                              | `undefined`          | It is called when `Pane` component resize start.                                                                                                                     |
+| `onResize`           |          |`(e: MouseEvent | TouchEvent, key: string, dir: PaneResizeDirection, elementRef: HTMLElement, delta: PaneSize) => void`| `undefined`          | It is called when `Pane` component resize.                                                                                                                           |
+| `onResizeStop`       |          |`(e: MouseEvent | TouchEvent, key: string, dir: PaneResizeDirection, elementRef: HTMLElement, delta: PaneSize) => void`| `undefined`          | It is called when `Pane` component resize stop.                                                                                                                      |
+| `onDragStart`        |          |`(e: React.MouseEvent<HTMLElement> | React.TouchEvent<HTMLElement>,  key: string, elementRef: HTMLElement) => void`    | `undefined`          | It is called when `Pane` component dragging starts.                                                                                                                  |
+| `onDragStop`         |          |`(e: MouseEvent | TouchEvent, key: PaneKey, elementRef: HTMLElement) => void`                                          | `undefined`          | It is called when `Pane` component dragging stop.                                                                                                                    |
 
 ## PaneComponent
 
