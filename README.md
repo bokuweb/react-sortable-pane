@@ -137,7 +137,7 @@ export default class SimpleControlledFullExample extends React.Component<{}, Sta
 ### SortablePaneComponent
 
 | Props                | Required | Type                                                                                                                  | Default              | Description                                                                                                                                                          |
-|:---------------------|:---------:-----------------------------------------------------------------------------------------------------------------------|:---------------------|:---------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+|:---------------------|:---------|:----------------------------------------------------------------------------------------------------------------------|:---------------------|:---------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | `className`          |          |`string`                                                                                                               | `undefined`          | Specify `className` of component.                                                                                                                                    | 
 | `style`              |          |`React.CssProperties`                                                                                                  | `{}`                 | Original style of component.                                                                                                                                         |        
 | `direction`          |          |`'horizontal' | 'vertical'`                                                                                            | `horizontal`         | The `direction` is used to set the direction of a component.                                                                                                         |
@@ -156,51 +156,18 @@ export default class SimpleControlledFullExample extends React.Component<{}, Sta
 
 ## PaneComponent
 
-#### `defaultSize?: { width?: (number | string), height?: (number | string) }`;
-
-Specifies the width and height that the dragged item should start at. For example, you can set 300, '300px', 50%. If both defaultSize and size omitted, set 'auto'.
-defaultSize will be ignored when size set.
-
-#### `size?: { width?: (number | string), height?: (number | string) }`;
-
-The size property is used to set the size of the component. For example, you can set 300, '300px', 50%.
-Use size if you need to control size state by yourself.
-
-#### `minWidth?: number | string;`
-
-The `minWidth` property is used to set the minimum width of a Pane component. Defaults to 10px.
-
-#### `minHeight?: number | string;`
-
-The `minHeight` property is used to set the minimum height of a Pane component. Defaults to 10px.
-
-#### `maxWidth?: number | string;`
-
-The `maxWidth` property is used to set the maximum width of a Pane component.
-
-#### `maxHeight?: number | string`;
-
-The `maxHeight` property is used to set the maximum height of a Pane component.
-
-#### `grid?: [number, number];`
-
-The `grid` property is used to specify the increments that resizing should snap to. Defaults to `[1, 1]`.
-
-#### `className?: string`
-
-The `className` property is used to set the css classname of a Pane component.
-
-#### `style?: React.CssProperties`
-
-The `style` property is used to set the style of a Pane component.
-
-#### `isResizable?: { x?: boolean, y?: boolean, xy?: boolean }`
-
-The `isResizable` property is used to set the resizable permission of a component.
-
-The permission of `x`, `y`, `xy` direction resizing.
-If omitted the default value is `{ x: true, y: true, xy: true }`.
-If you want to permit only x direction resizing, please set `{ x: true, y: false, xy: false }`.
+| Props                | Required | Type                                                                                                                  | Default                           | Description                                                                                                                                                          |
+|:---------------------|:---------|:----------------------------------------------------------------------------------------------------------------------|:----------------------------------|:---------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `className`          |          |`string`                                                                                                               | `undefined`                       | Specify `className` of component.                                                                                                                                    | 
+| `style`              |          |`React.CssProperties`                                                                                                  | `{}`                              | Original style of component.                                                                                                                                         |        
+| `defaultSize`        |          |`{ width?: (number | string), height?: (number | string) }`                                                            | `auto`                            | Specifies the width and height that the dragged item should start at. For example, you can set 300, '300px', 50%.                                                    |                                                                                                                                   
+| `size`               |          |`{ width?: (number | string), height?: (number | string) }`                                                            | `auto`                            | The size property is used to set the size of the component. For example, you can set 300, '300px', '50%'.                                                            |                                                                                                                
+| `minWidth`           |          |`number | string`                                                                                                      | `10px`                            | The `minWidth` is used to set the minimum width of a Pane component.                                                                                                 |
+| `minHeight`          |          |`number | string`                                                                                                      | `10px`                            | The `minHeight` is used to set the minimum height of a Pane component.                                                                                               |
+| `maxWidth`           |          |`number | string`                                                                                                      | `undefined`                       | The `maxWidth` is used to set the maximum width of a Pane component.                                                                                                 |
+| `maxHeight`          |          |`number | string`                                                                                                      | `undefined`                       | The `maxHeight` is used to set the maximum height of a Pane component.                                                                                               |
+| `grid`               |          |`[number, number]`                                                                                                     | `[1, 1]`                          | The `maxHeight` is used to set the maximum height of a Pane component.                                                                                               |
+| `resizable`          |          |`{ x: boolean, y: boolean, xy: boolean }`                                                                              | `{ x: true, y: true, xy: true }`  | The `resizable` is used to set the resizable permission of a component.                                                                                            |
 
 ## Changelog
 
