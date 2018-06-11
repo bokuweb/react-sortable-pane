@@ -172,6 +172,10 @@ export default class SimpleControlledFullExample extends React.Component<{}, Sta
 ## Changelog
 
 
+### V1.0.0-beta.2
+
+- fix: fixed a min / max size types.
+
 ### V1.0.0-beta.1
 
 - fix: fixed a TouchEvent error in IE11.
