@@ -136,109 +136,38 @@ export default class SimpleControlledFullExample extends React.Component<{}, Sta
 
 ### SortablePaneComponent
 
-#### `className?: string`
-
-The `className` property is used to set the css `className` of a component.
-
-#### `style?: React.CssProperties`
-
-The `style` property is used to set the style of a component.
-
-#### `direction?: 'horizontal' | 'vertical'`
-
-The `direction` property is used to set the direction of a component.
-If omitted the default direction is `'horizontal'`.
-
-#### `margin?: number`
-
-The `margin` property is used to set the margin between `Pane` component.
-If omitted the default margin is `0`.
-
-#### `isSortable?: boolean`
-
-The `isSortable` property is used to control whether panes can be dragged or not.
-If omitted, the default value is `true`.
-
-#### `disableEffect?: boolean`
-
-The `disableEffect` property is used to disable floating effect.
-If omitted the default value is `false`.
-
-#### `dragHandleClassName?: string`
-
-The `dragHandleClassName` property is a class name of an element which should handle drag events for panes.
-
-#### `onOrderChange?: (order: string[]) => void`
-
-It is called when `Pane` component order changed. The argument `order` is array of react element's `key`.
-
-#### `onResizeStart?: (e: React.MouseEvent<HTMLElement> | React.TouchEvent<HTMLElement>, key: string, dir: PaneResizeDirection) => void`
-
-It is called when `Pane` component resize start.
-
-#### `onResize?: (e: MouseEvent | TouchEvent, key: string, dir: PaneResizeDirection, elementRef: HTMLElement, delta: PaneSize) => void`
-
-It is called when `Pane` component resize.
-
-#### `onResizeStop?: (e: MouseEvent | TouchEvent, key: string, dir: PaneResizeDirection, elementRef: HTMLElement, delta: PaneSize) => void`
-
-It is called when `Pane` component resize stop.
-
-#### `onDragStart?: (e: React.MouseEvent<HTMLElement> | React.TouchEvent<HTMLElement>,  key: string, elementRef: HTMLElement) => void`
-
-It is called when `Pane` component dragging starts.
-
-#### `onDragStop?: (e: MouseEvent | TouchEvent, key: PaneKey, elementRef: HTMLElement) => void`
-
-It is called when `Pane` component dragging stop.
+| Props                | Required | Type                                                                                                                                  | Default              | Description                                                                                                                                                          |
+|:---------------------|:---------|:--------------------------------------------------------------------------------------------------------------------------------------|:---------------------|:---------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `className`          |          |`string`                                                                                                                               | `undefined`          | Specify `className` of component.                                                                                                                                    | 
+| `style`              |          |`React.CssProperties`                                                                                                                  | `{}`                 | Original style of component.                                                                                                                                         |        
+| `direction`          |          |<code>'horizontal' &#124; 'vertical'</code>                                                                                            | `horizontal`         | The `direction` is used to set the direction of a component.                                                                                                         |
+| `order`              |          |`string[]`                                                                                                                             | `undefined`          | The `order` is used to control `Pane` order. If you need not to control `Pane` state, you can omit this property. (See also, [controlled](#controlled))              |
+| `defaultOrder`       |          |`string[]`                                                                                                                             | `undefined`          | The `defaultOrder` is used to set default `Pane` order. If you need to control `Pane` state, please use `order` property. (See also, [uncontrolled](#uncontrolled))  |
+| `margin`             |          |`number`                                                                                                                               | `0`                  | The `margin` is used to set the margin between `Pane` component.                                                                                                     |
+| `isSortable`         |          |`boolean`                                                                                                                              | `true`               | The `isSortable` is used to control whether panes can be dragged or not.                                                                                             |
+| `disableEffect`      |          |`boolean`                                                                                                                              | `false`              | The `disableEffect` is used to disable floating effect.                                                                                                              |
+| `dragHandleClassName`|          |`string`                                                                                                                               | `undefined`          | The `dragHandleClassName` is a class name of an element which should handle drag events for panes.                                                                   | 
+| `onOrderChange`      |          |`(order: string[]) => void`                                                                                                            | `undefined`          | It is called when `Pane` component order changed. The argument `order` is array of react element's `key`.                                                            |
+| `onResizeStart`      |          |<code>(e: React.MouseEvent &#124; React.TouchEvent, key: string, dir: PaneResizeDirection) => void</code>                              | `undefined`          | It is called when `Pane` component resize start.                                                                                                                     |
+| `onResize`           |          |<code>(e: MouseEvent &#124; TouchEvent, key: string, dir: PaneResizeDirection, elementRef: HTMLElement, delta: PaneSize) => void</code>| `undefined`          | It is called when `Pane` component resize.                                                                                                                           |
+| `onResizeStop`       |          |<code>(e: MouseEvent &#124; TouchEvent, key: string, dir: PaneResizeDirection, elementRef: HTMLElement, delta: PaneSize) => void</code>| `undefined`          | It is called when `Pane` component resize stop.                                                                                                                      |
+| `onDragStart`        |          |<code>(e: React.MouseEvent<HTMLElement> &#124; React.TouchEvent<HTMLElement>,  key: string, elementRef: HTMLElement) => void</code>    | `undefined`          | It is called when `Pane` component dragging starts.                                                                                                                  |
+| `onDragStop`         |          |<code>(e: MouseEvent &#124; TouchEvent, key: PaneKey, elementRef: HTMLElement) => void</code>                                          | `undefined`          | It is called when `Pane` component dragging stop.                                                                                                                    |
 
 ## PaneComponent
 
-#### `defaultSize?: { width?: (number | string), height?: (number | string) }`;
-
-Specifies the width and height that the dragged item should start at. For example, you can set 300, '300px', 50%. If both defaultSize and size omitted, set 'auto'.
-defaultSize will be ignored when size set.
-
-#### `size?: { width?: (number | string), height?: (number | string) }`;
-
-The size property is used to set the size of the component. For example, you can set 300, '300px', 50%.
-Use size if you need to control size state by yourself.
-
-#### `minWidth?: number | string;`
-
-The `minWidth` property is used to set the minimum width of a Pane component. Defaults to 10px.
-
-#### `minHeight?: number | string;`
-
-The `minHeight` property is used to set the minimum height of a Pane component. Defaults to 10px.
-
-#### `maxWidth?: number | string;`
-
-The `maxWidth` property is used to set the maximum width of a Pane component.
-
-#### `maxHeight?: number | string`;
-
-The `maxHeight` property is used to set the maximum height of a Pane component.
-
-#### `grid?: [number, number];`
-
-The `grid` property is used to specify the increments that resizing should snap to. Defaults to `[1, 1]`.
-
-#### `className?: string`
-
-The `className` property is used to set the css classname of a Pane component.
-
-#### `style?: React.CssProperties`
-
-The `style` property is used to set the style of a Pane component.
-
-#### `isResizable?: { x?: boolean, y?: boolean, xy?: boolean }`
-
-The `isResizable` property is used to set the resizable permission of a component.
-
-The permission of `x`, `y`, `xy` direction resizing.
-If omitted the default value is `{ x: true, y: true, xy: true }`.
-If you want to permit only x direction resizing, please set `{ x: true, y: false, xy: false }`.
+| Props                | Required | Type                                                                                                                  | Default                           | Description                                                                                                                                                          |
+|:---------------------|:---------|:----------------------------------------------------------------------------------------------------------------------|:----------------------------------|:---------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `className`          |          |`string`                                                                                                               | `undefined`                       | Specify `className` of component.                                                                                                                                    | 
+| `style`              |          |`React.CssProperties`                                                                                                  | `{}`                              | Original style of component.                                                                                                                                         |        
+| `defaultSize`        |          |<code>{ width?: (number &#124; string), height?: (number &#124; string) }</code>                                       | `auto`                            | Specifies the width and height that the dragged item should start at. For example, you can set 300, '300px', 50%.                                                    |                                                                                                                                   
+| `size`               |          |<code>{ width?: (number &#124; string), height?: (number &#124; string) }</code>                                       | `auto`                            | The size property is used to set the size of the component. For example, you can set 300, '300px', '50%'.                                                            |                                                                                                                
+| `minWidth`           |          |<code>number &#124; string</code>                                                                                                 | `10px`                            | The `minWidth` is used to set the minimum width of a Pane component.                                                                                                 |
+| `minHeight`          |          |<code>number &#124; string</code>                                                                                                 | `10px`                            | The `minHeight` is used to set the minimum height of a Pane component.                                                                                               |
+| `maxWidth`           |          |<code>number &#124; string</code>                                                                                                 | `undefined`                       | The `maxWidth` is used to set the maximum width of a Pane component.                                                                                                 |
+| `maxHeight`          |          |<code>number &#124; string</code>                                                                                                 | `undefined`                       | The `maxHeight` is used to set the maximum height of a Pane component.                                                                                               |
+| `grid`               |          |`[number, number]`                                                                                                     | `[1, 1]`                          | The `maxHeight` is used to set the maximum height of a Pane component.                                                                                               |
+| `resizable`          |          |`{ x: boolean, y: boolean, xy: boolean }`                                                                              | `{ x: true, y: true, xy: true }`  | The `resizable` is used to set the resizable permission of a component.                                                                                            |
 
 ## Changelog
 
