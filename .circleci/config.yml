@@ -21,6 +21,9 @@ jobs:
       - run:
           name: Test
           command: yarn run test
+      - run:
+          name: Build
+          command: yarn run build
       #- run:
       #    name: Screener test
       #    command: yarn run test-storybook
