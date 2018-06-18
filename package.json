@@ -46,7 +46,7 @@
     "@types/storybook__react": "3.0.7",
     "babel-core": "6.26.3",
     "cypress": "3.0.1",
-    "concurrently": "^3.5.1",
+    "concurrently": "3.5.1",
     "gh-pages": "1.2.0",
     "light-ts-loader": "1.1.2",
     "npm-run-all": "4.1.3",
