@@ -19,6 +19,9 @@ jobs:
       #     name: Lint
       #     command: yarn run lint
       - run:
+          name: Build
+          command: yarn run build
+      - run:
           name: Test
           command: yarn run test
       #- run:
@@ -33,18 +36,18 @@ jobs:
           command: yarn
       - add-ssh-keys:
           fingerprints:
-            - "7c:17:bc:7b:8a:a2:ef:6b:11:f3:56:a0:ac:15:4c:9a"          
+            - "7c:17:bc:7b:8a:a2:ef:6b:11:f3:56:a0:ac:15:4c:9a"
       - run:
           name: Setup git
           command: |
             git config --global user.email "bokuweb12@gmail.com"
-            git config --global user.name "bokuweb"          
+            git config --global user.name "bokuweb"
       - run:
           name: Deploy
           filters:
             branches:
               only: master
-          command: yarn run deploy                   
+          command: yarn run deploy
   patch_release:
     <<: *defaults
     steps:
@@ -84,7 +87,7 @@ jobs:
           command: yarn
       - run:
           name: Build
-          command: yarn run build          
+          command: yarn run build
       - run:
           name: Setup git
           command: |
