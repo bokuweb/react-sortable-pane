@@ -2,10 +2,10 @@
 defaults: &defaults
   working_directory: ~/react-sortable-pane
   docker:
-    - image: quramy/node-nightmare:latest@sha256:e527e87f8dc37634b953594ff3fe1302068e67129dcffca51ebfa786507c379a
+    - image: cypress/base:8
       environment:
-        DISPLAY: ":99"
-
+        ## this enables colors in the output
+        TERM: xterm  
 version: 2
 jobs:
   build:
