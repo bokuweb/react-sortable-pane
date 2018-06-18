@@ -3,7 +3,7 @@ import { storiesOf } from '@storybook/react';
 import './styles.css';
 
 import SimpleVertical from './simple/vertical';
-import SimpleHorizontal from './simple/horizontal.stories';
+import SimpleHorizontal from './simple/horizontal';
 
 import ControlledOrder from './controlled/order';
 import ControlledSize from './controlled/size';
