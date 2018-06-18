@@ -61,6 +61,7 @@
   "exclude": ["stories", "lib"],
   "include": [
     "node_modules/cypress/types/*.ts",
-    "cypress/*/*.ts"
+    "cypress/*/*.ts",
+    "src"
   ]
 }
