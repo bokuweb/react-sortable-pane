@@ -2,6 +2,7 @@ node_modules/
 lib/
 build/
 .DS_Store
-*.js
+src/*.js
 .rpt2_cache
 *.d.ts
+cypress/videos
