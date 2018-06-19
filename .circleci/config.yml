@@ -2,10 +2,10 @@
 defaults: &defaults
   working_directory: ~/react-sortable-pane
   docker:
-    - image: quramy/node-nightmare:latest@sha256:e527e87f8dc37634b953594ff3fe1302068e67129dcffca51ebfa786507c379a
+    - image: cypress/base:8
       environment:
-        DISPLAY: ":99"
-
+        ## this enables colors in the output
+        TERM: xterm  
 version: 2
 jobs:
   build:
@@ -18,6 +18,9 @@ jobs:
       # - run:
       #     name: Lint
       #     command: yarn run lint
+      - run:
+          name: Build
+          command: yarn run build
       - run:
           name: Test
           command: yarn run test
@@ -33,18 +36,18 @@ jobs:
           command: yarn
       - add-ssh-keys:
           fingerprints:
-            - "7c:17:bc:7b:8a:a2:ef:6b:11:f3:56:a0:ac:15:4c:9a"          
+            - "7c:17:bc:7b:8a:a2:ef:6b:11:f3:56:a0:ac:15:4c:9a"
       - run:
           name: Setup git
           command: |
             git config --global user.email "bokuweb12@gmail.com"
-            git config --global user.name "bokuweb"          
+            git config --global user.name "bokuweb"
       - run:
           name: Deploy
           filters:
             branches:
               only: master
-          command: yarn run deploy                   
+          command: yarn run deploy
   patch_release:
     <<: *defaults
     steps:
@@ -84,7 +87,7 @@ jobs:
           command: yarn
       - run:
           name: Build
-          command: yarn run build          
+          command: yarn run build
       - run:
           name: Setup git
           command: |

@@ -4,7 +4,7 @@
 
 <p align="center">
 <a href="https://circleci.com/gh/bokuweb/react-sortable-pane">
-<img src="https://circleci.com/gh/bokuweb/react-sortable-pane.svg?style=svg" alt="CircleCI" /></a>
+<img src="https://circleci.com/gh/bokuweb/react-sortable-pane/tree/master.svg?style=svg" alt="CircleCI" /></a>
 <a href="https://www.npmjs.com/package/react-sortable-pane">
 <img src="https://img.shields.io/npm/v/react-sortable-pane.svg" alt="Build Status" /></a> 
 <a href="https://www.npmjs.com/package/react-sortable-pane">
@@ -44,7 +44,7 @@
 
 ### CodeSandbox
 
-[CodeSandbox(Uncontrolled)](https://codesandbox.io/s/m5m95p35zj)
+[CodeSandbox(Uncontrolled)](https://codesandbox.io/s/oj4o9763y9)
 
 ## Install
 
@@ -171,6 +171,9 @@ export default class SimpleControlledFullExample extends React.Component<{}, Sta
 
 ## Changelog
 
+### V1.0.0
+
+- chore: Update deps.
 
 ### V1.0.0-beta.2
 

@@ -10,6 +10,7 @@
 <!-- I'm using react-rnd **version** [x.x.x] -->
 <!-- My **browser** is: -->
 <!-- I am sure this issue is **not a duplicate**? -->
+<!-- https://codesandbox.io/s/oj4o9763y9 -->
 
 ### Description
 
