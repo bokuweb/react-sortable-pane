@@ -171,6 +171,9 @@ export default class SimpleControlledFullExample extends React.Component<{}, Sta
 
 ## Changelog
 
+### V1.0.0
+
+- chore: Update deps.
 
 ### V1.0.0-beta.2
 
