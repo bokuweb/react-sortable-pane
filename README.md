@@ -4,7 +4,7 @@
 
 <p align="center">
 <a href="https://circleci.com/gh/bokuweb/react-sortable-pane">
-<img src="https://circleci.com/gh/bokuweb/react-sortable-pane.svg?style=svg" alt="CircleCI" /></a>
+<img src="https://circleci.com/gh/bokuweb/react-sortable-pane/tree/master.svg?style=svg" alt="CircleCI" /></a>
 <a href="https://www.npmjs.com/package/react-sortable-pane">
 <img src="https://img.shields.io/npm/v/react-sortable-pane.svg" alt="Build Status" /></a> 
 <a href="https://www.npmjs.com/package/react-sortable-pane">
