@@ -1,0 +1,95 @@
+/* @flow */
+
+import * as React from 'react';
+
+export type Size = string | number;
+export type PaneDirection = 'horizontal' | 'vertical';
+export type PaneResizeDirection = 'x' | 'y' | 'xy';
+export type PaneMode = 'add' | 'remove';
+export type PaneKey = string | number | null;
+export type PaneSize = { width: number; height: number };
+
+export type SortablePaneProps = {
+  direction?: 'horizontal' | 'vertical',
+  margin?: number,
+  style?: { [key: string]: number | string },
+  onResize?: (e: MouseEvent | TouchEvent, key: PaneKey, dir: PaneResizeDirection, elementRef: HTMLElement, delta: PaneSize) => void,
+  onResizeStop?: (e: MouseEvent | TouchEvent, key: PaneKey, dir: PaneResizeDirection, elementRef: HTMLElement, delta: PaneSize) => void,
+  onResizeStart?: (e: SyntheticMouseEvent<HTMLElement> | SyntheticTouchEvent<HTMLElement>, key: PaneKey, dir: PaneResizeDirection) => void,
+  onDragStart?: (e: SyntheticMouseEvent<HTMLElement> | SyntheticTouchEvent<HTMLElement>, key: PaneKey, elementRef: HTMLElement) => void,
+  onDragStop?: (e: MouseEvent | TouchEvent, key: PaneKey, elementRef: HTMLElement) => void,
+  onOrderChange?: (order: string[]) => void,
+  className?: string,
+  disableEffect?: boolean,
+  isSortable?: boolean,
+  dragHandleClassName?: string,
+  defaultOrder?: string[],
+  order?: string[],
+  children: Pane[],
+};
+
+class SortablePane extends React.Component<SortablePaneProps> {
+  static defaultProps = {
+    direction: 'horizontal',
+    style: {},
+    children: [],
+    margin: 0,
+    onClick: () => {},
+    onTouchStart: () => {},
+    onResizeStart: () => {},
+    onResize: () => {},
+    onResizeStop: () => {},
+    onDragStart: () => {},
+    onDragStop: () => {},
+    onOrderChange: () => {},
+    className: '',
+    disableEffect: false,
+    isSortable: true,
+  };
+}
+
+export type IsPaneResizable = {
+    x?: boolean,
+    y?: boolean,
+    xy?: boolean,
+};
+
+export type PaneProps = {
+  defaultSize?: {
+    width?: Size,
+    height?: Size,
+  };
+  size?: {
+    width?: Size,
+    height?: Size,
+  };
+  minWidth?: Size,
+  maxWidth?: Size,
+  minHeight?: Size,
+  maxHeight?: Size,
+  style?: { [key: string]: number | string },
+  className?: string,
+  children?: string | React$Node,
+  resizable?: IsPaneResizable,
+  grid?: [number, number],
+  onSizeChange?: () => void,
+};  
+
+
+class Pane extends React.Component<PaneProps> {
+  static defaultProps: {
+    minWidth: 0,
+    minHeight: 0,
+    style: {},
+    className: '',
+    grid: [1, 1],
+    resizable: {
+      x: true,
+      y: true,
+      xy: true,
+    },
+  }
+}
+
+
+export { Pane, SortablePane };
