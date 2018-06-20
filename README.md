@@ -171,6 +171,10 @@ export default class SimpleControlledFullExample extends React.Component<{}, Sta
 
 ## Changelog
 
+### V1.0.1
+
+- fix: Add `flowtype` definition.
+
 ### V1.0.0
 
 - chore: Update deps.
