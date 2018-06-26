@@ -33,9 +33,9 @@
   },
   "devDependencies": {
     "@cypress/webpack-preprocessor": "2.0.1",
-    "@storybook/addon-info": "3.4.7",
-    "@storybook/addon-storysource": "3.4.7",
-    "@storybook/react": "3.4.6",
+    "@storybook/addon-info": "3.4.8",
+    "@storybook/addon-storysource": "3.4.8",
+    "@storybook/react": "3.4.8",
     "@types/lodash": "4.14.109",
     "@types/lodash.debounce": "4.0.3",
     "@types/lodash.isequal": "4.5.2",
