@@ -23,30 +23,34 @@ import PanePropsMin from './pane_props/min';
 
 import Callback from './callbacks/callback';
 
-storiesOf('000. Simple (uncontrolled)', module)
+import SandboxOrderDefaultSize from './sandbox/order-default-size';
+
+storiesOf('Basic (uncontrolled)', module)
   .add('vertical', () => <SimpleVertical />)
   .add('horizontal', () => <SimpleHorizontal />);
 
-storiesOf('001. Controlled', module)
+storiesOf('Controlled', module)
   .add('order only', () => <ControlledOrder />)
   .add('size (height) only', () => <ControlledSize />)
   .add('full', () => <ControlledFull />);
 
-storiesOf('002. SizeUpDown', module).add('horizontal', () => <SizeUpDownHorizontal />);
+storiesOf('SizeUpDown', module).add('horizontal', () => <SizeUpDownHorizontal />);
 
-storiesOf('003. Add & Remove', module)
+storiesOf('Add & Remove', module)
   .add('uncontrollable order', () => <AddAndRemoveWithUncontrollableOrder />)
   .add('controllable order', () => <AddAndRemoveWithControllableOrder />);
 
-storiesOf('004. Rotation', module)
+storiesOf('Rotation', module)
   .add('horizontal', () => <RotationHorizontal />)
   .add('vertical', () => <RotationVertical />);
 
-storiesOf('005. Pane props', module)
+storiesOf('Pane props', module)
   .add('grid', () => <PanePropsGrid />)
   .add('minimum size', () => <PanePropsMin />)
   .add('maximum size', () => <PanePropsMax />);
 
-storiesOf('006. Callbacks', module)
+storiesOf('Callbacks', module)
   .add('callback', () => <Callback />);
   
+storiesOf('Sandbox', module)
+  .add('default size with order', () => <SandboxOrderDefaultSize />);  
