@@ -171,6 +171,10 @@ export default class SimpleControlledFullExample extends React.Component<{}, Sta
 
 ## Changelog
 
+### V1.0.2
+
+- fix: Fixed a bug, order offset calculation doesn't work properly #203
+
 ### V1.0.1
 
 - fix: Add `flowtype` definition.
