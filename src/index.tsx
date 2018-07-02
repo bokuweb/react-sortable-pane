@@ -182,7 +182,7 @@ class SortablePane extends React.Component<SortablePaneProps, State> {
     const newPanes = this.panes.map((pane, i) => {
       return {
         key: pane.key,
-        ref: panes[this.order.indexOf(i)],
+        ref: panes[this.order[i]],
       };
     });
     this.setState({ panes: newPanes });
