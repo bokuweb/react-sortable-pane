@@ -30,9 +30,11 @@ export default class ControllableOrder extends React.Component {
   }
 
   add() {
-    const order = [String(this.id), ...this.state.order];
+    const pos = ~~(Math.random() * this.state.list.length);
+    const order = [...this.state.order];
+    order.splice(pos, 0, String(this.id));
     this.state.list.splice(
-      ~~(Math.random() * this.state.list.length),
+      pos,
       0,
       <Pane key={this.id} defaultSize={{ width: '100%', height: 120 }} style={paneStyle}>
         <p style={textStyle}>00{this.id++}</p>
