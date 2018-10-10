@@ -1,75 +1,87 @@
 {
   "name": "react-sortable-pane",
-  "version": "0.5.1",
+  "version": "1.0.2",
+  "title": "react-sortable-pane",
+  "main": "./lib/react-sortable-pane.es5.js",
+  "module": "./lib/react-sortable-pane.js",
+  "jsnext:main": "./lib/react-sortable-pane.js",
   "description": "",
-  "main": "lib/index.js",
-  "scripts": {
-    "watch": "npm run watch:lib & npm run watch:example",
-    "watch:lib": "watchify --extension=js -o lib/index.js src/index.js",
-    "watch:example": "watchify --extension=js -o example/dist/bundle.js example/src/index.js",
-    "build": "npm run build:lib & npm run build:example",
-    "build:lib": "browserify --extension=js -o lib/index.js src/index.js",
-    "build:example": "browserify --extension=js -o example/dist/bundle.js example/src/index.js",
-    "test": "karma start",
-    "compile": "babel -d lib/ src/",
-    "prepublish": "npm run compile",
-    "lint": "eslint src",
-    "prepush": "npm run lint"
+  "types": "./lib/index.d.ts",
+  "keywords": [
+    "React"
+  ],
+  "homepage": "",
+  "author": {
+    "name": "bokuweb"
   },
+  "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/bokuweb/react-sortable-pane.git"
+    "url": ""
   },
-  "keywords": [
-    "react",
-    "resize",
-    "resizable",
-    "sortable",
-    "component"
-  ],
-  "author": "bokuweb",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/bokuweb/react-sortable-pane/issues"
+  "engines": {
+    "npm": ">=3.0.0",
+    "node": ">=6.0.0"
   },
-  "homepage": "https://github.com/bokuweb/react-sortable-pane",
-  "peerDependencies": {
-    "react": ">=0.14.0",
-    "react-dom": ">=0.14.0"
+  "dependencies": {
+    "lodash.debounce": "^4.0.8",
+    "lodash.isequal": "^4.1.1",
+    "re-resizable": "4.7.1",
+    "react-motion": "^0.5.2",
+    "resize-observer-polyfill": "^1.5.0",
+    "tslib": "^1.9.2"
   },
   "devDependencies": {
-    "babel": "^6.1.18",
-    "babel-cli": "^6.2.0",
-    "babel-eslint": "^6.0.2",
-    "babel-plugin-add-module-exports": "^0.2.1",
-    "babel-plugin-espower": "2.0.0",
-    "babel-plugin-transform-object-assign": "^6.8.0",
-    "babel-preset-es2015-ie": "^6.6.2",
-    "babel-preset-react": "^6.1.18",
-    "babel-preset-stage-0": "^6.5.0",
-    "babelify": "7.2.0",
-    "browserify": "^12.0.1",
-    "eslint": "^2.7.0",
-    "eslint-config-airbnb": "^6.2.0",
-    "eslint-plugin-react": "^4.2.0",
-    "husky": "^0.11.4",
-    "re-bulma": "0.0.5",
-    "react": "^15.0.1",
-    "react-addons-test-utils": "^15.0.1",
-    "sinon": "^1.17.2",
-    "watchify": "^3.5.0"
+    "@cypress/webpack-preprocessor": "2.0.1",
+    "@storybook/addon-info": "3.4.8",
+    "@storybook/addon-storysource": "3.4.8",
+    "@storybook/react": "3.4.8",
+    "@types/lodash": "4.14.110",
+    "@types/lodash.debounce": "4.0.3",
+    "@types/lodash.isequal": "4.5.2",
+    "@types/react": "16.4.6",
+    "@types/react-dom": "16.0.6",
+    "@types/react-motion": "0.0.26",
+    "@types/storybook__addon-actions": "3.0.3",
+    "@types/storybook__react": "3.0.8",
+    "babel-core": "6.26.3",
+    "concurrently": "3.6.0",
+    "cpx": "1.5.0",
+    "cpy-cli": "2.0.0",
+    "cypress": "3.0.2",
+    "gh-pages": "1.2.0",
+    "light-ts-loader": "1.1.2",
+    "npm-run-all": "4.1.3",
+    "prettier": "1.13.7",
+    "react": "16.4.1",
+    "react-dom": "16.4.1",
+    "rollup": "0.60.7",
+    "rollup-plugin-babel": "3.0.7",
+    "rollup-plugin-commonjs": "9.1.3",
+    "rollup-plugin-node-globals": "1.2.1",
+    "rollup-plugin-node-resolve": "3.3.0",
+    "rollup-plugin-replace": "2.0.0",
+    "rollup-plugin-typescript2": "0.15.1",
+    "ts-loader": "4.4.2",
+    "typescript": "2.9.2",
+    "wait-on": "2.1.0"
   },
-  "browserify": {
-    "transform": [
-      "babelify"
-    ]
+  "scripts": {
+    "build:prod:main": "rollup -c config/prod.js",
+    "build:prod:es5": "rollup -c config/prod.es5.js",
+    "build": "npm-run-all --serial build:prod:* copy:flow",
+    "start": "npm run storybook",
+    "copy:flow": "cpy src/react-sortable-pane.es5.js.flow lib && cpy src/react-sortable-pane.es5.js.flow lib --rename react-sortable-pane.js.flow",
+    "test": "concurrently 'npm run storybook' 'npm run cypress:test' -k -s first",
+    "storybook": "start-storybook -p 6096",
+    "cypress:test": "wait-on http-get://localhost:6096 && npm run cypress:run",
+    "cypress:run": "cypress run",
+    "cypress:open": "cypress open",
+    "build-storybook": "build-storybook",
+    "format": "prettier-eslint --write --single-quote --semi=true \"src/**/*.js\" ",
+    "deploy": "npm run build-storybook && gh-pages -d storybook-static"
   },
   "files": [
     "lib"
-  ],
-  "dependencies": {
-    "lodash.isequal": "^4.1.1",
-    "react-motion": "^0.4.4",
-    "react-resizable-box": "^1.3.2"
-  }
+  ]
 }

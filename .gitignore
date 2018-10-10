@@ -1,3 +1,8 @@
 node_modules/
-lib/*.js
-example/dist/*.js
+lib/
+build/
+.DS_Store
+src/*.js
+.rpt2_cache
+*.d.ts
+cypress/videos
