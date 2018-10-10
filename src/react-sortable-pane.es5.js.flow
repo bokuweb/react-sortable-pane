@@ -17,7 +17,7 @@ export type SortablePaneProps = {
   onResizeStop?: (e: MouseEvent | TouchEvent, key: PaneKey, dir: PaneResizeDirection, elementRef: HTMLElement, delta: PaneSize) => void,
   onResizeStart?: (e: SyntheticMouseEvent<HTMLElement> | SyntheticTouchEvent<HTMLElement>, key: PaneKey, dir: PaneResizeDirection) => void,
   onDragStart?: (e: SyntheticMouseEvent<HTMLElement> | SyntheticTouchEvent<HTMLElement>, key: PaneKey, elementRef: HTMLElement) => void,
-  onDragStop?: (e: MouseEvent | TouchEvent, key: PaneKey, elementRef: HTMLElement) => void,
+  onDragStop?: (e: MouseEvent | TouchEvent, key: PaneKey, elementRef: HTMLElement, order: string[]) => void,
   onOrderChange?: (order: string[]) => void,
   className?: string,
   disableEffect?: boolean,

@@ -85,7 +85,7 @@ export type SortablePaneProps = {
     key: PaneKey,
     elementRef: HTMLElement,
   ) => void;
-  onDragStop?: (e: MouseEvent | TouchEvent, key: PaneKey, elementRef: HTMLElement) => void;
+  onDragStop?: (e: MouseEvent | TouchEvent, key: PaneKey, elementRef: HTMLElement, order: string[]) => void;
   onOrderChange?: (order: string[]) => void;
   className?: string;
   disableEffect?: boolean;
@@ -500,14 +500,16 @@ class SortablePane extends React.Component<SortablePaneProps, State> {
   handleMouseUp(e: MouseEvent | TouchEvent) {
     const children = this.props.children || [];
     if (children.length === 0) return;
+    const wasPressed = this.state.isPressed;
     this.setState({ isPressed: false, delta: 0 });
     const child = children[this.state.lastPressed];
     const lastPressedId = child.key;
     if (!this.props.isSortable) return;
-    if (this.props.onDragStop) {
+    const panes = this.state.panes;
+    if (this.props.onDragStop && wasPressed) {
       const c = this.panes.find(p => p.key === child.key);
       if (c && c.ref) {
-        this.props.onDragStop(e, child.key, c.ref as HTMLElement);
+        this.props.onDragStop(e, child.key, c.ref as HTMLElement, panes.map(p => String(p.key)));
       }
     }
   }
