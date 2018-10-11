@@ -6,3 +6,5 @@ src/*.js
 .rpt2_cache
 *.d.ts
 cypress/videos
+.idea
+.vscode
