@@ -25,6 +25,7 @@ export type SortablePaneProps = {
   dragHandleClassName?: string,
   defaultOrder?: string[],
   order?: string[],
+  springConfig?: { stiffness?: number, damping?: number, precision?: number }
   children: Pane[],
 };
 
@@ -44,6 +45,7 @@ class SortablePane extends React.Component<SortablePaneProps> {
     onOrderChange: () => {},
     className: '',
     disableEffect: false,
+    springConfig: { damping: 30, stiffness: 500 },
     isSortable: true,
   };
 }

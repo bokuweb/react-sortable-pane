@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Motion, spring } from 'react-motion';
+import { Motion, spring, SpringHelperConfig } from 'react-motion';
 import { ResizableDirection } from 're-resizable';
 import ResizeObserver from 'resize-observer-polyfill';
 import isEqual from 'lodash.isequal';
@@ -31,13 +31,7 @@ const directionDict: { [key: string]: PaneResizeDirection } = {
 
 const clamp = (n: number, min = n, max = n): number => Math.max(Math.min(n, max), min);
 
-type Spring = {
-  damping?: number;
-  stiffness?: number;
-  precision?: number;
-};
-
-const springConfig: Spring = {
+const defaultSpringConfig: SpringHelperConfig = {
   damping: 30,
   stiffness: 500,
 };
@@ -93,6 +87,7 @@ export type SortablePaneProps = {
   dragHandleClassName?: string;
   defaultOrder?: string[];
   order?: string[];
+  springConfig?: SpringHelperConfig,
   children: React.ReactElement<PaneProps>[];
 };
 
@@ -127,6 +122,7 @@ class SortablePane extends React.Component<SortablePaneProps, State> {
     className: '',
     disableEffect: false,
     isSortable: true,
+    springConfig: defaultSpringConfig
   };
 
   constructor(props: SortablePaneProps) {
@@ -516,7 +512,7 @@ class SortablePane extends React.Component<SortablePaneProps, State> {
 
   renderPanes() {
     const { mouse, isPressed, lastPressed, isResizing } = this.state;
-    const { disableEffect, isSortable } = this.props;
+    const { disableEffect, isSortable, springConfig } = this.props;
     const children = this.props.children || [];
     return children.map((child, i) => {
       const pos = this.props.order
