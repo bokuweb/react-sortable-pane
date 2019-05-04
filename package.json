@@ -45,7 +45,7 @@
     "@types/storybook__addon-actions": "3.0.3",
     "@types/storybook__react": "3.0.8",
     "babel-core": "6.26.3",
-    "concurrently": "3.6.0",
+    "concurrently": "3.6.1",
     "cpx": "1.5.0",
     "cpy-cli": "2.0.0",
     "cypress": "3.0.2",
