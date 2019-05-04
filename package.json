@@ -62,7 +62,7 @@
     "rollup-plugin-node-resolve": "3.3.0",
     "rollup-plugin-replace": "2.0.0",
     "rollup-plugin-typescript2": "0.15.1",
-    "ts-loader": "4.4.2",
+    "ts-loader": "4.5.0",
     "typescript": "2.9.2",
     "wait-on": "2.1.0"
   },
