@@ -309,9 +309,9 @@
   version "3.2.16"
   resolved "https://registry.yarnpkg.com/@types/jquery/-/jquery-3.2.16.tgz#04419c404a3194350e7d3f339a90e72c88db3111"
 
-"@types/lodash.debounce@4.0.3":
-  version "4.0.3"
-  resolved "https://registry.yarnpkg.com/@types/lodash.debounce/-/lodash.debounce-4.0.3.tgz#d712aee9e6136be77f70523ed9f0fc049a6cf15a"
+"@types/lodash.debounce@4.0.6":
+  version "4.0.6"
+  resolved "https://registry.yarnpkg.com/@types/lodash.debounce/-/lodash.debounce-4.0.6.tgz#c5a2326cd3efc46566c47e4c0aa248dc0ee57d60"
   dependencies:
     "@types/lodash" "*"
 
