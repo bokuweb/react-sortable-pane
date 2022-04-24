@@ -352,9 +352,10 @@
     "@types/node" "*"
     "@types/react" "*"
 
-"@types/react-motion@0.0.26":
-  version "0.0.26"
-  resolved "https://registry.yarnpkg.com/@types/react-motion/-/react-motion-0.0.26.tgz#16ba807ae3c4bf3cb67791c91bdfa9074ceb5ec9"
+"@types/react-motion@0.0.33":
+  version "0.0.33"
+  resolved "https://registry.yarnpkg.com/@types/react-motion/-/react-motion-0.0.33.tgz#c156c400ace995584990344cc0239e41f411f425"
+  integrity sha512-R9grd4EwdDBcKKq7Zhszd8ukyy2BLKN6ooNI0V39nUl/sui+m7VI94cdebYemBteoPHmO7J7BZk+cIf+Xnk4TA==
   dependencies:
     "@types/react" "*"
 
