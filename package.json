@@ -36,7 +36,7 @@
     "@storybook/addon-info": "3.4.8",
     "@storybook/addon-storysource": "3.4.8",
     "@storybook/react": "3.4.8",
-    "@types/lodash": "4.14.110",
+    "@types/lodash": "4.17.11",
     "@types/lodash.debounce": "4.0.3",
     "@types/lodash.isequal": "4.5.2",
     "@types/react": "16.4.6",
